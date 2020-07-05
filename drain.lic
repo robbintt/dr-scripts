@@ -1,0 +1,22 @@
+# drain for a specific amount of time before exiting
+#
+custom_require.call(%w[common])
+
+# 120 mins for f2p i think
+minutes = 120
+# minutes = 60
+
+# want to hide but not every minute, maybe every 15 mins check
+put "hide"
+
+while minutes > 0
+
+  minutes = minutes - 1
+  put "exp"
+  pause
+  put "echo *** Draining for #{minutes} more minutes."
+  pause 60
+
+end
+
+put "exit"

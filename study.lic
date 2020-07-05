@@ -1,0 +1,58 @@
+
+custom_require.call(%w[drinfomon common spellmonitor])
+
+class FirstAidTrainer
+  # not yet used
+  attr_reader :skillnames
+
+  def initialize
+    # not yet used
+    @skillnames = ["Magic", "Augmentation", "Utility"]
+  end
+
+  def stow
+    pause
+    waitrt?
+    put "stow left"
+
+    pause
+    waitrt?
+    put "stow right"
+  end
+
+  def studyguide
+    pause
+    waitrt?
+    put "turn my guide"
+
+    pause
+    waitrt?
+    put "study my guide"
+
+  end
+
+  def getguide
+    pause
+    waitrt?
+    put "take my guide"
+
+    pause
+    waitrt?
+    put "open my guide"
+
+    pause
+    waitrt?
+    put "turn my guide to boo" # train to 24 or so
+    #put "turn my guide to peccary" # takes forever to get to 34
+  end
+end
+
+firstaidtrainer = FirstAidTrainer.new
+
+firstaidtrainer.stow
+firstaidtrainer.getguide
+# book doesn't lock it at the moment, try unlocking more
+while DRSkill.getxp('First Aid') < 24
+  firstaidtrainer.studyguide
+end
+firstaidtrainer.stow

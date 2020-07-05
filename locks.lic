@@ -1,0 +1,76 @@
+
+# common, DRC: check if script is running thingy
+# spellmonitor: watch spells
+custom_require.call(%w[drinfomon common spellmonitor])
+
+# original from hunting-buddy.lic
+#custom_require.call(%w[common common-arcana common-items common-travel drinfomon events spellmonitor equipmanager])
+
+class LockTrainer
+  # from common: have only used one method from DRC so far, not sure what DRCA, DRCI, DRCT are...
+  include DRC
+  #include DRCA
+  #include DRCI
+  #include DRCT
+  def initialize
+    # not using used/daily_uses yet
+    @training_items = {'training box' => {'used' => 1, 'daily_uses' => 105}}
+
+    @locks_exp_threshold = 34
+    @skillname = 'Locksmithing'
+    @pick_message = ''
+    @end_message_list = ["The lock feels warm, as if worked too often recently, so you stop your attempt to pick it."]
+
+    # what is all this, what can i use
+    #arg_definitions = [[]]
+    #args = parse_args(arg_definitions, true)
+    #@settings = get_settings
+    #@stop_on_low_threshold = @settings.stop_on_low_threshold
+    #data = get_data('hunting')
+    #@escort_zones = data.escort_zones
+  end
+  def pick_message 
+    @pick_message
+  end
+  def end_message_list 
+    @end_message_list
+  end
+  def training_items 
+    @training_items
+  end
+  def skillname 
+    @skillname
+  end
+  def locks_exp_threshold 
+    @locks_exp_threshold
+  end
+  def pick(item, attribs)
+    # note that the messages are special for "an intricate locksmith's training box fit with a silversteel latch"
+    # need to move match messages into the @training_items data structure for dynamic trainer handling
+    waitrt?
+    fput "lock my #{item}", "You", "already locked"
+    waitrt?
+    # need to append the @end_message_list here to allow custom end_message
+    @pick_message = fput "pick my #{item}", "The lock feels warm, as if worked too often recently, so you stop your attempt to pick it.", "You", "isn't locked"
+  end
+end
+
+locktrainer = LockTrainer.new
+
+# > study box
+# You're certain you can LOCK, PICK an intricate locksmith's training box fit with a silversteel latch.
+# You believe the training box could be picked 105 times per day before running the risk of damaging the lock.  You think it could be picked 42 more times today.
+
+locktrainer.training_items.each do |trainer, attribs|
+  # later add a condition where this one is used up and move on to the next...
+  # put this in a loop
+  pause
+  waitrt?
+  fput "get my #{trainer}", "You get", "You"
+  while DRSkill.getxp(locktrainer.skillname) < locktrainer.locks_exp_threshold and not locktrainer.end_message_list.include?(locktrainer.pick_message)
+    locktrainer.pick(trainer, attribs)
+  end
+  pause
+  waitrt?
+  fput "stow my #{trainer}", "You put"
+end

@@ -1,0 +1,342 @@
+---
+# https://elanthipedia.play.net/Cleric#Circle_Requirements
+# 3 Magics: Arcana, Augmentation, Attunement
+# 3 Weapons (only 1 is needed to circle): Brawling, Heavy Thrown, Large Blunt
+# 1 Armor: Chain Armor (does not include Shield Usage)
+# 4 Survivals: Athletics, Perception, Evasion, Outdoorsmanship
+# 4 Lores (only 3 are needed to circle): Appraisal, Tactics, Scholarship
+
+hometown: Crossing
+training_manager_hunting_priority: true
+forage_item: rock
+safe_room: 5713
+outdoor_room: 19162
+
+# Sell loot
+sell_loot: true
+sell_loot_pouch: false
+sell_loot_bundle: true
+sell_loot_money_on_hand: 3 silver
+sell_loot_skip_bank: false
+sell_loot_skip_exchange: false
+sell_loot_skip_pouch_close: false
+#sale_pouches_container: haversack
+
+#hunting-buddy will maintain a minimum of storebought ammo - will need more details outside crossing
+#You can specify custom restocking, advanced feature
+restock:
+  arrow:
+    quantity: 15
+  bolt:
+    quantity: 15
+  rock:
+    quantity: 15
+  #You can specify custom restocking, advanced feature
+  # rock:
+  #   hometown: Hibarnhvidar
+  #   name: smooth rocks
+  #   room: 12172
+  #   price: 45
+  #   size: 30
+  #   stackable: true
+  #   quantity: 30
+
+
+full_pouch_container: "backpack"
+spare_gem_pouch_container: "backpack"
+tie_gem_pouches: true
+gem_pouch_adjective: dark
+
+# use zills or cowbell
+worn_instrument: zills
+
+# listen in your safe room
+listen: true
+
+storage_containers:
+- backpack
+
+## Hunting settings
+# teach your hunting buddies
+combat_teaching_skill: Sling
+# how many mindstates to use a weapon for
+combat_trainer_target_increment: 5
+# how many actions to do if you dont hit the mindstate goal before swapping weapons
+combat_trainer_action_count: 15
+# avoid losing ammo by killing the last opponent
+skip_last_kill: false
+loot_bodies: true
+loot_delay: 5
+custom_loot_type:
+dump_junk: true
+dump_item_count: 9
+
+priority_skills_lower_limit: 6
+empty_hunting_room_messages:
+- hello?
+stop_hunting_if_bleeding: true
+left_hand_free: true
+skinning:
+  skin: true
+  # number of arranges, only use this when skinning slows down
+  arrange_count: 0
+  # need to save on inv slots... when does this tie the bundle?
+  tie_bundle: true
+
+# list of skills that will trigger a hunt loop if they go below the lower_limit. THIS MEANS ONLY COMBAT SKILLS SHOULD BE ON HERE
+training_manager_priority_skills:
+- Shield Usage
+- Leather Armor
+hunting_info:
+  #can find zones with notes in base-hunting.yaml in the data file
+  # Note: You can add multiple "overflow" zones to the list.
+  # It checks each hunting zone for an empty room before waiting
+- :zone:
+  #- wildland_goblin_riverhaven
+  #- arbelog_ram_bear_riverhaven
+  #- reavers
+  - rats
+  #- fell_hogs
+  :duration: 30
+  stop_on:
+  - Shield Usage
+  - Parry Ability
+  - Missile Mastery
+  - Melee Mastery
+
+# Gear settings
+gear:
+- :name: leathers
+  :adjective: rugged
+  :is_leather: true
+  :hinders_lockpicking: true
+  :is_worn: true
+- :name: bascinet
+  :hinders_lockpicking: true
+  :is_worn: true
+- :name: gloves
+  :adjective: chain
+  :hinders_lockpicking: true
+  :is_worn: true
+- :name: aventail
+  :adjective: scale
+  :hinders_lockpicking: true
+  :is_worn: true
+- :name: shield
+  :adjective: target
+  :hinders_lockpicking: true
+  :is_worn: true
+- :name: stick
+  :adjective: parry
+  :hinders_lockpicking: false
+  :is_worn: true
+
+# weapons
+- :name: sling
+  :adjective: leather
+  :is_worn: false
+- :name: shortbow
+  :adjective: yew
+  :is_worn: false
+- :name: crossbow
+  :adjective: light
+  :is_worn: false
+
+- :name: scimitar
+  :adjective: steel
+  :is_worn: false
+#- :name: blade
+#  :adjective: thrusting
+#  :is_worn: false
+#- :name: nightstick
+#  :is_worn: false
+#- :name: sword
+#  :adjective: bastard
+#  :is_worn: false
+#  :swappable: true
+#- :name: mace
+#  :adjective: bar
+#  :is_worn: false
+#  :swappable: true
+#- :name: javelin
+#  :is_worn: false
+#- :name: club
+#  :adjective: throwing
+#  :is_worn: false
+
+
+gear_sets:
+  standard:
+  - target shield
+  - parry stick
+  - rugged leathers
+  - chain gloves
+  - bascinet
+  - scale aventail
+  stealing:
+  - parry stick
+  swimming:
+  - parry stick
+
+# Combat settings
+buff_spells:
+  Ease Burden:
+    abbrev: ease
+    recast: 1
+    mana: 1
+    cambrinth:
+    - 1
+  Manifest Force:
+    abbrev: maf
+    recast: 1
+    mana: 1
+    cambrinth:
+    - 1
+  Shadows:
+    abbrev: shadows
+    recast: 1
+    mana: 1
+    cambrinth:
+    - 1
+offensive_spells:
+- skill: Targeted Magic
+  name: Strange Arrow
+  abbrev: stra
+  mana: 1
+  cast_only_to_train: true
+- skill: Debilitation
+  name: burden
+  abbrev: burden
+  mana: 1
+  harmless: true
+
+dance_skill: Small Edged
+aiming_trainables:
+- Tactics
+- Brawling
+training_abilities:
+  Tactics: 30
+  App Quick: 30
+  Analyze: 120  #Teaches tactics
+  Hunt: 80
+  Collect: 120  #adds a lot of RT
+  Perc: 120
+  Pray: 610
+weapon_training:
+  Brawling: ''
+  Bow: yew shortbow
+  Crossbow: light crossbow
+  Slings: leather sling
+  #Heavy Thrown: javelin
+  #Light Thrown: throwing club
+  #Small Blunt: throwing club
+  #Large Blunt: bar mace
+  #Twohanded Blunt: bar mace
+  Small Edged: steel scimitar
+  #Small Edged: thrusting blade
+  #Large Edged: bastard sword
+  #Twohanded Edged: bastard sword
+  #Polearms: javelin
+  #Staves: nightstick
+  #Offhand Weapon: throwing club
+# these are trained first when you enter combat
+priority_weapons:
+#  - Targeted Magic
+#  - Large Blunt
+#  - Bow
+#  - Crossbow
+#  - Slings
+#  - Heavy Thrown
+#  - Light Thrown
+#  - Small Blunt
+#  - Large Blunt
+#  - Twohanded Blunt
+#  - Small Edged
+#  - Large Edged
+#  - Twohanded Edged
+#  - Polearms
+#  - Staves
+#  - Offhand Weapon
+# Non-combat settings
+crossing_training:
+- Astrology
+- Augmentation
+- Warding
+- Utility
+- Sorcery
+- Appraisal
+- Athletics
+- Outdoorsmanship
+- Perception
+- Attunement
+- Arcana
+- Scholarship
+- Performance
+- Thievery
+- Locksmithing
+#- First Aid
+training_spells:
+  Augmentation:
+    abbrev: ease
+  Warding:
+    abbrev: maf
+  Utility:
+    abbrev: shadows
+cambrinth: cambrinth ring
+cambrinth_cap: 5
+favor_goal: 25
+favor_god: Faenella
+water_holder: chalice
+
+# only include art for younglings in crossing
+appraisal_training:
+- pouches
+- gear
+- art
+
+# Lockpicking settings - follow it carefully to avoid springing traps!
+stop_pick_on_mindlock: true
+pick_blind: false
+use_lockpick_ring: true
+skip_lockpick_ring_refill: true
+lockpick_container: lockpick ring
+lockpick_type: stout  #use 'stout iron' if in Shard
+harvest_traps: false
+#live box source
+picking_box_source: backpack
+# Keep this empty to drop too-hard boxes on the ground
+picking_box_storage: backpack
+#pet box source
+picking_pet_box_source: backpack
+#number of boxes to make with ;pick pets
+pet_boxes_on_hand: 0
+#settings for lockpick training box to use with ;lockbox
+picking_lockbox: cabinet
+picking_worn_lockbox: false
+
+
+#list of scripts that will block ;sanowret-crystal from draining your concentration
+sanowret_no_use_scripts:
+- sew
+- carve
+- tinker
+- forge
+- remedy
+- shape
+- enchant
+- outdoorsmanship
+#- combat-trainer
+- buff
+
+train_with_burgle: true
+burgle_settings:
+  room: 851
+  entry_type: cycle
+  max_search_count: 1
+  loot_container: "backpack"
+  safe_mode: true
+
+# defines a spell to train sorcery if Sorcery is on your crossing-training list
+#crossing_training_sorcery:
+# what room to use when training sorcery - check JUSTICE beforehand
+crossing_training_sorcery_room: 19162

@@ -1,0 +1,50 @@
+=begin
+  Documentation:
+
+  Future:
+    -
+=end
+
+custom_require.call(%w[common])
+include DRC  # wait_for_script_to_complete
+
+def power
+  # paused to run ;percmoons at all times
+  #pause
+  #waitrt?
+  #put "perc moons"
+  pause
+  waitrt?
+  put "perc mana"
+end
+
+loop {
+
+  power
+  wait_for_script_to_complete('sym')
+  power
+  wait_for_script_to_complete('go2', ['475'] ) # haven ranger tent
+  power
+  wait_for_script_to_complete('tattoo')
+  power
+  wait_for_script_to_complete('astrology')
+  power
+  wait_for_script_to_complete('go2', ['3353'] ) # lang bin for climb
+  power
+  wait_for_script_to_complete('climb')
+  power
+  wait_for_script_to_complete('go2', ['475'] ) # haven ranger tent
+  while DRSkill.getxp('Enchanting') < 30
+    power
+    wait_for_script_to_complete('workorders', ['artificing'] )
+  end
+  # go after artificing
+  wait_for_script_to_complete('go2', ['475'] ) # haven ranger tent
+  power
+  wait_for_script_to_complete('rocks')
+  power
+  wait_for_script_to_complete('study')
+  power
+  #wait_for_script_to_complete('locks')
+
+}

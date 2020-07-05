@@ -1,0 +1,84 @@
+custom_require.call(%w[common])
+
+#include DRC
+
+module UtilMethods
+
+  def stowheld
+    @@held_text = ""
+    while @@held_text != "Both of your hands are empty."
+      pause
+      waitrt?
+      fput "stow right", "you", "Stow what?"
+      pause
+      waitrt?
+      fput "stow left", "you", "Stow what?"
+      pause
+      waitrt?
+      @@held_text = fput "inv held", "Both of your hands are empty.", "You", "you"
+    end
+  end
+
+  def stowfeet
+    fput "stow feet", "you", "Stow what?"
+  end
+
+  def getmyitem(item)
+    pause
+    waitrt?
+    fput "get my #{item}", "You", "What were you referring to?"
+  end
+
+  def getitem(item, container="")
+    if container == ""
+      pause
+      waitrt?
+      fput "get #{item}", "You", "What were you referring to?"
+    else
+      pause
+      waitrt?
+      fput "get #{item} from #{container}", "You", "What were you referring to?"
+    end
+  end
+
+  def stowmyitem(item)
+    pause
+    waitrt?
+    fput "stow my #{item}", "You", "Stow what?"
+  end
+
+  def stowitem(item)
+    pause
+    waitrt?
+    fput "stow my #{item}", "You", "Stow what?"
+  end
+
+  def unpause_other_scripts
+    #resume the previously paused scripts
+    Script.running.find_all { |s| s.paused? && !s.no_pause_all && $scripts_to_unpause.include?(s.name) }.each(&:unpause)
+  end
+
+  def pause_other_scripts
+    #Pause all running scripts, that do not have no_pause_all flag set
+    #Do not use pause_all/unpause_all, as when resuming this could resume scripts that were not paused by this script
+    $scripts_to_unpause = []
+    Script.running.find_all { |s| !s.paused? && !s.no_pause_all && s.name != Script.self.name}.each do  |s|
+      s.pause
+      $scripts_to_unpause << s.name
+    end
+  end
+
+
+  def justicearea?
+    pause
+    waitrt?
+    justicearea = fput "justice", "You're fairly certain this area is lawless and unsafe.", "After assessing the area, you think local law enforcement keeps an eye on what's going on here.", "You", "you"
+    # This is defensive to avoid the law
+    if justicearea != "You're fairly certain this area is lawless and unsafe."
+      return true
+    else
+      return false
+    end
+  end
+
+end

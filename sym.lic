@@ -1,0 +1,58 @@
+
+custom_require.call(%w[drinfomon common spellmonitor])
+
+class MagicTrainer
+  # not yet used
+  attr_reader :skillnames
+
+  def initialize
+    # not yet used
+    @skillnames = ["Magic", "Augmentation", "Utility"]
+  end
+
+  def utilmagic
+    pause
+    waitrt?
+    put "release"
+    pause
+    waitrt?
+    put "prep symbiosis"
+    pause
+    waitrt?
+    put "prep pg 28"
+    waitfor "fully prepared to cast"
+    pause 5
+    fput "cast", "You gesture", "You don't have a spell prepared!"
+  end
+
+  def augmagic
+    pause
+    waitrt?
+    put "release"
+    pause
+    waitrt?
+    put "prep symbiosis"
+    pause
+    waitrt?
+    put "prep aus 28"
+    waitfor "fully prepared to cast"
+    pause 5
+    fput "cast", "You gesture", "You don't have a spell prepared!"
+  end
+end
+
+magictrainer = MagicTrainer.new
+
+# need to update this to use variables
+
+# need to thread an RT thing into this script
+while DRSkill.getxp('Utility') < 17 or DRSkill.getxp('Augmentation') < 17 or DRSkill.getxp('Lunar Magic') < 34
+  if DRSkill.getxp('Utility') < 17 
+    magictrainer.utilmagic
+  end
+  # temp catchall for primary magic
+  if DRSkill.getxp('Augmentation') < 17 or DRSkill.getxp('Lunar Magic') < 34
+    magictrainer.augmagic
+  end
+end
+

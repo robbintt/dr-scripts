@@ -1,0 +1,15 @@
+waitrt?
+pause
+put "unlock door"
+waitrt?
+pause
+put "open door"
+waitrt?
+pause
+put "go door"
+waitrt?
+pause
+put "close door"
+waitrt?
+pause
+put "lock door"

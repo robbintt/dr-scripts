@@ -1,0 +1,92 @@
+=begin
+  Documentation:
+
+=end
+
+custom_require.call(%w[common])
+include DRC  # wait_for_script_to_complete
+
+
+# [0] is the full line, each next index is a word
+# store a hash of inputs and roomnumbers
+echo("Going to: #{variable}")
+
+if variable[0] == 'xbank'
+  wait_for_script_to_complete('go2', ['1900'])
+end
+
+if variable[0] == 'home'
+  wait_for_script_to_complete('go2', ['3138'])
+end
+
+if variable[0] == 'bin'
+  wait_for_script_to_complete('go2', ['3353'])
+end
+
+if variable[0] == 'tent'
+  wait_for_script_to_complete('go2', ['475'])
+end
+
+if variable[0] == 'empath'
+  wait_for_script_to_complete('go2', ['8720'])
+end
+
+if variable[0] == 'gryphons'
+  wait_for_script_to_complete('go2', ['8626'])
+end
+
+if variable[0] == 'wolves'
+  wait_for_script_to_complete('go2', ['8675'])
+end
+
+if variable[0] == 'vines'
+  wait_for_script_to_complete('go2', ['3635'])
+end
+
+
+if variable[0] == 'trolls'
+  wait_for_script_to_complete('go2', ['3568'])
+end
+
+if variable[0] == 'repair'
+  wait_for_script_to_complete('go2', ['12209'])
+end
+
+if variable[0] == 'srela'
+  wait_for_script_to_complete('go2', ['10079'])
+end
+
+
+## Shard
+
+# 
+if variable[0] == 'shardwestgate'
+  wait_for_script_to_complete('go2', ['6452'])
+end
+
+# [The Western Road, Big Meadow]
+if variable[0] == 'shardgryphons'
+  wait_for_script_to_complete('go2', ['6244'])
+end
+
+# [Dragon's Spine, Behind the Waterfall]
+if variable[0] == 'waterfall'
+  wait_for_script_to_complete('go2', ['19471'])
+end
+
+# blade spiders: [Undergondola, Twisting Grotto]
+if variable[0] == 'blades'
+  wait_for_script_to_complete('go2', ['11507'])
+end
+
+# Haven Checkpoints
+
+if variable[0] == 'havenhome'
+  wait_for_script_to_complete('go2', ['13793'])
+end
+
+if variable[0] == 'crate'
+  wait_for_script_to_complete('go2', ['365'])
+end
+
+

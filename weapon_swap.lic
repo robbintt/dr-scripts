@@ -1,0 +1,28 @@
+custom_require.call(%w[common util_methods])
+
+# mandatory for many things including hide?
+include DRC
+include UtilMethods # from util_methods
+
+
+module WeaponSwap
+  @@held_text = ""
+
+  def swapitem(item, target_swapstring="")
+    tries = 3
+    swapstring = ""
+    if target_swapstring != ""
+      until swapstring.include?(target_swapstring) or tries <= 0
+        pause
+        waitrt?
+        swapstring = fput "swap my #{item}", target_swapstring, "You"
+        tries -= 1
+        #echo "Swapstring: #{swapstring}"
+        #echo "Tries left: #{tries}"
+      end
+    else
+      return
+    end
+  end
+
+end

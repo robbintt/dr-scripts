@@ -1,0 +1,70 @@
+
+# common, DRC: check if script is running thingy
+# spellmonitor: watch spells
+
+custom_require.call(%w[drinfomon common spellmonitor util_methods])
+include UtilMethods # from util_methods
+
+class TattooTrainer
+  # from common: have only used one method from DRC so far, not sure what DRCA, DRCI, DRCT are...
+  #include DRC
+  #include DRCA
+  #include DRCI
+  #include DRCT
+  attr_accessor :justicearea
+  def initialize
+    @camb = "cambrinth armband"
+    @camb_charge = 8
+
+    @justice_string = "After assessing the area, you think local law enforcement keeps an eye on what's going on here."
+    @justicearea = ""
+
+    # what is all this, what can i use
+    #arg_definitions = [[]]
+    #args = parse_args(arg_definitions, true)
+    #@settings = get_settings
+    #@stop_on_low_threshold = @settings.stop_on_low_threshold
+    #data = get_data('hunting')
+    #@escort_zones = data.escort_zones
+  end
+  def camb
+    @camb
+  end
+  def camb_charge
+    @camb_charge
+  end
+  def cast
+    # note that the messages are special for "an intricate locksmith's training box fit with a silversteel latch"
+    # need to move match messages into the @training_items data structure for dynamic trainer handling
+    waitrt?
+    fput "prep symbiosis", "You recall", "But you've already prepared"
+    waitrt?
+    fput "invoke my tattoo", "Closing your eyes,"
+    waitrt?
+    fput "charge my #{camb} #{camb_charge}", "You harness"
+    waitrt?
+    fput "invoke my #{camb} #{camb_charge}", "link", "null"
+    pause 16 # finish spell prep
+
+
+    if !justicearea?
+      pause
+      waitrt?
+      fput "cast", "You gesture.", "You"
+    else
+      # note: check on the containing loop to actually abort - is there a lich exit script command?
+      echo "You are in a justice area!! Aborting."
+      pause
+      waitrt?
+      put "release"
+    end
+
+  end
+end
+
+tattootrainer = TattooTrainer.new
+
+# there was an abstraction for going over all the named skills in hunting-buddy
+while !justicearea? and (DRSkill.getxp('Warding') < 34 and DRSkill.getxp('Sorcery') < 34)
+  tattootrainer.cast
+end

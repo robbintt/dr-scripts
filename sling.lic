@@ -1,0 +1,39 @@
+
+custom_require.call(%w[drinfomon common util_methods combat_methods])
+
+include DRC
+
+include UtilMethods
+include Combat
+
+getmyitem("sling")
+
+def missile_etc2
+  load
+  aim
+  pause 8
+  fire
+  cleanup
+  # this will face next, which is important for aiming
+  while !mobs?
+    pause 2
+  end
+end
+
+loop {
+  current_skill = 'Slings'
+  current_exp = DRSkill.getxp(current_skill)
+  while DRSkill.getxp(current_skill) < 33
+    missile_etc2
+    getmyitem("stone shard")
+    stowmyitem("stone shard")
+
+    # skip if no learning happened
+    if current_exp == DRSkill.getxp(current_skill)
+      break
+    end
+  end
+}
+
+# never reaches this, leave for future control flow
+stowmyitem("sling")

@@ -1,0 +1,10 @@
+custom_require.call(%w[common combat_methods])
+include Combat
+
+loop {
+  attack
+  attack
+  attack
+  attack
+  cleanup
+}

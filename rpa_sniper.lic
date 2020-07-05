@@ -1,0 +1,109 @@
+# This is designed to start with lich autostart
+# Toggle an RPA on first login each day
+require 'date'
+
+# not sure what I need for UserVars. I guess nothing?
+# custom_require.call(%w[common drinfomon common-travel equipmanager])
+
+no_kill_all
+no_pause_all
+
+class RPASniper 
+  def rpa_active?
+    rpa_check = fput "rpa check", "Your role-playing award information:", "You find it hard to concentrate on anything but getting across the bridge."
+    rpa_state_str = matchtimeout 3, "Status:"
+    # check rpa_exists? separately with that method
+    if /Status: Active/.match(rpa_state_str)
+      rpa_state = true
+    else
+      # "None." state also false by default
+      rpa_state = false
+    end
+    rpa_state
+  end
+    
+  def rpa_exists?
+    rpa_check = fput "rpa check", "Your role-playing award information:", "You find it hard to concentrate on anything but getting across the bridge."
+    rpa_exists_str = matchtimeout 3, "Status:"
+    # check rpa_exists? separately with that method
+    if rpa_exists_str
+      rpa_exists = true
+    else
+      rpa_exists = false
+    end
+    rpa_exists
+  end
+
+  def start_rpa
+    # example: "You unpause your level 4 roleplaying award."
+    if not rpa_active?
+      fput "rpa toggle", "You unpause your.", "But you don't have an active roleplaying award to pause!", "You need to wait a few minutes before doing that again."
+      # if we need to wait a few minutes, it will be too late to capture rested, so we will bail and today will not use 5 mins of RPA
+    else
+      echo "RPA already active, how did you get here?"
+    end
+  end
+
+  def stop_rpa
+    if rpa_active?
+      # does this support multiple possible strings
+      fput "rpa toggle", "You pause your roleplaying award.", "But you don't have an active roleplaying award to pause!", "You need to wait a few minutes before doing that again."
+
+      # instead of using this, use a daemon to test this each minute
+      # not sure if i can skip the assignment
+      #need_to_wait = matchtimeout 3, "You need to wait a few minutes before doing that again."
+      #if need_to_wait
+      #  sleep 60
+      #  # hope this recursion is fine
+      #  stop_rpa
+      #end
+
+    # not using this anymore
+    #else
+    #  echo "RPA already paused, how did you get here?"
+    end
+  end
+
+  def cycle_rpa_daily_on_login
+
+    # exit early if no RPA
+    if not rpa_exists?
+      echo "***"
+      echo "*** WARNING: Activate a new Level 4 RPA, you may need to get some RPAs."
+      echo "***"
+      return
+    end
+
+    if not UserVars.RPASpent or UserVars.RPASpent < Date.today.to_s       
+      # TODO: can i add a check for rested exp or something?
+      # because this doesn't work if i login after midnight
+      UserVars.RPASpent = Date.today.to_s
+      start_rpa
+      sleep 10  # small spacer, stop_rpa will retry
+      #stop_rpa # rpa_killer will clean up, it should be called after this
+    else
+      echo "***"
+      echo "*** RPA Already Used Today: Already ran RPA on first time startup. It's probably too late for your rested exp now, catch it tomorrow. To manually disable before sleeping, run ';vars delete RPASpent'"
+      echo "***"
+    end
+  end
+
+  def rpa_killer
+    # don't allow a RPA to run unless I just logged in
+    # watch constantly, designed to always be running
+    # might want to warn the user to activate another RPA every 5 mins here if they don't have one active
+    loop {
+      stop_rpa
+      pause 305
+    }
+  end
+end
+
+rpasniper = RPASniper.new
+
+# only runs on first login per calendar day, stored in local vars
+# this would run 1x per computer logged into
+rpasniper.cycle_rpa_daily_on_login
+
+# run constantly, check every 5 minutes
+rpasniper.rpa_killer

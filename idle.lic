@@ -1,0 +1,10 @@
+
+no_kill_all
+no_pause_all
+
+loop {
+
+    pause 90
+    put "ex"
+
+}

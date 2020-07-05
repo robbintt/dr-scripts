@@ -1,0 +1,123 @@
+custom_require.call(%w[drinfomon common combat_methods weapon_swap])
+
+# mandatory for many things including hide?
+include DRC
+
+include WeaponSwap
+include Combat
+
+
+def lob_etc
+  while !mobs?
+    pause 2
+  end
+  lob
+  cleanup
+end
+
+def missile_etc
+  load
+  aim
+  pause 8
+  fire
+  cleanup
+  # this will face next, which is important for aiming
+  while !mobs?
+    pause 3
+  end
+end
+
+loop {
+
+  current_exp = 0
+  exp_increment = 8
+
+  stowheld
+
+  getmyitem("javelin")
+  current_skill = 'Heavy Thrown'
+  current_exp = DRSkill.getxp(current_skill)
+  while DRSkill.getxp(current_skill) < (current_exp + exp_increment < 33 ? current_exp + exp_increment : 33)
+    lob_etc
+    getmyitem("javelin")
+    lob_etc
+    getmyitem("javelin")
+
+    # skip if no learning happened
+    if current_exp == DRSkill.getxp(current_skill)
+      break
+    end
+  end
+  stowmyitem("javelin")
+
+  getmyitem("club")
+  current_skill = 'Light Thrown'
+  current_exp = DRSkill.getxp(current_skill)
+  while DRSkill.getxp(current_skill) < (current_exp + exp_increment < 33 ? current_exp + exp_increment : 33)
+    # repeat so we get measurable exp gain
+    lob_etc
+    getmyitem("club")
+    lob_etc
+    getmyitem("club")
+
+    # skip if no learning happened
+    if current_exp == DRSkill.getxp(current_skill)
+      break
+    end
+  end
+  stowmyitem("club")
+
+
+  getmyitem("shortbow")
+  current_skill = 'Bow'
+  current_exp = DRSkill.getxp(current_skill)
+  while DRSkill.getxp(current_skill) < (current_exp + exp_increment < 33 ? current_exp + exp_increment : 33)
+    missile_etc
+    getitem("fang arrow")
+    stowitem("fang arrow")
+    getitem("arrow", "hide sack")
+    stowitem("arrow")
+
+    # skip if no learning happened
+    if current_exp == DRSkill.getxp(current_skill)
+      break
+    end
+  end
+  unload
+  stowitem("fang arrow")
+  stowmyitem("shortbow")
+
+  getmyitem("pelletbow")
+  current_skill = 'Crossbow'
+  current_exp = DRSkill.getxp(current_skill)
+  while DRSkill.getxp(current_skill) < (current_exp + exp_increment < 33 ? current_exp + exp_increment : 33)
+    missile_etc
+    getmyitem("stone shard")
+    stowmyitem("stone shard")
+
+    # skip if no learning happened
+    if current_exp == DRSkill.getxp(current_skill)
+      break
+    end
+  end
+  unload
+  stowmyitem("stone shard")
+  stowmyitem("pelletbow")
+
+  getmyitem("sling")
+  current_skill = 'Slings'
+  current_exp = DRSkill.getxp(current_skill)
+  while DRSkill.getxp(current_skill) < (current_exp + exp_increment < 33 ? current_exp + exp_increment : 33)
+    missile_etc
+    getmyitem("stone shard")
+    stowmyitem("stone shard")
+
+    # skip if no learning happened
+    if current_exp == DRSkill.getxp(current_skill)
+      break
+    end
+  end
+  unload
+  stowmyitem("stone shard")
+  stowmyitem("sling")
+}

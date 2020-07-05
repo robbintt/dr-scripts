@@ -1,0 +1,10 @@
+=begin
+  Documentation:
+
+=end
+
+loop {
+  pause
+  waitrt?
+  put "#{variable[0]}"
+}

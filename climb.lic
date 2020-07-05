@@ -1,0 +1,59 @@
+
+# common contains DRC?
+custom_require.call(%w[drinfomon common])
+
+class ClimbTrainer 
+  attr_accessor :target_exists
+  # is this needed to get exp or just drinfomon/common?
+  include DRC
+  def initialize
+    #@training_items = ['pine tree', 'wall']
+    @training_items = ['fir tree', 'wall']
+    @target_exists = true
+
+    @climb_exp_threshold = 34
+    @skillname = 'Athletics'
+    @end_message_list = ["You finish practicing your climbing skill and take a well-earned break."]
+
+  end
+  def end_message_list 
+    @end_message_list
+  end
+  def training_items 
+    @training_items
+  end
+  def skillname 
+    @skillname
+  end
+  def climb_exp_threshold 
+    @climb_exp_threshold
+  end
+  def climb(item)
+    pause
+    waitrt?
+    # need 'didn't work' message, need 'wait a bit' message
+    climbing = fput "cli prac #{item}", "CLIMB:", "You begin to practice your climbing skills.", "You should stop practicing your Athletics skill before you do that."
+    if climbing.include?("CLIMB:")
+      @target_exists = false
+      return # target does not exist
+    end
+    # multi waitfor? want to also notice if it's cancelled and restart
+    matchtimeout 150, *end_message_list
+    #matchtimeout 60, "string to watch for", "another", "endlessly"
+  end
+end
+
+climbtrainer = ClimbTrainer.new
+
+climbtrainer.training_items.each do |item|
+  # fire this and don't worry if it works or not
+  pause
+  waitrt?
+  put "appraise focus #{item}"
+  while DRSkill.getxp(climbtrainer.skillname) < climbtrainer.climb_exp_threshold and climbtrainer.target_exists
+    climbtrainer.climb(item)
+  end
+  # make sure we stop
+  waitrt?
+  fput "climb stop", "You stop practicing your climbing skills.", "What were you referring to?"
+end

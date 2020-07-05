@@ -1,0 +1,120 @@
+=begin
+  Documentation:
+
+  Details:
+
+  Notes:
+    - Charge prism 1-9 costs 2 seconds, this is the min time.
+    - It seems to follow this pattern:
+    - Highest mana per second of RT are: 9, 19, 29, 39...
+
+  Future:
+    - needs to deal with out of mana...
+    - can i directly check my mana using drinfomon or something
+      - maybe set min mana % to charge the camb
+    - put better guardrails for sleep/pause if not enough mana
+    - support held camb, how to stow though, probably just support stow
+      - if stow fails quit with echo ERROR: Your cambrinth failed to stow.
+    - need to sleep focuses on rope bridge: 
+      - You find it hard to concentrate on anything but getting across the bridge.
+    - need to sleep in rooms that don't allow focus, like the bank and vault
+      - Something in the area is interfering with your magical senses.
+
+=end
+
+class CambWatcher
+
+  def initialize
+    @max_single_camb_charge = 19 # 3 seconds
+    @charge_cambrinth = true
+    @sleep_between_checks = 180
+
+    # track state of each cambrinth
+    @worn_cambrinth = {'armband' => {'capacity' => 48, 'focused' => false, 'lines' => 0}}
+    # there is no code to support this variable yet
+    @held_cambrinth = {}
+
+  end
+
+  def worn_cambrinth
+    @worn_cambrinth
+  end
+  def max_single_camb_charge
+    @max_single_camb_charge
+  end
+  def charge_cambrinth
+    @charge_cambrinth
+  end
+  def sleep_between_checks
+    @sleep_between_checks
+  end
+
+  def cambstate(camb, attribs)
+
+    # get raw info
+    waitrt?
+    focus = fput "focus #{camb}", "You focus"
+    cambstate_string = matchtimeout 5, "the cambrinth #{camb}"
+
+    # set mana
+    lines = /You clearly perceive ([0-9]+) line/.match(cambstate_string)[1]
+    # catch '' or nil result and set to 0  (empty cambrinth)
+    unless lines
+      lines = 0
+    end
+    @worn_cambrinth[camb]['lines'] = lines.to_i
+    echo "Cambrinth has: #{@worn_cambrinth[camb]['lines']} mana."
+
+    # set focused
+    focused = false
+    if /Your link to the/.match(cambstate_string)
+      @worn_cambrinth[camb]['focused'] = true
+      echo "Cambrinth is focused: #{@worn_cambrinth[camb]['focused']}"
+    end
+  end
+
+  def charge_camb(camb, target)
+    # charge the camb up to target
+
+    # a little safety
+    unless @worn_cambrinth[camb]
+      echo "Cambrinth '#{camb}' not in @worn_cambrinth"
+      return
+    end
+
+    # charge the camb up to target mana
+    lines = @worn_cambrinth[camb]['lines']
+    # check that amount in the camb is still below target
+    if target > lines
+      # never charge more than max_single_camb_charge
+      if (target - lines) > @max_single_camb_charge
+        waitrt?
+        fput "charge #{camb} #{@max_single_camb_charge}", "You harness"
+        # update the cambrinth
+        @worn_cambrinth[camb]['lines'] += max_single_camb_charge
+        # recurse and keep charging
+        charge_camb(camb, target)
+      # top it off
+      else
+        waitrt?
+        fput "charge #{camb} #{target - lines}", "You harness"
+        @worn_cambrinth[camb]['lines'] += (target - lines)
+      end
+    end
+  end
+end
+
+cambwatcher = CambWatcher.new
+
+loop {
+  cambwatcher.worn_cambrinth.each do |camb, attribs|
+    cambwatcher.cambstate(camb, attribs)
+
+    # if camb is not fully charged, fill it up
+    if cambwatcher.charge_cambrinth
+      cambwatcher.charge_camb(camb, attribs['capacity'])
+    end
+
+  end
+  sleep cambwatcher.sleep_between_checks
+}

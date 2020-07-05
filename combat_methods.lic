@@ -1,0 +1,337 @@
+custom_require.call(%w[common])
+
+# mandatory for many things including hide?
+include DRC
+
+module Combat
+
+  # this could be concentration based too
+  @@interval_gazecrystal = 180
+  @@timer_gazecrystal = Time.now - @@interval_gazecrystal # set to start right away
+
+  @@interval_hunt = 45
+  @@timer_hunt = Time.now - @@interval_hunt # set to start right away
+
+  @@interval_percmoons = 90
+  @@timer_percmoons = Time.now - @@interval_percmoons # set to start right away
+
+  def mobs?
+    pause
+    waitrt?
+    test_advance = fput "advance", "What do you want to advance towards?", "You"
+    if test_advance != "What do you want to advance towards?"
+      return true
+    end
+    pause
+    waitrt?
+    test_facenext = fput "face next", "There is nothing else to face!", "You"
+    if test_facenext != "There is nothing else to face!"
+      return true
+    end
+    return false
+  end
+
+  def lob
+    pause
+    waitrt?
+    put "lob"
+  end
+
+  def load
+    pause
+    waitrt?
+    put "load"
+  end
+
+  def unload
+    pause
+    waitrt?
+    put "unload"
+  end
+
+  def aim
+    pause
+    waitrt?
+    put "aim"
+  end
+
+  def fire
+    pause
+    waitrt?
+    put "fire"
+  end
+
+  def facenext
+    pause
+    waitrt?
+    put "face next"
+  end
+
+  def advance
+    pause
+    waitrt?
+    put "advance"
+  end
+
+  def hide
+    pause
+    waitrt?
+    hide?
+  end
+
+  def retreat
+    pause
+    waitrt?
+    put "retreat"
+  end
+
+  def cleanup
+    pause
+    waitrt?
+    put "skin"
+
+    pause
+    waitrt?
+    put "loot goods"
+    pause
+    waitrt?
+    put "stow gem"
+  end
+
+  def cleanupall
+    pause
+    waitrt?
+    put "skin"
+
+    pause
+    waitrt?
+    put "loot all"
+    pause
+    waitrt?
+    put "stow gem"
+  end
+
+  def attack
+    pause
+    waitrt?
+    put "attack"
+  end
+
+  def ambush_attack
+
+    hide
+
+    if hiding?
+      advance
+    end
+
+    if hiding?
+      attack
+    end
+  end
+
+  def feint
+    pause
+    waitrt?
+    put "feint"
+  end
+
+  def feint_left
+    pause
+    waitrt?
+    put "feint left"
+  end
+
+  def jab
+    pause
+    waitrt?
+    put "jab"
+  end
+
+  def jab_left
+    pause
+    waitrt?
+    put "jab left"
+  end
+
+  def ambush_jab
+
+    hide
+
+    if hiding?
+      advance
+    end
+
+    if hiding?
+      jab
+    end
+  end
+
+  def blindside
+    pause
+    waitrt?
+    put "blindside"
+  end
+
+
+  def ambush_blindside
+
+    hide
+
+    if hiding?
+      advance
+    end
+
+    if hiding?
+      blindside
+    end
+  end
+
+  def ambush_feint
+
+    hide
+
+    if hiding?
+      advance
+    end
+
+    if hiding?
+      feint
+    end
+  end
+
+  def circle
+    pause
+    waitrt?
+    put "circle"
+  end
+
+  def elbow
+    pause
+    waitrt?
+    put "elbow"
+  end
+
+  def gazecrystal
+    #echo "Now #{Time.now}"
+    #echo "Timer: #{@@timer_gazecrystal}"
+    #echo "Difference: #{Time.now - @@timer_gazecrystal}"
+    if (Time.now - @@timer_gazecrystal) > @@interval_gazecrystal
+      @@timer_gazecrystal = Time.now
+      pause
+      waitrt?
+      put "gaze my sano crystal"
+    end
+  end
+
+  def hunt
+    if (Time.now - @@timer_hunt) > @@interval_hunt
+      @@timer_hunt = Time.now
+      pause
+      waitrt?
+      put "hunt"
+    end
+  end
+
+  def app_critter(critter)
+    pause
+    waitrt?
+    put "app #{critter}"
+  end
+
+  def recall_critter(critter)
+    pause
+    waitrt?
+    put "recall #{critter}"
+  end
+
+  def percmoons
+    if (Time.now - @@timer_percmoons) > @@interval_percmoons
+      @@timer_percmoons = Time.now
+      # replaced this with an always-running script
+      # if i cancel that method, just uncomment this
+      #pause
+      #waitrt?
+      #put "perc moons"
+      pause
+      waitrt?
+      # unify with resting-chain power method
+      put "perc mana"
+    end
+  end
+
+  def analyze
+    pause
+    waitrt?
+    put "analyze"
+  end
+
+  def target
+    pause
+    waitrt?
+    fput "target pd 18", "attunement", "already"
+
+    pause # 1 sec
+    waitrt?
+    # how to abstract this with the method??
+    result = fput "circle", "You", "There is nothing else to face!" # 4 sec
+
+    circle
+    circle
+
+    if result == "There is nothing else to face!"
+      return
+    end
+
+    pause # 1 sec
+    waitrt?
+    fput "cast", "You"
+  end
+
+  def kill
+    pause
+    waitrt?
+    fput "target pd 18", "attunement", "already"
+
+    pause # 1 sec
+    waitrt?
+    # how to abstract this with the method??
+    result = fput "feint", "You", "There is nothing else to face!" # 4 sec
+
+    feint
+    feint
+
+    if result == "There is nothing else to face!"
+      return
+    end
+
+    pause # 1 sec
+    waitrt?
+    fput "cast", "You"
+  end
+
+  def debil
+    pause
+    waitrt?
+    put "prep mb 20"
+
+    pause # 1 sec
+    waitrt?
+    # how to abstract this with the method??
+    result = fput "circle", "You", "There is nothing else to face!" # 4 sec
+
+    # 3 sec
+    elbow
+
+    # 3 sec
+    elbow
+
+    if result == "There is nothing else to face!"
+      return
+    end
+
+    pause
+    waitrt?
+    fput "cast", "You"
+  end
+end

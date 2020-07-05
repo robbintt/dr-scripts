@@ -1,0 +1,154 @@
+custom_require.call(%w[drinfomon common combat_methods weapon_swap])
+
+# mandatory for many things including hide?
+include DRC
+
+include WeaponSwap
+include Combat
+
+def attack
+  while !mobs?
+    pause 3
+  end
+  advance
+  feint
+  feint
+  feint
+  cleanup
+end
+
+def offhand
+  while !mobs?
+    pause 3
+  end
+  advance
+  feint_left
+  feint_left
+  feint_left
+  cleanup
+end
+
+loop {
+  # swap strings - passed into the swapitem method
+  twohe_string = "a two-handed edged weapon"
+  he_string = "a heavy edged weapon"
+  twohb_string = "a two-handed blunt weapon"
+  hb_string = "a heavy blunt weapon"
+
+  current_exp = 0
+  exp_increment = 8
+
+  stowheld
+
+  getmyitem("bastard sword")
+  swapitem("bastard sword", twohe_string)
+  current_skill = 'Twohanded Edged'
+  current_exp = DRSkill.getxp(current_skill)
+  while DRSkill.getxp(current_skill) < (current_exp + exp_increment < 33 ? current_exp + exp_increment : 33)
+    attack
+  end
+  swapitem("bastard sword", he_string)
+  current_skill = 'Large Edged'
+  current_exp = DRSkill.getxp(current_skill)
+  while DRSkill.getxp(current_skill) < (current_exp + exp_increment < 33 ? current_exp + exp_increment : 33)
+    attack
+
+    # skip if no learning happened
+    if current_exp == DRSkill.getxp(current_skill)
+      break
+    end
+  end
+  stowmyitem("bastard sword")
+
+
+  getmyitem("bar mace")
+  swapitem("bar mace", twohb_string)
+  current_skill = 'Twohanded Blunt'
+  current_exp = DRSkill.getxp(current_skill)
+  while DRSkill.getxp(current_skill) < (current_exp + exp_increment < 33 ? current_exp + exp_increment : 33)
+    attack
+
+    # skip if no learning happened
+    if current_exp == DRSkill.getxp(current_skill)
+      break
+    end
+  end
+
+  swapitem("bar mace", hb_string)
+  current_skill = 'Large Blunt'
+  current_exp = DRSkill.getxp(current_skill)
+  while DRSkill.getxp(current_skill) < (current_exp + exp_increment < 33 ? current_exp + exp_increment : 33)
+    attack
+
+    # skip if no learning happened
+    if current_exp == DRSkill.getxp(current_skill)
+      break
+    end
+  end
+  stowmyitem("bar mace")
+
+  getmyitem("javelin")
+  current_skill = 'Polearms'
+  current_exp = DRSkill.getxp(current_skill)
+  while DRSkill.getxp(current_skill) < (current_exp + exp_increment < 33 ? current_exp + exp_increment : 33)
+    attack
+
+    # skip if no learning happened
+    if current_exp == DRSkill.getxp(current_skill)
+      break
+    end
+  end
+  stowmyitem("javelin")
+
+  getmyitem("nightstick")
+  current_skill = 'Staves'
+  current_exp = DRSkill.getxp(current_skill)
+  while DRSkill.getxp(current_skill) < (current_exp + exp_increment < 33 ? current_exp + exp_increment : 33)
+    attack
+
+    # skip if no learning happened
+    if current_exp == DRSkill.getxp(current_skill)
+      break
+    end
+  end
+
+  getmyitem("club")
+  current_skill = 'Offhand Weapon'
+  current_exp = DRSkill.getxp(current_skill)
+  while DRSkill.getxp(current_skill) < (current_exp + exp_increment < 33 ? current_exp + exp_increment : 33)
+    offhand
+
+    # skip if no learning happened
+    if current_exp == DRSkill.getxp(current_skill)
+      break
+    end
+  end
+  stowmyitem("nightstick")
+  stowmyitem("club")
+
+  getmyitem("club")
+  current_skill = 'Small Blunt'
+  current_exp = DRSkill.getxp(current_skill)
+  while DRSkill.getxp(current_skill) < (current_exp + exp_increment < 33 ? current_exp + exp_increment : 33)
+    attack
+
+    # skip if no learning happened
+    if current_exp == DRSkill.getxp(current_skill)
+      break
+    end
+  end
+  stowmyitem("club")
+
+  getmyitem("thrusting blade")
+  current_skill = 'Small Edged'
+  current_exp = DRSkill.getxp(current_skill)
+  while DRSkill.getxp(current_skill) < (current_exp + exp_increment < 33 ? current_exp + exp_increment : 33)
+    attack
+
+    # skip if no learning happened
+    if current_exp == DRSkill.getxp(current_skill)
+      break
+    end
+  end
+  stowmyitem("thrusting blade")
+}

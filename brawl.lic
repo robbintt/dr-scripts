@@ -1,0 +1,12 @@
+custom_require.call(%w[common combat_methods])
+include Combat
+
+loop {
+  circle
+  elbow
+  elbow
+  elbow
+  cleanup
+
+  gazecrystal
+}

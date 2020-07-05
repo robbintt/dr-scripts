@@ -1,0 +1,34 @@
+# This is designed to start with lich and run constantly
+
+no_kill_all
+no_pause_all
+
+custom_require.call(%w[common util_methods drinfomon spellmonitor])
+
+include UtilMethods # from util_methods
+
+class PercMoons 
+  @@interval_percmoons = 300
+  @@timer_percmoons = Time.now - @@interval_percmoons # set to start right away
+
+  def percmoons
+    if (Time.now - @@timer_percmoons) > @@interval_percmoons
+      @@timer_percmoons = Time.now
+      pause_other_scripts
+      pause
+      waitrt?
+      # let this fail out, it runs constantly
+      put "perc moons"
+      pause
+      waitrt?
+      unpause_other_scripts
+    end
+  end
+end
+
+
+pm = PercMoons.new
+loop {
+  pm.percmoons
+  pause 2
+}

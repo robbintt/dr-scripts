@@ -1,0 +1,295 @@
+=begin
+  Documentation:
+
+  Details:
+  - most of this script will bomb out safely if things don't go right, in that case it will repeat the buff attempt
+  - however, the case in which you run out of mana needs handled more gracefully, ideally it would sleep for 15 sec
+
+  Future:
+  - see about importing cambrinth functions from cambwatcher?
+  - detect if you already have a spell prepped
+  - flag spells as combat rebuff or not
+  - implement a "wait" timer if a spell is already being prepped
+  - detect low mana situations and wait
+    - maybe even directly check your mana metric using whatever drinfomon or whatever
+=end
+
+no_kill_all
+no_pause_all
+
+pause 5 # race condition? apparently i need to let custom_require.call get loaded up?
+custom_require.call(%w[common util_methods drinfomon spellmonitor])
+
+include UtilMethods # from util_methods
+
+class BuffWatcher
+
+  include DRC
+
+  def initialize
+
+    # need to use full name of spell
+    @buffs = {'Shadowling' => {'min' => 1, 'power' => 70},
+              'Aura Sight' => {'min' => 1, 'power' => 100},
+              'Shadows' => {'min' => 1, 'power' => 100},
+              'Seer\'s Sense' => {'min' => 15, 'power' => 80},
+              'Minor Physical Protection' => {'min' => 1, 'power' => 100},
+              'Shadowling' => {'min' => 15, 'power' => 70},
+              'Clear Vision' => {'min' => 1, 'power' => 100}}
+
+    @tattoo_spell = 'Minor Physical Protection'
+    @shadowling_spell = 'Shadowling'
+
+    # max amount to power spell from harness
+    @max_spell_size = 20
+    @max_single_camb_charge = 30
+    @charge_cambrinth = true
+    @minutes_left_to_recast_at = 2
+
+    # track if each camb is linked
+    @worn_cambrinth = {'armband' => {'capacity' => 48, 'focused' => false, 'lines' => 0}}
+
+    @active_spells = {}  # init for DRSpells.active_spells
+
+    # what is all this, what can i use
+    #arg_definitions = [[]]
+    #args = parse_args(arg_definitions, true)
+    #@settings = get_settings
+    #@stop_on_low_threshold = @settings.stop_on_low_threshold
+    #data = get_data('hunting')
+    #@escort_zones = data.escort_zones
+  end
+
+  def worn_cambrinth
+    @worn_cambrinth
+  end
+  def buffs
+    @buffs
+  end
+  def tattoo_spell
+    @tattoo_spell
+  end
+  def shadowling_spell
+    @shadowling_spell
+  end
+  def max_spell_size
+    @max_spell_size
+  end
+  def max_single_camb_charge
+    @max_single_camb_charge
+  end
+  def charge_cambrinth
+    @charge_cambrinth
+  end
+  def minutes_left_to_recast_at
+    @minutes_left_to_recast_at
+  end
+
+
+
+  def nervestate
+    if Wounds.nerves > 0
+      echo "Wounds: #{Wounds.nerves}"
+    else
+      echo "No nerve wounds."
+    end
+  end
+
+  def buff_spellstate(buff)
+    active_spells = DRSpells.active_spells
+    #echo "spell data: #{active_spells}"
+    #echo "Buff '#{buff}' has #{active_spells[buff]} roisaen left."
+    return active_spells[buff]
+  end
+
+  def cast_buff(spell, mana)
+    # dead simple, no dependencies
+    # if it doesnt work, the nanny tries again later
+    waitrt?
+    fput "release sym", "You release", "But you haven't prepared a symbiosis!"
+    waitrt?
+    fput "release spell", "You let", "You aren't", "You"
+    waitrt?
+    if spell == tattoo_spell
+      fput "invoke tattoo"
+    else
+      fput "prep #{spell} #{mana}"
+    end
+    pause 20
+    waitrt?
+    fput "cast", "You gesture.", "You"
+    if spell == shadowling_spell
+      waitrt?
+      put "invoke shadowling"
+    end
+  end
+
+  def cambstate(camb, attribs)
+    # this doesn't handle cases where skill is not sufficient
+    waitrt?
+    # bomb out if you can't focus?
+    focus = fput "focus #{camb}", "You focus", "You find it hard to concentrate on anything but getting across the bridge."
+    cambstate_string = matchtimeout 5, "the cambrinth #{camb}"
+    lines = /You clearly perceive ([0-9]+) line/.match(cambstate_string)[1]
+    # catch empty camb
+    unless lines
+      lines = 0
+    end
+    # set focused
+    focused = false
+    if /Your link to the/.match(cambstate_string)
+      focused = true
+    end
+
+    # this is extra code, just set it above instead
+    echo "Cambrinth has: #{lines} mana."
+    @worn_cambrinth[camb]['lines'] = lines.to_i
+    echo "Cambrinth is focused: #{focused}"
+    @worn_cambrinth[camb]['focused'] = focused
+  end
+
+  def get_power_from_camb(camb, attribs, min_from_camb, max_from_camb, min_prep, spell_power)
+    # determine the max power the cambrinth can provide
+    # return spell_power - min_prep - max_from_camb
+    # set max to camb capacity if necessary
+    if attribs['capacity'] < max_from_camb
+      max_from_camb = attribs['capacity']
+    end
+    # plenty of mana, no need to charge
+    if attribs['lines'] >= max_from_camb
+      return max_from_camb, 0
+    # need to charge the camb, increase spell prep, or underpower the spell
+    elsif attribs['lines'] < max_from_camb
+      return max_from_camb, max_from_camb - attribs['lines']
+    # not reachable
+    else
+      # add logging here to detect if it is reached
+      return 0, 0
+    end
+  end
+
+  def charge_camb(camb, target)
+    # charge the camb up to target and invoke it
+
+    # a little safety
+    unless @worn_cambrinth[camb]
+      echo "Cambrinth '#{camb}' not in @worn_cambrinth"
+      return
+    end
+
+    # charge camb
+    lines = @worn_cambrinth[camb]['lines']
+    # check that we should still charge the cambrinth
+    if target > lines
+      if (target - lines) > @max_single_camb_charge
+        waitrt?
+        fput "charge #{camb} #{@max_single_camb_charge}", "You harness"
+        # update the cambrinth
+        @worn_cambrinth[camb]['lines'] += max_single_camb_charge
+        # recurse the script
+        charge_camb(camb, target)
+      else
+        waitrt?
+        fput "charge #{camb} #{target - lines}", "You harness"
+        @worn_cambrinth[camb]['lines'] += (target - lines)
+      end
+    end
+  end
+end
+
+buffwatcher = BuffWatcher.new
+
+buffwatcher.nervestate
+
+=begin
+buffwatcher.worn_cambrinth.each do |camb, attribs|
+  buffwatcher.cambstate(camb, attribs)
+end
+=end
+
+loop {
+  buffwatcher.buffs.each do |buff, attrs|
+
+    # seek to maximize camb usage and minimize harness usage
+    # but stay within bounds for each
+    # have an option for using only existing camb charge?
+    buffstate = buffwatcher.buff_spellstate(buff)
+    max_from_harness = buffwatcher.max_spell_size
+
+    # establish bounds for the cambrinth min/max charge calculations
+    min_prep = attrs['min']
+    spell_power = attrs['power']
+    max_prep = spell_power
+    max_from_camb = spell_power - min_prep # does not yet reflect camb capacity
+
+    if spell_power > max_from_harness
+      # min_from_camb is minimum to ensure we hit spell power given max_from_harness
+      min_from_camb = spell_power - max_from_harness
+      max_prep = max_from_harness  # consume this partial value when casting
+    else
+      min_from_camb = 0
+    end
+    # how to choose which camb?
+    camb = 'prism'
+
+    # I have a half-baked idea about keeping my worn camb full with another script
+    # this code first seeks to maximize from camb, then if the camb is undercharged
+    # it seeks to pull more from the prep size until the max prep size
+    # then it either charges the camb or casts undersized spells
+    # once i figure out how to compare it to something, pass the reset condition as a number - on a per-spell basis
+    #   - 0 means reset only after spell wears off, 10 means reset when 10 roisaen left on spell, etc
+    if !buffstate or buffstate < buffwatcher.minutes_left_to_recast_at
+
+      # skip sorcery in a justice area
+      if buff == buffwatcher.tattoo_spell
+        if justicearea?
+          next
+        end
+      end
+
+      buffwatcher.pause_other_scripts
+
+      if min_from_camb > 0
+        # does this instance @variable work because its in a function sig in the instance?
+        buffwatcher.cambstate(camb, @worn_cambrinth[camb])
+        # this gets the most possible from camb
+        power_from_camb, amount_undercharged = buffwatcher.get_power_from_camb(camb, buffwatcher.worn_cambrinth[camb], min_from_camb, max_from_camb, min_prep, spell_power)
+
+        # make up for the undercharged cambrinth if possible
+        ideal_prep_size = min_prep + amount_undercharged
+        # cap the prep at max prep
+        if ideal_prep_size <= max_prep
+          prep_size = ideal_prep_size
+        elsif buff == buffwatcher.tattoo_spell
+          prep_size = min_prep
+        else
+          prep_size = max_prep
+        end
+        # this was in the path of error logging, add back later
+        #prep_size = (ideal_prep_size <= max_prep) ? ideal_prep_size : max_prep
+
+        # take less from camb if we compensated for uncharged camb with bigger prep
+        if spell_power - prep_size < power_from_camb
+          revised_max_power_from_camb = spell_power - prep_size
+        else
+          revised_max_power_from_camb = power_from_camb
+        end
+        #revised_max_power_from_camb = (spell_power - prep_size) < power_from_camb ? (spell_power - prep_size) : power_from_camb
+
+        # calculate if there's a gap in the max values here
+        prep_gap = spell_power - revised_max_power_from_camb - prep_size
+        if buffwatcher.charge_cambrinth
+          buffwatcher.charge_camb(camb, revised_max_power_from_camb + prep_gap)
+        end
+        if revised_max_power_from_camb > 0
+          waitrt?
+          fput "invoke #{camb} #{revised_max_power_from_camb}", "link", "null"
+        end
+      end
+      buffwatcher.cast_buff(buff, prep_size)
+
+      buffwatcher.unpause_other_scripts
+    end
+  end
+  pause 120
+}

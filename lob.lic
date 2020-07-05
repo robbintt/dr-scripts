@@ -1,0 +1,16 @@
+custom_require.call(%w[combat_methods util_methods])
+include Combat
+include UtilMethods
+
+loop {
+  stowmyitem("club")
+  stowmyitem("club")
+  put "get club"
+  lob
+  stowfeet
+  lob
+  stowfeet
+  lob
+  stowfeet
+  cleanup
+}

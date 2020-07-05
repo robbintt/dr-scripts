@@ -1,0 +1,12 @@
+=begin
+  Documentation:
+
+=end
+
+loop {
+  variable[1..-1].each do |action|
+    pause
+    waitrt?
+    put action
+  end
+}
