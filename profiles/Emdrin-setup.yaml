@@ -221,7 +221,6 @@ training_abilities:
   Hunt: 80
   Collect: 120  #adds a lot of RT
   Perc: 120
-  Pray: 610
 weapon_training:
   Brawling: ''
   Bow: yew shortbow

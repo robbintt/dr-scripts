@@ -61,7 +61,7 @@ storage_containers:
 # teach your hunting buddies
 combat_teaching_skill: Sling
 # how many mindstates to use a weapon for
-combat_trainer_target_increment: 5
+combat_trainer_target_increment: 3
 # how many actions to do if you dont hit the mindstate goal before swapping weapons
 combat_trainer_action_count: 15
 # avoid losing ammo by killing the last opponent
@@ -75,6 +75,12 @@ dump_item_count: 9
 priority_skills_lower_limit: 6
 empty_hunting_room_messages:
 - hello?
+hunting_buddies:
+  - Magit
+# Max number of hunting buddies you want in room with you
+hunting_buddies_max: 2
+# A list of nemesis or people you do not want to hunt with.
+hunting_nemesis:
 stop_hunting_if_bleeding: true
 left_hand_free: true
 skinning:
@@ -87,7 +93,6 @@ skinning:
 # list of skills that will trigger a hunt loop if they go below the lower_limit. THIS MEANS ONLY COMBAT SKILLS SHOULD BE ON HERE
 training_manager_priority_skills:
 - Shield Usage
-- Large Blunt
 hunting_info:
   #can find zones with notes in base-hunting.yaml in the data file
   # Note: You can add multiple "overflow" zones to the list.
@@ -97,13 +102,15 @@ hunting_info:
   #- arbelog_ram_bear_riverhaven
   #- reavers
   #- rats
-  - fell_hogs
-  :duration: 30
+  #- fell_hogs
+  - water_sprites_and_lipopods
+  :duration: 40
   stop_on:
   - Shield Usage
   - Parry Ability
   - Missile Mastery
   - Melee Mastery
+  - Large Blunt
 
 # Gear settings
 gear:
@@ -202,11 +209,20 @@ offensive_spells:
   mana: 1
   cast_only_to_train: true
 - skill: Debilitation
+  name: burden
+  abbrev: burden
+  mana: 1
+  harmless: true
+- skill: Debilitation
   name: Soul Sickness
   abbrev: sick
   mana: 1
   harmless: true
-
+- skill: Debilitation
+  name: Soul Bonding
+  abbrev: sb
+  mana: 1
+  harmless: true
 dance_skill: Small Edged
 aiming_trainables:
 - Tactics
@@ -244,7 +260,7 @@ priority_weapons:
 #  - Heavy Thrown
 #  - Light Thrown
 #  - Small Blunt
-  - Large Blunt
+#  - Large Blunt
 #  - Twohanded Blunt
 #  - Small Edged
 #  - Large Edged

@@ -9,7 +9,7 @@
 hometown: Crossing
 training_manager_hunting_priority: true
 forage_item: rock
-safe_room: 5713
+safe_room: 657
 outdoor_room: 19162
 
 # Sell loot
@@ -42,7 +42,7 @@ restock:
   #   quantity: 30
 
 
-full_pouch_container: "thigh bag"
+full_pouch_container: "leather haversack"
 spare_gem_pouch_container: "backpack"
 tie_gem_pouches: true
 gem_pouch_adjective: dark
@@ -55,7 +55,7 @@ listen: true
 
 storage_containers:
 - backpack
-- thigh bag
+- leather haversack
 
 ## Hunting settings
 # teach your hunting buddies
@@ -75,6 +75,12 @@ dump_item_count: 9
 priority_skills_lower_limit: 6
 empty_hunting_room_messages:
 - hello?
+hunting_buddies:
+  - Artiglas
+# Max number of hunting buddies you want in room with you
+hunting_buddies_max: 2
+# A list of nemesis or people you do not want to hunt with.
+hunting_nemesis:
 stop_hunting_if_bleeding: true
 left_hand_free: true
 skinning:
@@ -87,7 +93,6 @@ skinning:
 # list of skills that will trigger a hunt loop if they go below the lower_limit. THIS MEANS ONLY COMBAT SKILLS SHOULD BE ON HERE
 training_manager_priority_skills:
 - Shield Usage
-- Leather Armor
 hunting_info:
   #can find zones with notes in base-hunting.yaml in the data file
   # Note: You can add multiple "overflow" zones to the list.
@@ -96,7 +101,8 @@ hunting_info:
   #- wildland_goblin_riverhaven
   #- arbelog_ram_bear_riverhaven
   #- reavers
-  - rats
+  #- rats
+  - hogs
   #- fell_hogs
   :duration: 30
   stop_on:
@@ -147,6 +153,21 @@ gear:
 - :name: scimitar
   :adjective: steel
   :is_worn: false
+- :name: bola
+- :name: club
+  :adjective: oaken
+- :name: greathammer
+  :adjective: etched
+- :name: broadsword
+  :adjective: stout
+- :name: flail
+  :adjective: footman's
+- :name: stick
+  :adjective: gnarled
+  :is_leather: false 
+- :name: claymore
+- :name: allarh
+  :adjective: iron
 #- :name: blade
 #  :adjective: thrusting
 #  :is_worn: false
@@ -223,24 +244,22 @@ training_abilities:
   Hunt: 80
   Collect: 120  #adds a lot of RT
   Perc: 120
-  Pray: 610
 weapon_training:
   Brawling: ''
   Bow: yew shortbow
   Crossbow: light crossbow
   Slings: leather sling
-  #Heavy Thrown: javelin
-  #Light Thrown: throwing club
-  #Small Blunt: throwing club
-  #Large Blunt: bar mace
-  #Twohanded Blunt: bar mace
+  Heavy Thrown: iron allarh
+  Light Thrown: bola
+  Small Blunt: oaken club
+  Large Blunt: etched greathammer
+  Twohanded Blunt: footman's flail
   Small Edged: steel scimitar
-  #Small Edged: thrusting blade
-  #Large Edged: bastard sword
-  #Twohanded Edged: bastard sword
-  #Polearms: javelin
-  #Staves: nightstick
-  #Offhand Weapon: throwing club
+  Large Edged: stout broadsword
+  Twohanded Edged: claymore
+  Polearms: iron allarh
+  Staves: gnarled stick
+  Offhand Weapon: oaken club
 # these are trained first when you enter combat
 priority_weapons:
 #  - Targeted Magic
@@ -283,7 +302,7 @@ training_spells:
   Warding:
     abbrev: maf
   Utility:
-    abbrev: cv
+    abbrev: pg
 cambrinth: cambrinth ring
 cambrinth_cap: 5
 favor_goal: 25
@@ -308,7 +327,7 @@ picking_box_source: backpack
 # Keep this empty to drop too-hard boxes on the ground
 picking_box_storage: backpack
 #pet box source
-picking_pet_box_source: thigh bag
+picking_pet_box_source: leather haversack
 #number of boxes to make with ;pick pets
 pet_boxes_on_hand: 0
 #settings for lockpick training box to use with ;lockbox
