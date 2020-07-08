@@ -1,0 +1,25 @@
+
+waitrt?
+pause
+put "harness verbose"
+
+waitrt?
+pause
+put "toggle shield arm"
+
+waitrt?
+pause
+put "avoid !holding"
+
+waitrt?
+pause
+put "avoid !dragging"
+
+waitrt?
+pause
+put "avoid !joining"
+
+waitrt?
+pause
+put "avoid coins"
+
