@@ -11,6 +11,8 @@ training_manager_hunting_priority: true
 forage_item: rock
 safe_room: 657
 outdoor_room: 19162
+repair_every: 4
+repair_timer: 21600
 
 # Sell loot
 sell_loot: true
