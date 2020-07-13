@@ -281,7 +281,6 @@ priority_weapons:
 #  - Offhand Weapon
 # Non-combat settings
 crossing_training:
-- Astrology
 - Augmentation
 - Warding
 - Utility
