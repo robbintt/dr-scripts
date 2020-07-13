@@ -79,6 +79,7 @@ empty_hunting_room_messages:
 - hello?
 hunting_buddies:
   - Artiglas
+  - Emdrin
 # Max number of hunting buddies you want in room with you
 hunting_buddies_max: 2
 # A list of nemesis or people you do not want to hunt with.
