@@ -230,7 +230,7 @@ loop {
       min_from_camb = 0
     end
     # how to choose which camb?
-    camb = 'prism'
+    camb = 'armband'
 
     # I have a half-baked idea about keeping my worn camb full with another script
     # this code first seeks to maximize from camb, then if the camb is undercharged
