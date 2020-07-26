@@ -47,6 +47,9 @@ if variable[0] == 'vines'
   wait_for_script_to_complete('go2', ['3635'])
 end
 
+if variable[0] == 'kuniyo'
+  wait_for_script_to_complete('go2', ['3330'])
+end
 
 if variable[0] == 'trolls'
   wait_for_script_to_complete('go2', ['3568'])
@@ -66,6 +69,10 @@ end
 # 
 if variable[0] == 'shardwestgate'
   wait_for_script_to_complete('go2', ['6452'])
+end
+
+if variable[0] == 'quentin'
+  wait_for_script_to_complete('go2', ['8908'])
 end
 
 # [The Western Road, Big Meadow]

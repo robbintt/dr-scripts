@@ -47,7 +47,7 @@ class BuffWatcher
     @minutes_left_to_recast_at = 2
 
     # track if each camb is linked
-    @worn_cambrinth = {'armband' => {'capacity' => 48, 'focused' => false, 'lines' => 0}}
+    @worn_cambrinth = {'prism' => {'capacity' => 108, 'focused' => false, 'lines' => 0}}
 
     @active_spells = {}  # init for DRSpells.active_spells
 
@@ -230,7 +230,7 @@ loop {
       min_from_camb = 0
     end
     # how to choose which camb?
-    camb = 'armband'
+    camb = 'prism'
 
     # I have a half-baked idea about keeping my worn camb full with another script
     # this code first seeks to maximize from camb, then if the camb is undercharged

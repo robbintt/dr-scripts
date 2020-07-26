@@ -27,10 +27,6 @@ loop {
   power
   wait_for_script_to_complete('tattoo')
   power
-  wait_for_script_to_complete('go2', ['19162'] ) # crossing mm guild
-  power
-  wait_for_script_to_complete('astrology') # crossing -> theren
-  power
   wait_for_script_to_complete('go2', ['3353'] ) # lang bin for climb
   power
   wait_for_script_to_complete('climb')

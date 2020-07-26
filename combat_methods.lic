@@ -86,6 +86,10 @@ module Combat
   end
 
   def cleanup
+
+    pause
+    waitrt?
+    put "arrange"
     pause
     waitrt?
     put "skin"
@@ -296,10 +300,11 @@ module Combat
     pause # 1 sec
     waitrt?
     # how to abstract this with the method??
-    result = fput "feint", "You", "There is nothing else to face!" # 4 sec
+    result = fput "attack", "You", "There is nothing else to face!" # 4 sec
 
-    feint
-    feint
+    attack
+    attack
+    attack
 
     if result == "There is nothing else to face!"
       return
