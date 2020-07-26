@@ -105,9 +105,9 @@ hunting_info:
   #- arbelog_ram_bear_riverhaven
   #- reavers
   #- rats
-  #- hogs
+  - hogs
   #- fell_hogs
-  - water_sprites_and_lipopods
+  #- water_sprites_and_lipopods
   :duration: 30
   stop_on:
   - Shield Usage
