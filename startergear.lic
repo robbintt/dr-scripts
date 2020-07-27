@@ -2,7 +2,7 @@
 #
 # offer extra to brute force the purchases for now
 # pouches, ammo, and bundling ropes are left to the character to manage (typically ;training-manager)
-custom_require.call(%w[common common-travel drinfomon])
+custom_require.call(%w[common common-travel drinfomon util_methods])
 
 class BuyStarterGear
   include DRC
@@ -19,28 +19,6 @@ class BuyStarterGear
 
     buy_newbie_gear
     #test_section_only
-  end
-
-  def buy(item, cost)
-    # typically offer a higher cost so you don't have to deal with barter
-    # this can be fixed later to read and say the price the merchant offers
-    # item -> string, cost -> string
-    waitrt?
-    pause
-    put("order #{item}")
-    waitrt?
-    pause
-    put("offer #{cost}")
-    waitrt?
-    pause
-    put("offer #{cost}")
-  end
-
-  def buy_fast(item)
-    # for merchants with no negotiation step
-    waitrt?
-    pause
-    put("buy #{item}")
   end
 
   def buy_newbie_gear

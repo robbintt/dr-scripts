@@ -4,6 +4,28 @@ custom_require.call(%w[common])
 
 module UtilMethods
 
+  def buy(item, cost)
+    # typically offer a higher cost so you don't have to deal with barter
+    # this can be fixed later to read and say the price the merchant offers
+    # item -> string, cost -> string
+    waitrt?
+    pause
+    put("order #{item}")
+    waitrt?
+    pause
+    put("offer #{cost}")
+    waitrt?
+    pause
+    put("offer #{cost}")
+  end
+
+  def buy_fast(item)
+    # for merchants with no negotiation step
+    waitrt?
+    pause
+    put("buy #{item}")
+  end
+
   def stowheld
     @@held_text = ""
     while @@held_text != "Both of your hands are empty."

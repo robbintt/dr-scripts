@@ -1,0 +1,81 @@
+
+# TODO: This costs
+
+
+custom_require.call(%w[common common-travel drinfomon util_methods])
+
+class MakeNewbieCompendium
+  include DRC
+  include DRCT
+
+  def initialize
+    arg_definitions = [
+      [
+        { name: 'skill', options: %w[appraisal scholarship], description: 'skill to stop on' }
+      ],
+      []
+    ]
+    args = parse_args(arg_definitions)
+
+    make_newbie_compendium
+  end
+
+  def buy_and_add_chart(chart)
+
+    waitrt?
+    pause
+    buy_fast(chart)
+    waitrt?
+    pause
+    # this fput is always too fast, just assume it went in...
+    fput("put my chart in my compendium", "You insert", "What were you referring to?")
+
+  end
+
+  def make_newbie_compendium
+
+    echo "*** Are you premie? You must be an estate holder to go to Advanced Anatomy."
+    init_wait = 10
+    while init_wait > 0
+      echo "*** ;pause within #{init_wait} seconds & empty hands! You need 8 platinum dokoras (77572 dok)."
+      pause 2
+      init_wait -= 2
+    end
+
+    # Advanced Anatomy
+    walk_to("9095")
+    waitrt?
+    pause
+    buy_fast("simple compendium")
+    waitrt?
+    pause
+    walk_to("9094")
+    buy_and_add_chart("chart on hook")
+    buy_and_add_chart("other chart on hook")
+    buy_and_add_chart("third chart on hook")
+    buy_and_add_chart("fourth chart on hook")
+    buy_and_add_chart("fifth chart on hook")
+    buy_and_add_chart("sixth chart on hook")
+    buy_and_add_chart("chart on rack")
+    buy_and_add_chart("other chart on rack")
+    buy_and_add_chart("third chart on rack")
+    buy_and_add_chart("fourth chart on rack")
+    buy_and_add_chart("fifth chart on rack")
+    buy_and_add_chart("sixth chart on rack")
+    buy_and_add_chart("seventh chart on rack")
+    buy_and_add_chart("eighth chart on rack")
+    buy_and_add_chart("ninth chart on rack")
+    buy_and_add_chart("tenth chart on rack")
+    waitrt?
+    pause
+    fput("stow my compendium", "You put")
+
+  #end
+  # just move these lines to start later and incrementally test
+  #def test_section_only
+
+  end
+end
+
+
+MakeNewbieCompendium.new
