@@ -80,6 +80,7 @@ empty_hunting_room_messages:
 hunting_buddies:
   - Magit
   - Emdrin
+  - Slefkava
 # Max number of hunting buddies you want in room with you
 hunting_buddies_max: 2
 # A list of nemesis or people you do not want to hunt with.
@@ -107,7 +108,9 @@ hunting_info:
   #- reavers
   #- rats
   #- fell_hogs
-  - water_sprites_and_lipopods
+  - goblins
+  #- water_sprites_and_lipopods
+  #- grass_eels
   :duration: 40
   stop_on:
   - Shield Usage

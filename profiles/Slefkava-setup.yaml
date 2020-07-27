@@ -96,6 +96,7 @@ skinning:
 # list of skills that will trigger a hunt loop if they go below the lower_limit. THIS MEANS ONLY COMBAT SKILLS SHOULD BE ON HERE
 training_manager_priority_skills:
 - Shield Usage
+- Small Edged
 hunting_info:
   #can find zones with notes in base-hunting.yaml in the data file
   # Note: You can add multiple "overflow" zones to the list.
@@ -107,7 +108,7 @@ hunting_info:
   - rats
   #- hogs
   #- fell_hogs
-  :duration: 30
+  :duration: 40
   stop_on:
   - Shield Usage
   - Parry Ability
@@ -273,7 +274,7 @@ priority_weapons:
 #  - Small Blunt
 #  - Large Blunt
 #  - Twohanded Blunt
-#  - Small Edged
+  - Small Edged
 #  - Large Edged
 #  - Twohanded Edged
 #  - Polearms
@@ -285,7 +286,7 @@ crossing_training:
 - Athletics
 - Outdoorsmanship
 - Perception
-- Arcana
+#- Arcana
 - Scholarship
 - Performance
 - Thievery

@@ -80,6 +80,7 @@ empty_hunting_room_messages:
 hunting_buddies:
   - Artiglas
   - Emdrin
+  - Slefkava
 # Max number of hunting buddies you want in room with you
 hunting_buddies_max: 2
 # A list of nemesis or people you do not want to hunt with.
@@ -96,6 +97,8 @@ skinning:
 # list of skills that will trigger a hunt loop if they go below the lower_limit. THIS MEANS ONLY COMBAT SKILLS SHOULD BE ON HERE
 training_manager_priority_skills:
 - Shield Usage
+- Targeted Magic
+- Debilitation
 hunting_info:
   #can find zones with notes in base-hunting.yaml in the data file
   # Note: You can add multiple "overflow" zones to the list.
@@ -105,9 +108,11 @@ hunting_info:
   #- arbelog_ram_bear_riverhaven
   #- reavers
   #- rats
-  - hogs
+  #- hogs
   #- fell_hogs
+  - goblins
   #- water_sprites_and_lipopods
+  #- grass_eels
   :duration: 30
   stop_on:
   - Shield Usage
@@ -266,7 +271,8 @@ weapon_training:
   Offhand Weapon: oaken club
 # these are trained first when you enter combat
 priority_weapons:
-#  - Targeted Magic
+  - Targeted Magic
+  - Debilitation
 #  - Large Blunt
 #  - Bow
 #  - Crossbow
