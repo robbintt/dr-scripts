@@ -5,7 +5,7 @@ crafting_container: cerulean sack
 enchanting_tools:
 - imbuement rod
 - felwood burin
-divination_tool: 
+divination_tool:
   name: sapphire prism
   container: grey odaj
 divination_bones_storage:
