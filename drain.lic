@@ -2,9 +2,8 @@
 #
 custom_require.call(%w[common])
 
-# 120 mins for f2p i think
-minutes = 120
-# minutes = 60
+# i understand full drain can be 6-8 hours on f2p or 360-480 minutes
+minutes = 180
 
 # want to hide but not every minute, maybe every 15 mins check
 put "hide"
