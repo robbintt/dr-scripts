@@ -273,7 +273,7 @@ module Combat
   def target
     pause
     waitrt?
-    fput "target pd 17", "attunement", "already"
+    fput "target pd 16", "attunement", "already"
 
     pause # 1 sec
     waitrt?
@@ -295,7 +295,7 @@ module Combat
   def kill
     pause
     waitrt?
-    fput "target pd 17", "attunement", "already"
+    fput "target pd 16", "attunement", "already"
 
     pause # 1 sec
     waitrt?
