@@ -23,3 +23,10 @@ waitrt?
 pause
 put "avoid coins"
 
+waitrt?
+pause
+put "set combatbrief"
+
+waitrt?
+pause
+put "set battlebrief"

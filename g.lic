@@ -27,7 +27,7 @@ if variable[0] == 'tent'
   wait_for_script_to_complete('go2', ['475'])
 end
 
-if variable[0] == 'empath'
+if variable[0] == 'fraethis'
   wait_for_script_to_complete('go2', ['8720'])
 end
 

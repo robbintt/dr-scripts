@@ -11,7 +11,8 @@ include Combat  # from combat_methods
 loop {
 
   #critter = "gryphon"
-  critter = "basilisk"
+  #critter = "basilisk"
+  critter = "gremlin"
   other_critter = "other #{critter}"
 
   circle # get some balance
