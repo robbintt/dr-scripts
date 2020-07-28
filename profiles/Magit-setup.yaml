@@ -174,7 +174,7 @@ gear:
   :adjective: footman's
 - :name: stick
   :adjective: gnarled
-  :is_leather: false 
+  :is_leather: true
 - :name: claymore
 - :name: allarh
   :adjective: iron
