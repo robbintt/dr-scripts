@@ -97,7 +97,7 @@ skinning:
 # list of skills that will trigger a hunt loop if they go below the lower_limit. THIS MEANS ONLY COMBAT SKILLS SHOULD BE ON HERE
 training_manager_priority_skills:
 - Shield Usage
-- Brawling
+#- Large Blunt
 hunting_info:
   #can find zones with notes in base-hunting.yaml in the data file
   # Note: You can add multiple "overflow" zones to the list.
@@ -108,9 +108,10 @@ hunting_info:
   #- reavers
   #- rats
   #- fell_hogs
-  - goblins
+  #- goblins
+  #- blood_dryad
   #- water_sprites_and_lipopods
-  #- grass_eels
+  - grass_eels
   :duration: 40
   stop_on:
   - Shield Usage
@@ -216,11 +217,6 @@ offensive_spells:
   mana: 1
   cast_only_to_train: true
 - skill: Debilitation
-  name: burden
-  abbrev: burden
-  mana: 1
-  harmless: true
-- skill: Debilitation
   name: Soul Sickness
   abbrev: sick
   mana: 1
@@ -292,7 +288,7 @@ crossing_training:
 - Performance
 - Thievery
 - Locksmithing
-#- First Aid
+- First Aid
 training_spells:
   Augmentation:
     abbrev: centering

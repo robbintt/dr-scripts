@@ -296,7 +296,7 @@ crossing_training:
 - Performance
 - Thievery
 - Locksmithing
-#- First Aid
+- First Aid
 training_spells:
   Utility:
     abbrev: shadows

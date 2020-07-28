@@ -18,6 +18,82 @@ have_telescope: true
 telescope_storage:
   container: telescope case
 
+picking_box_source: "backpack"
+
+train_with_burgle: true
+burgle_settings:
+  room: 851
+  entry_type: cycle
+  max_search_count: 1
+  loot_container: "backpack"
+  safe_mode: true
+
+gear:
+- :name: leathers
+  :adjective: coarse
+  :is_leather: true
+  :hinders_lockpicking: true
+  :is_worn: true
+- :name: helm
+  :adjective: ring
+  :hinders_lockpicking: true
+  :is_worn: true
+- :name: gloves
+  :adjective: scale
+  :hinders_lockpicking: true
+  :is_worn: true
+- :name: mask
+  :adjective: plate
+  :hinders_lockpicking: true
+  :is_worn: true
+- :name: sipar
+  :adjective: round
+  :hinders_lockpicking: true
+  :is_worn: true
+- :name: stick
+  :adjective: parry
+  :hinders_lockpicking: false
+  :is_worn: true
+- :name: scimitar
+  :is_worn: false
+- :name: sword
+  :adjective: bastard
+  :is_worn: false
+  :swappable: true
+- :name: mace
+  :adjective: bar
+  :is_worn: false
+  :swappable: true
+- :name: nightstick
+  :is_worn: false
+- :name: sling
+  :adjective: leather
+  :is_worn: false
+  :is_leather: true
+- :name: shortbow
+  :adjective: nisha
+  :is_worn: false
+- :name: pelletbow
+  :is_worn: false
+- :name: javelin
+  :is_worn: false
+- :name: club
+  :adjective: throwing
+  :is_worn: false
+
+
+gear_sets:
+  standard:
+  - round sipar
+  - parry stick
+  - coarse leathers
+  - scale gloves
+  - ring helm
+  - plate mask
+  stealing:
+  - parry stick
+  swimming:
+  - parry stick
 
 empty_values:
   appraisal_training: []
@@ -40,7 +116,6 @@ empty_values:
   crossing_training: []
   research_skills: []
   train_workorders: []
-  gear: []
   hunting_info: []
   mining_buddy_vein_list: []
   training_manager_priority_skills: []

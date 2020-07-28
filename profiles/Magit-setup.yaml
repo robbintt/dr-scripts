@@ -110,7 +110,8 @@ hunting_info:
   #- rats
   #- hogs
   #- fell_hogs
-  - goblins
+  #- goblins
+  - blood_dryad
   #- water_sprites_and_lipopods
   #- grass_eels
   :duration: 30
@@ -305,7 +306,7 @@ crossing_training:
 - Performance
 - Thievery
 - Locksmithing
-#- First Aid
+- First Aid
 training_spells:
   Augmentation:
     abbrev: shadows

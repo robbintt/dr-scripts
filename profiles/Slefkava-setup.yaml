@@ -291,7 +291,7 @@ crossing_training:
 - Performance
 - Thievery
 - Locksmithing
-#- First Aid
+- First Aid
 favor_goal: 25
 favor_god: Faenella
 water_holder: chalice
