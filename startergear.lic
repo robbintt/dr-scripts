@@ -52,6 +52,9 @@ class BuyStarterGear
     waitrt?
     pause
     put("store ammunition in my haversack")
+    waitrt?
+    pause
+    put("store armor in my haversack")
 
     # Berolt's Dry Goods
     waitrt?
