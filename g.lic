@@ -35,6 +35,11 @@ if variable[0] == 'gryphons'
   wait_for_script_to_complete('go2', ['8626'])
 end
 
+if variable[0] == 'gremlins'
+  wait_for_script_to_complete('go2', ['8407'])
+end
+
+
 if variable[0] == 'basilisks' or variable[0] == 'basilisk'
   wait_for_script_to_complete('go2', ['19441'])
 end
