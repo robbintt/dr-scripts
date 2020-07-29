@@ -43,6 +43,7 @@ restock:
   #   stackable: true
   #   quantity: 30
 
+compendium_type: compendium
 
 full_pouch_container: "haversack"
 spare_gem_pouch_container: "backpack"
@@ -62,9 +63,9 @@ storage_containers:
 # teach your hunting buddies
 combat_teaching_skill: Sling
 # how many mindstates to use a weapon for
-combat_trainer_target_increment: 5
+combat_trainer_target_increment: 6
 # how many actions to do if you dont hit the mindstate goal before swapping weapons
-combat_trainer_action_count: 15
+combat_trainer_action_count: 12
 # avoid losing ammo by killing the last opponent
 skip_last_kill: false
 loot_bodies: true
@@ -159,6 +160,7 @@ gear:
 - :name: bola
 - :name: club
   :adjective: oaken
+  :is_leather: true
 - :name: greathammer
   :adjective: etched
 - :name: broadsword

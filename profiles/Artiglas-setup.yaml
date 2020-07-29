@@ -43,6 +43,7 @@ restock:
   #   stackable: true
   #   quantity: 30
 
+compendium_type: compendium
 
 full_pouch_container: "backpack"
 spare_gem_pouch_container: "haversack"
@@ -63,9 +64,9 @@ storage_containers:
 # teach your hunting buddies
 combat_teaching_skill: Sling
 # how many mindstates to use a weapon for
-combat_trainer_target_increment: 3
+combat_trainer_target_increment: 6
 # how many actions to do if you dont hit the mindstate goal before swapping weapons
-combat_trainer_action_count: 15
+combat_trainer_action_count: 12 # try 2 for every mindstate
 # avoid losing ammo by killing the last opponent
 skip_last_kill: false
 loot_bodies: true
@@ -256,21 +257,22 @@ weapon_training:
   Offhand Weapon: throwing club
 # these are trained first when you enter combat
 priority_weapons:
-#  - Targeted Magic
-#  - Bow
-#  - Crossbow
-#  - Slings
-#  - Heavy Thrown
-#  - Light Thrown
-#  - Small Blunt
-#  - Large Blunt
-#  - Twohanded Blunt
-#  - Small Edged
-#  - Large Edged
-#  - Twohanded Edged
-#  - Polearms
-#  - Staves
-#  - Offhand Weapon
+#- Targeted Magic
+#- Bow
+#- Crossbow
+#- Slings
+#- Heavy Thrown
+#- Light Thrown
+#- Small Blunt
+#- Large Blunt
+#- Twohanded Blunt
+#- Small Edged
+#- Large Edged
+#- Twohanded Edged
+#- Polearms
+#- Staves
+#- Offhand Weapon
+- Brawling
 # Non-combat settings
 crossing_training:
 - Sorcery

@@ -43,6 +43,7 @@ restock:
   #   stackable: true
   #   quantity: 30
 
+compendium_type: compendium
 
 full_pouch_container: "haversack"
 spare_gem_pouch_container: "backpack"
@@ -62,9 +63,9 @@ storage_containers:
 # teach your hunting buddies
 combat_teaching_skill: Sling
 # how many mindstates to use a weapon for
-combat_trainer_target_increment: 5
+combat_trainer_target_increment: 6
 # how many actions to do if you dont hit the mindstate goal before swapping weapons
-combat_trainer_action_count: 15
+combat_trainer_action_count: 12
 # avoid losing ammo by killing the last opponent
 skip_last_kill: false
 loot_bodies: true
@@ -72,6 +73,23 @@ loot_delay: 5
 custom_loot_type:
 dump_junk: true
 dump_item_count: 9
+
+#early skill levels/newly required khri require kneeling to activate
+kneel_khri: true
+
+#maintain spells in combat
+buff_nonspells:
+  khri:
+  #- Prowess # Helps with uphunting
+  #- Sagacity # Helps with uphunting
+  #- Elusion
+  #- Terrify
+  - Focus
+  #- Avoidance
+  #- Hasten
+  #- Darken
+  #- Dampen
+  #- Strike
 
 priority_skills_lower_limit: 6
 empty_hunting_room_messages:
@@ -105,8 +123,8 @@ hunting_info:
   #- wildland_goblin_riverhaven
   #- arbelog_ram_bear_riverhaven
   #- reavers
-  - rats
-  #- hogs
+  #- rats
+  - hogs
   #- fell_hogs
   :duration: 40
   stop_on:
@@ -160,6 +178,7 @@ gear:
 - :name: bola
 - :name: club
   :adjective: oaken
+  :is_leather: true
 - :name: greathammer
   :adjective: etched
 - :name: broadsword
@@ -286,7 +305,8 @@ crossing_training:
 - Athletics
 - Outdoorsmanship
 - Perception
-#- Arcana
+- Arcana
+- Augmentation
 - Scholarship
 - Performance
 - Thievery
