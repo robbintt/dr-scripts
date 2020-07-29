@@ -20,15 +20,16 @@ class FirstAidTrainer
     put "stow right"
   end
 
-  def studyguide
+  def turnguide
     pause
     waitrt?
     put "turn my guide"
+  end
 
+  def studyguide
     pause
     waitrt?
     put "study my guide"
-
   end
 
   def getguide
@@ -42,7 +43,7 @@ class FirstAidTrainer
 
     pause
     waitrt?
-    put "turn my guide to boo" # train to 24 or so
+    put "turn my guide to boobrie" # train to 24 or less, seems to get stuck but seems like where training starts
     #put "turn my guide to peccary" # takes forever to get to 34
   end
 end
@@ -51,8 +52,23 @@ firstaidtrainer = FirstAidTrainer.new
 
 firstaidtrainer.stow
 firstaidtrainer.getguide
-# book doesn't lock it at the moment, try unlocking more
-while DRSkill.getxp('First Aid') < 24
+
+no_learning_counter = 0
+while DRSkill.getxp('First Aid') < 32
+
+  prev_fa_level = DRSkill.getxp('First Aid')
+  prev_scholar_level = DRSkill.getxp('Scholarship')
   firstaidtrainer.studyguide
+
+  # stop wasting time if not training
+  if DRSkill.getxp('First Aid') - prev_fa_level < 1 or DRSkill.getxp('Scholarship') - prev_scholar_level < 1
+    no_learning_counter += 1
+    if no_learning_counter > 3
+      break
+    end
+  else
+    no_learning_counter = 0
+  end
+  firstaidtrainer.turnguide
 end
 firstaidtrainer.stow
