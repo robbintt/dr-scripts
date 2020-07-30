@@ -46,12 +46,18 @@ magictrainer = MagicTrainer.new
 
 # need to thread an RT thing into this script
 
+used_tarantula = 0 # track whether tarantula has been used in this iteration
 while DRSkill.getxp('Utility') < 25 or DRSkill.getxp('Augmentation') < 25 or DRSkill.getxp('Lunar Magic') < 34
-  use_tarantula_if_full("Lunar Magic")
-  if DRSkill.getxp('Utility') < 25
+  if used_tarantula == 0
+    used_tarantula = use_tarantula_if_full("Lunar Magic")
+  end
+  # keep running this spell with primary magic until PM also locked
+  if DRSkill.getxp('Utility') < 25 or DRSkill.getxp('Lunar Magic') < 34
     magictrainer.utilmagic
   end
-  use_tarantula_if_full("Lunar Magic")
+  if used_tarantula == 0
+    used_tarantula = use_tarantula_if_full("Lunar Magic")
+  end
   # keep running this spell with primary magic until PM also locked
   if DRSkill.getxp('Augmentation') < 25 or DRSkill.getxp('Lunar Magic') < 34
     magictrainer.augmagic

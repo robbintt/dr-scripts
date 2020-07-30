@@ -30,7 +30,9 @@ module UtilMethods
     if DRSkill.getxp(skillname) >= 34
       turn_tarantula(skillname)
       rub_tarantula
+      return 1
     end
+    return 0
   end
 
   def buy(item, cost)
