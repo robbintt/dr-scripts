@@ -1,4 +1,4 @@
-custom_require.call(%w[common])
+custom_require.call(%w[drinfomon common])
 
 #include DRC
 
@@ -6,6 +6,11 @@ module UtilMethods
 
   def turn_tarantula(skill)
     # TODO: expand logic
+    
+    # fix this one for now
+    if skill == "Lunar Magic"
+      skill = "magic"
+    end
     pause
     waitrt?
     put "turn my tarantula to #{skill}"
@@ -21,7 +26,7 @@ module UtilMethods
     put "exp 0" # reset lich utility tracking for the skill that was drained
   end
 
-  def use_taran_if_full(skillname)
+  def use_tarantula_if_full(skillname)
     if DRSkill.getxp(skillname) >= 34
       turn_tarantula(skillname)
       rub_tarantula

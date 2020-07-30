@@ -1,5 +1,6 @@
 
 custom_require.call(%w[drinfomon common spellmonitor util_methods])
+include UtilMethods # from util_methods
 
 class MagicTrainer
   # not yet used
@@ -39,23 +40,20 @@ class MagicTrainer
     pause 5
     fput "cast", "You gesture", "You don't have a spell prepared!"
   end
+end
 
 magictrainer = MagicTrainer.new
 
-# need to update this to use variables
-
 # need to thread an RT thing into this script
 
-taran_used = 0
-while DRSkill.getxp('Utility') < 17 or DRSkill.getxp('Augmentation') < 17 or DRSkill.getxp('Lunar Magic') < 34
-  use_taran_if_full("Magic")
-  end
-  if DRSkill.getxp('Utility') < 17
+while DRSkill.getxp('Utility') < 25 or DRSkill.getxp('Augmentation') < 25 or DRSkill.getxp('Lunar Magic') < 34
+  use_tarantula_if_full("Lunar Magic")
+  if DRSkill.getxp('Utility') < 25
     magictrainer.utilmagic
   end
-  # temp catchall for primary magic
-  if DRSkill.getxp('Augmentation') < 17 or DRSkill.getxp('Lunar Magic') < 34
+  use_tarantula_if_full("Lunar Magic")
+  # keep running this spell with primary magic until PM also locked
+  if DRSkill.getxp('Augmentation') < 25 or DRSkill.getxp('Lunar Magic') < 34
     magictrainer.augmagic
   end
 end
-
