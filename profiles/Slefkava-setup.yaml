@@ -91,7 +91,7 @@ buff_nonspells:
   #- Dampen
   #- Strike
 
-priority_skills_lower_limit: 6
+priority_skills_lower_limit: 2
 empty_hunting_room_messages:
 - hello?
 hunting_buddies:
@@ -120,11 +120,10 @@ hunting_info:
   # Note: You can add multiple "overflow" zones to the list.
   # It checks each hunting zone for an empty room before waiting
 - :zone:
-  #- wildland_goblin_riverhaven
-  #- arbelog_ram_bear_riverhaven
   #- reavers
   #- rats
-  - hogs
+  #- hogs
+  - goblins
   #- fell_hogs
   :duration: 40
   stop_on:

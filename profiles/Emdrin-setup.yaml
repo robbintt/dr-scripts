@@ -74,7 +74,7 @@ custom_loot_type:
 dump_junk: true
 dump_item_count: 9
 
-priority_skills_lower_limit: 6
+priority_skills_lower_limit: 2
 empty_hunting_room_messages:
 - hello?
 hunting_buddies:

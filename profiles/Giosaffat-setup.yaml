@@ -19,6 +19,7 @@ telescope_storage:
   container: telescope case
 
 picking_box_source: "hide sack"
+#picking_box_source: "backpack"
 
 train_with_burgle: true
 burgle_settings:
