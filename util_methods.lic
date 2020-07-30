@@ -4,6 +4,30 @@ custom_require.call(%w[common])
 
 module UtilMethods
 
+  def turn_tarantula(skill)
+    # TODO: expand logic
+    pause
+    waitrt?
+    put "turn my tarantula to #{skill}"
+  end
+
+  def rub_tarantula
+    # TODO: expand logic
+    pause
+    waitrt?
+    put "rub my tarantula"
+    pause
+    waitrt?
+    put "exp 0" # reset lich utility tracking for the skill that was drained
+  end
+
+  def use_taran_if_full(skillname)
+    if DRSkill.getxp(skillname) >= 34
+      turn_tarantula(skillname)
+      rub_tarantula
+    end
+  end
+
   def buy(item, cost)
     # typically offer a higher cost so you don't have to deal with barter
     # this can be fixed later to read and say the price the merchant offers
