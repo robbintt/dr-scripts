@@ -5,15 +5,20 @@
     -
 =end
 
-custom_require.call(%w[drinfomon common combat_methods])
+custom_require.call(%w[drinfomon common combat_methods util_methods])
 include Combat  # from combat_methods
 
+used_tarantula = 0 # track whether tarantula has been used in this iteration
 loop {
 
   #critter = "gryphon"
   #critter = "basilisk"
   critter = "gremlin"
   other_critter = "other #{critter}"
+
+  if used_tarantula == 0
+    used_tarantula = use_tarantula_if_full("Light Armor")
+  end
 
   circle # get some balance
 

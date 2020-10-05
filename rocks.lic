@@ -9,7 +9,7 @@ class OutdoorsmanshipTrainer
   end
 
   def collect
-    use_taran_if_full("Outdoorsmanship")
+    use_tarantula_if_full("Outdoorsmanship")
     pause
     waitrt?
     fput "kick pile", "You take a step back and run up to the pile of rocks.", "I could not find what you were referring to."

@@ -5,6 +5,9 @@ crafting_container: cerulean sack
 enchanting_tools:
 - imbuement rod
 - felwood burin
+workorder_diff: hard
+cambrinth: cambrinth prism
+cambrinth_cap: 108
 divination_tool:
   name: sapphire prism
   container: grey odaj
@@ -12,14 +15,13 @@ divination_bones_storage:
 astrology_training:
   - events
   - moons
-  - ways
   - rtr
 have_telescope: true
 telescope_storage:
   container: telescope case
 
-picking_box_source: "hide sack"
-#picking_box_source: "backpack"
+picking_box_source: "old backpack"
+picking_box_storage: "old backpack"
 
 train_with_burgle: true
 burgle_settings:
@@ -28,10 +30,46 @@ burgle_settings:
   max_search_count: 1
   loot_container: "backpack"
   safe_mode: true
+  use_lockpick_ring: true
+  lockpick_container: lockpick ring
+
+favor_goal: 25
+favor_god: Faenella
+
+buff_spells: &buffs
+  shadows:
+    abberv: shadows
+    recast: 3
+    mana: 20
+    cambrinth:
+    - 38
+    - 38
+
+waggle_sets:
+#  default:
+#    << : *buffs
+#  prehunt_buffs:
+#    Ease Burden:
+#      abbrev: EASE
+#      recast: 1
+#      mana: 20
+#      cambrinth:
+#      - 20
+#      - 20
+#      - 20
+  enchanting:
+    Artificer's Eye:
+      abbrev: art
+      recast: 3
+      mana: 20
+      cambrinth:
+      - 38
+      - 38
 
 gear:
 - :name: leathers
-  :adjective: coarse
+  :adjective: thick
+  #:adjective: coarse
   :is_leather: true
   :hinders_lockpicking: true
   :is_worn: true
@@ -87,7 +125,7 @@ gear_sets:
   standard:
   - round sipar
   - parry stick
-  - coarse leathers
+  - thick leathers
   - scale gloves
   - ring helm
   - plate mask

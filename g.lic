@@ -11,10 +11,6 @@ include DRC  # wait_for_script_to_complete
 # store a hash of inputs and roomnumbers
 echo("Going to: #{variable}")
 
-if variable[0] == 'xbank'
-  wait_for_script_to_complete('go2', ['1900'])
-end
-
 if variable[0] == 'home'
   wait_for_script_to_complete('go2', ['3138'])
 end
@@ -105,4 +101,17 @@ if variable[0] == 'crate'
   wait_for_script_to_complete('go2', ['365'])
 end
 
+# Crossing Checkpints
+
+if variable[0] == 'urn'
+  wait_for_script_to_complete('go2', ['19162'])
+end
+
+if variable[0] == 'xbank'
+  wait_for_script_to_complete('go2', ['1900'])
+end
+
+if variable[0] == 'xempath'
+  wait_for_script_to_complete('go2', ['5713'])
+end
 
