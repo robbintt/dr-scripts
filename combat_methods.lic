@@ -100,6 +100,9 @@ module Combat
     pause
     waitrt?
     put "stow gem"
+    pause
+    waitrt?
+    put "fill my pou with my hide sack"
   end
 
   def cleanupall
@@ -109,10 +112,13 @@ module Combat
 
     pause
     waitrt?
-    put "loot all"
+    put "loot goods"
     pause
     waitrt?
     put "stow gem"
+    pause
+    waitrt?
+    put "fill my pou with my hide sack"
   end
 
   def attack

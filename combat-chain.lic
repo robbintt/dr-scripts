@@ -6,7 +6,9 @@
 =end
 
 custom_require.call(%w[drinfomon common combat_methods util_methods])
+#custom_require.call(%w[drinfomon common spellmonitor util_methods])
 include Combat  # from combat_methods
+include UtilMethods # from util_methods
 
 used_tarantula = 0 # track whether tarantula has been used in this iteration
 loop {

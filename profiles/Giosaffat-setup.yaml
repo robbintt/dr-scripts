@@ -20,8 +20,10 @@ have_telescope: true
 telescope_storage:
   container: telescope case
 
-picking_box_source: "old backpack"
+picking_box_source: "hide sack"
 picking_box_storage: "old backpack"
+#picking_box_source: "old backpack"
+#picking_box_storage: "old backpack"
 
 train_with_burgle: true
 burgle_settings:
@@ -32,6 +34,10 @@ burgle_settings:
   safe_mode: true
   use_lockpick_ring: true
   lockpick_container: lockpick ring
+  loot: pawn
+  item_whitelist:
+    - memory orb
+    - keepsake box
 
 favor_goal: 25
 favor_god: Faenella

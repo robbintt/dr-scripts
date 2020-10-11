@@ -106,13 +106,13 @@ hunting_info:
 - :zone:
   #- wildland_goblin_riverhaven
   #- arbelog_ram_bear_riverhaven
-  #- reavers
   #- rats
   #- fell_hogs
   #- goblins
   #- blood_dryad
   #- water_sprites_and_lipopods
-  - grass_eels
+  #- grass_eels
+  - reavers
   :duration: 40
   stop_on:
   - Shield Usage

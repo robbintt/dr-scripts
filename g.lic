@@ -15,6 +15,10 @@ if variable[0] == 'home'
   wait_for_script_to_complete('go2', ['3138'])
 end
 
+if variable[0] == 'shop'
+  wait_for_script_to_complete('go2', ['7935'])
+end
+
 if variable[0] == 'bin'
   wait_for_script_to_complete('go2', ['3353'])
 end
