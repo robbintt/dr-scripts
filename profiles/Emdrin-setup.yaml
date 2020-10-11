@@ -142,7 +142,7 @@ gear:
   :hinders_lockpicking: false
   :is_worn: true
 
-# weapons
+# ranged weapons
 - :name: sling
   :adjective: leather
   :is_worn: false
@@ -154,42 +154,27 @@ gear:
   :adjective: light
   :is_worn: false
 
-- :name: scimitar
-  :adjective: steel
+# melee weapons
+gear:
+- :name: blade
+  :adjective: thrusting
   :is_worn: false
-- :name: bola
+- :name: sword
+  :adjective: bastard
+  :is_worn: false
+  :swappable: true
+- :name: mace
+  :adjective: bar
+  :is_worn: false
+  :swappable: true
+- :name: nightstick
+  :is_worn: false
+- :name: javelin
+  :is_worn: false
 - :name: club
-  :adjective: oaken
-  :is_leather: true
-- :name: greathammer
-  :adjective: etched
-- :name: broadsword
-  :adjective: stout
-- :name: flail
-  :adjective: footman's
-- :name: stick
-  :adjective: gnarled
-  :is_leather: true
-- :name: claymore
-- :name: allarh
-#- :name: blade
-#  :adjective: thrusting
-#  :is_worn: false
-#- :name: nightstick
-#  :is_worn: false
-#- :name: sword
-#  :adjective: bastard
-#  :is_worn: false
-#  :swappable: true
-#- :name: mace
-#  :adjective: bar
-#  :is_worn: false
-#  :swappable: true
-#- :name: javelin
-#  :is_worn: false
-#- :name: club
-#  :adjective: throwing
-#  :is_worn: false
+  :adjective: throwing
+  :is_worn: false
+
 
 
 gear_sets:
@@ -253,17 +238,17 @@ weapon_training:
   Bow: yew shortbow
   Crossbow: light crossbow
   Slings: leather sling
-  Heavy Thrown: allarh
-  Light Thrown: bola
-  Small Blunt: oaken club
-  Large Blunt: etched greathammer
-  Twohanded Blunt: footman's flail
-  Small Edged: steel scimitar
-  Large Edged: stout broadsword
-  Twohanded Edged: claymore
-  Polearms: allarh
-  Staves: gnarled stick
-  Offhand Weapon: oaken club
+  Heavy Thrown: javelin
+  Light Thrown: throwing club
+  Small Blunt: throwing club
+  Large Blunt: bar mace
+  Twohanded Blunt: bar mace
+  Small Edged: thrusting blade
+  Large Edged: bastard sword
+  Twohanded Edged: bastard sword
+  Polearms: javelin
+  Staves: nightstick
+  Offhand Weapon: throwing club
 # these are trained first when you enter combat
 priority_weapons:
 #  - Targeted Magic
