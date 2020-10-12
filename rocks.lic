@@ -6,8 +6,6 @@ class OutdoorsmanshipTrainer
   # is this needed to get exp or just drinfomon/common?
   #include DRC
   def initialize
-    @end_message_list = ["You finish practicing your climbing skill and take a well-earned break."]
-
     arg_definitions = [
       [
         { name: 'exp_increment', regex: /\d+/, optional: true, description: 'exit after this amount of experience is added to the existing pool' }
@@ -32,7 +30,6 @@ class OutdoorsmanshipTrainer
   def skill_targets
     @skill_targets
   end
-
   def collect
     use_tarantula_if_full("Outdoorsmanship")
     pause

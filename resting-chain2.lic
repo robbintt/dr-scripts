@@ -8,7 +8,7 @@
 custom_require.call(%w[common])
 include DRC  # wait_for_script_to_complete
 
-exp_incr = 11
+exp_incr = 6
 
 def power
   # paused to run ;percmoons at all times
@@ -40,13 +40,12 @@ loop {
   wait_for_script_to_complete('burgle',['start'])
   power
   wait_for_script_to_complete('go2', ['475'] ) # haven ranger tent
-  wait_for_script_to_complete('buff',['enchanting'], 1)
+  wait_for_script_to_complete('buff',['enchanting'])
   power
   #while DRSkill.getxp('Enchanting') < 30
   #  power
   #  wait_for_script_to_complete('workorders', ['artificing'] )
   #end
-  # go after artificing
   # just do it once
   wait_for_script_to_complete('workorders', ['artificing'] )
   power
