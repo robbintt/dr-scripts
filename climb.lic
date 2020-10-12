@@ -2,7 +2,7 @@
 # common contains DRC?
 custom_require.call(%w[drinfomon common])
 
-class ClimbTrainer 
+class ClimbTrainer
   attr_accessor :target_exists
   # is this needed to get exp or just drinfomon/common?
   include DRC
@@ -15,17 +15,40 @@ class ClimbTrainer
     @skillname = 'Athletics'
     @end_message_list = ["You finish practicing your climbing skill and take a well-earned break."]
 
+    arg_definitions = [
+      [
+        { name: 'exp_increment', regex: /\d+/, optional: true, description: 'exit after this amount of experience is added to the existing pool' }
+      ]
+    ]
+    args = parse_args(arg_definitions)
+
+    current_exp = 0
+    exp_max = 30
+
+    # default to exp_max if arg not provided
+    exp_increment = args.exp_increment ? Integer(args.exp_increment) : exp_max
+    # remove extra list, set the default in the mapping
+    @skillnames = ["Athletics"]
+    @skill_targets = {}
+
+    @skillnames.each do |current_skill|
+      new_target = DRSkill.getxp(current_skill) + exp_increment
+      @skill_targets[current_skill] = new_target < exp_max ? new_target : exp_max
+    end
   end
-  def end_message_list 
+  def skill_targets
+    @skill_targets
+  end
+  def end_message_list
     @end_message_list
   end
-  def training_items 
+  def training_items
     @training_items
   end
-  def skillname 
+  def skillname
     @skillname
   end
-  def climb_exp_threshold 
+  def climb_exp_threshold
     @climb_exp_threshold
   end
   def climb(item)
@@ -50,7 +73,7 @@ climbtrainer.training_items.each do |item|
   pause
   waitrt?
   put "appraise focus #{item}"
-  while DRSkill.getxp(climbtrainer.skillname) < climbtrainer.climb_exp_threshold and climbtrainer.target_exists
+  while DRSkill.getxp('Athletics') < climbtrainer.skill_targets['Athletics'] and climbtrainer.target_exists
     climbtrainer.climb(item)
   end
   # make sure we stop
