@@ -11,8 +11,6 @@ class ClimbTrainer
     @training_items = ['fir tree', 'wall']
     @target_exists = true
 
-    @climb_exp_threshold = 34
-    @skillname = 'Athletics'
     @end_message_list = ["You finish practicing your climbing skill and take a well-earned break."]
 
     arg_definitions = [
