@@ -1,5 +1,9 @@
 # This is designed to start with lich and run constantly
 
+
+# needs custom_require loaded at startup
+pause 4
+
 no_kill_all
 no_pause_all
 
@@ -7,7 +11,7 @@ custom_require.call(%w[common util_methods drinfomon spellmonitor])
 
 include UtilMethods # from util_methods
 
-class PercMoons 
+class PercMoons
   @@interval_percmoons = 300
   @@timer_percmoons = Time.now - @@interval_percmoons # set to start right away
 

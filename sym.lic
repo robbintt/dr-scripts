@@ -7,8 +7,32 @@ class MagicTrainer
   attr_reader :skillnames
 
   def initialize
-    # not yet used
-    @skillnames = ["Magic", "Augmentation", "Utility"]
+
+    arg_definitions = [
+      [
+        { name: 'exp_increment', regex: /\d+/, optional: true, description: 'exit after this amount of experience is added to the existing pool' }
+      ]
+    ]
+
+    args = parse_args(arg_definitions)
+
+    current_exp = 0
+    exp_max = 30
+
+    # default to exp_max if arg not provided
+    exp_increment = args.exp_increment ? Integer(args.exp_increment) : exp_max
+    # remove extra list, set the default in the mapping
+    @skillnames = ["Lunar Magic", "Augmentation", "Utility"]
+    @skill_targets = {}
+
+    @skillnames.each do |current_skill|
+      new_target = DRSkill.getxp(current_skill) + exp_increment
+      @skill_targets[current_skill] = new_target < exp_max ? new_target : exp_max
+    end
+  end
+
+  def skill_targets
+    @skill_targets
   end
 
   def utilmagic
@@ -47,19 +71,20 @@ magictrainer = MagicTrainer.new
 # need to thread an RT thing into this script
 
 used_tarantula = 0 # track whether tarantula has been used in this iteration
-while DRSkill.getxp('Utility') < 25 or DRSkill.getxp('Augmentation') < 25 or DRSkill.getxp('Lunar Magic') < 34
+
+while DRSkill.getxp('Utility') < magictrainer.skill_targets['Utility'] or DRSkill.getxp('Augmentation') < magictrainer.skill_targets['Augmentation'] or DRSkill.getxp('Lunar Magic') < magictrainer.skill_targets['Lunar Magic']
   if used_tarantula == 0
     used_tarantula = use_tarantula_if_full("Lunar Magic")
   end
   # keep running this spell with primary magic until PM also locked
-  if DRSkill.getxp('Utility') < 25 or DRSkill.getxp('Lunar Magic') < 34
+  if DRSkill.getxp('Utility') < magictrainer.skill_targets['Utility'] or DRSkill.getxp('Lunar Magic') < magictrainer.skill_targets['Lunar Magic']
     magictrainer.utilmagic
   end
   if used_tarantula == 0
     used_tarantula = use_tarantula_if_full("Lunar Magic")
   end
   # keep running this spell with primary magic until PM also locked
-  if DRSkill.getxp('Augmentation') < 25 or DRSkill.getxp('Lunar Magic') < 34
+  if DRSkill.getxp('Augmentation') < magictrainer.skill_targets['Augmentation'] or DRSkill.getxp('Lunar Magic') < magictrainer.skill_targets['Lunar Magic']
     magictrainer.augmagic
   end
 end

@@ -20,12 +20,35 @@ class TattooTrainer
     @justicearea = ""
 
     # what is all this, what can i use
-    #arg_definitions = [[]]
-    #args = parse_args(arg_definitions, true)
     #@settings = get_settings
     #@stop_on_low_threshold = @settings.stop_on_low_threshold
     #data = get_data('hunting')
     #@escort_zones = data.escort_zones
+
+    arg_definitions = [
+      [
+        { name: 'exp_increment', regex: /\d+/, optional: true, description: 'exit after this amount of experience is added to the existing pool' }
+      ]
+    ]
+
+    args = parse_args(arg_definitions)
+
+    current_exp = 0
+    exp_max = 30
+
+    # default to exp_max if arg not provided
+    exp_increment = args.exp_increment ? Integer(args.exp_increment) : exp_max
+    # remove extra list, set the default in the mapping
+    @skillnames = ["Sorcery", "Warding"]
+    @skill_targets = {}
+
+    @skillnames.each do |current_skill|
+      new_target = DRSkill.getxp(current_skill) + exp_increment
+      @skill_targets[current_skill] = new_target < exp_max ? new_target : exp_max
+    end
+  end
+  def skill_targets
+    @skill_targets
   end
   def camb
     @camb
@@ -65,6 +88,6 @@ end
 tattootrainer = TattooTrainer.new
 
 # there was an abstraction for going over all the named skills in hunting-buddy
-while !justicearea? and (DRSkill.getxp('Warding') < 34 and DRSkill.getxp('Sorcery') < 34)
+while !justicearea? and (DRSkill.getxp('Warding') < tattootrainer.skill_targets['Warding'] and DRSkill.getxp('Sorcery') < tattootrainer.skill_targets['Sorcery'])
   tattootrainer.cast
 end
