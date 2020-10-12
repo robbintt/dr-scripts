@@ -6,6 +6,31 @@ class OutdoorsmanshipTrainer
   # is this needed to get exp or just drinfomon/common?
   #include DRC
   def initialize
+    @end_message_list = ["You finish practicing your climbing skill and take a well-earned break."]
+
+    arg_definitions = [
+      [
+        { name: 'exp_increment', regex: /\d+/, optional: true, description: 'exit after this amount of experience is added to the existing pool' }
+      ]
+    ]
+    args = parse_args(arg_definitions)
+
+    current_exp = 0
+    exp_max = 30
+
+    # default to exp_max if arg not provided
+    exp_increment = args.exp_increment ? Integer(args.exp_increment) : exp_max
+    # remove extra list, set the default in the mapping
+    @skillnames = ["Outdoorsmanship"]
+    @skill_targets = {}
+
+    @skillnames.each do |current_skill|
+      new_target = DRSkill.getxp(current_skill) + exp_increment
+      @skill_targets[current_skill] = new_target < exp_max ? new_target : exp_max
+    end
+  end
+  def skill_targets
+    @skill_targets
   end
 
   def collect
@@ -22,6 +47,6 @@ end
 
 outdoorstrainer = OutdoorsmanshipTrainer.new
 
-while DRSkill.getxp("Outdoorsmanship") < 34
+while DRSkill.getxp('Outdoorsmanship') < outdoorstrainer.skill_targets['Outdoorsmanship']
   outdoorstrainer.collect
 end
