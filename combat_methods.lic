@@ -102,7 +102,7 @@ module Combat
     put "stow gem"
     pause
     waitrt?
-    put "fill my pou with my hide sack"
+    put "fill my pou with my scav belt"
   end
 
   def cleanupall
@@ -118,7 +118,7 @@ module Combat
     put "stow gem"
     pause
     waitrt?
-    put "fill my pou with my hide sack"
+    put "fill my pou with my scav belt"
   end
 
   def attack

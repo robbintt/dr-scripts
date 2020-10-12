@@ -20,7 +20,7 @@ have_telescope: true
 telescope_storage:
   container: telescope case
 
-picking_box_source: "hide sack"
+picking_box_source: "scavenger's belt"
 picking_box_storage: "old backpack"
 #picking_box_source: "old backpack"
 #picking_box_storage: "old backpack"

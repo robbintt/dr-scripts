@@ -75,7 +75,7 @@ loop {
     missile_etc
     getitem("fang arrow")
     stowitem("fang arrow")
-    getitem("arrow", "hide sack")
+    getitem("arrow", "scavenger's belt")
     stowitem("arrow")
 
     # skip if no learning happened
