@@ -1,6 +1,6 @@
 ---
 
-hometown: Riverhaven
+hometown: Crossing
 crafting_container: cerulean sack
 enchanting_tools:
 - imbuement rod
@@ -66,7 +66,7 @@ waggle_sets:
   enchanting:
     Artificer's Eye:
       abbrev: art
-      recast: 3
+      recast: 15
       mana: 20
       cambrinth:
       - 38

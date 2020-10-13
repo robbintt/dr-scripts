@@ -63,9 +63,9 @@ class FirstAidTrainer
     waitrt?
     put "open my guide"
 
-    pause
-    waitrt?
-    put "turn my guide to boobrie" # train to 24 or less, seems to get stuck but seems like where training starts
+    #pause
+    #waitrt?
+    #put "turn my guide to boobrie" # train to 24 or less, seems to get stuck but seems like where training starts
     #put "turn my guide to peccary" # takes forever to get to 34
   end
 end

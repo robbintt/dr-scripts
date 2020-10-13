@@ -10,52 +10,71 @@ include DRC  # wait_for_script_to_complete
 
 def power
   # paused to run ;percmoons at all times
-  #pause
-  #waitrt?
-  #put "perc moons"
+  # now we pause percmoons during this script
+  pause
+  waitrt?
+  put "perc moons"
   pause
   waitrt?
   put "perc mana"
 end
 
+pause_script('percmoons')
 loop {
 
+  # used custom experience increments per script, certain skills are better suited to the end
+
+  # standin for appraisal
+  pause
+  waitrt?
+  put "app my pouch careful"
+  waitrt?
+  pause
+
   power
   wait_for_script_to_complete('burgle',['start'])
   power
+  unpause_other_scripts # temp fix for bug in percmoons
+
   wait_for_script_to_complete('go2', ['19162'] ) # crossing urn
-  power
-  wait_for_script_to_complete('sym')
-  power
-  wait_for_script_to_complete('go2', ['475'] ) # haven ranger tent
-  power
-  wait_for_script_to_complete('tattoo')
-  power
-  wait_for_script_to_complete('go2', ['3353'] ) # lang bin for climb
-  power
-  wait_for_script_to_complete('climb')
-  power
-  wait_for_script_to_complete('burgle',['start'])
-  power
-  wait_for_script_to_complete('go2', ['475'] ) # haven ranger tent
-  wait_for_script_to_complete('buff',['enchanting'])
-  power
-  #while DRSkill.getxp('Enchanting') < 30
+
+  if DRSkill.getxp('Lunar Magic') < 30
+    power
+    wait_for_script_to_complete('sym', [9])
+  end
+
+  if DRSkill.getxp('Sorcery') < 30
+    power
+    wait_for_script_to_complete('tattoo', [9])
+  end
+
+  # need to move gazecrystal from combat_methods to util_methods and add here
+
+  # try athletics solely from burgle
+  #while DRSkill.getxp('Athletics') < 15
   #  power
-  #  wait_for_script_to_complete('workorders', ['artificing'] )
+  # wait_for_script_to_complete('go2', ['3353'] ) # lang bin for climb
+  #  power
+  #  wait_for_script_to_complete('climb', [6])
   #end
-  # go after artificing
-  # just do it once
-  wait_for_script_to_complete('workorders', ['artificing'] )
-  power
-  wait_for_script_to_complete('go2', ['475'] ) # haven ranger tent
-  power
-  wait_for_script_to_complete('rocks')
-  power
-  wait_for_script_to_complete('study')
-  power
 
-  # replace with burgle
-  #wait_for_script_to_complete('locks')
+  if DRSkill.getxp('Enchanting') < 14
+    power
+    wait_for_script_to_complete('go2', ['19162'] ) # crossing urn
+    wait_for_script_to_complete('buff',['enchanting'])
+    wait_for_script_to_complete('workorders', ['artificing'] )
+  end
 
+  if DRSkill.getxp('Outdoorsmanship') < 30
+    power
+    wait_for_script_to_complete('go2', ['19162'] ) # crossing urn
+    wait_for_script_to_complete('rocks', [6])
+  end
+
+  if DRSkill.getxp('First Aid') < 30
+    power
+    # need to tell study whether to pass in a point in the book or continue from last
+    wait_for_script_to_complete('study', [11])
+  end
 }
+unpause_script('percmoons')
