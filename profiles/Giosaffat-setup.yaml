@@ -5,6 +5,7 @@ crafting_container: cerulean sack
 enchanting_tools:
 - imbuement rod
 - felwood burin
+- small brazier
 workorder_diff: hard
 cambrinth: cambrinth prism
 cambrinth_cap: 108
@@ -20,6 +21,10 @@ have_telescope: true
 telescope_storage:
   container: telescope case
 
+use_lockpick_ring: true
+lockpick_container: lockpick ring
+skip_lockpick_ring_refill: true
+balance_lockpick_container: true
 picking_box_source: "scavenger's belt"
 picking_box_storage: "old backpack"
 #picking_box_source: "old backpack"

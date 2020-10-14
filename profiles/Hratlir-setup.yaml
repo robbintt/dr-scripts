@@ -1,0 +1,12 @@
+hometown: Crossing
+safe_room: 8246
+
+# empty works fine with ;healme
+cambrinth:
+
+# used with ;healme.  first number is prep, second is a single camb charge.
+empath_healing:
+  HW:
+  - 4
+  HS:
+  - 4

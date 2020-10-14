@@ -7,7 +7,7 @@
 # 4 Lores (only 3 are needed to circle): Appraisal, Tactics, Scholarship
 
 hometown: Crossing
-training_manager_hunting_priority: true
+training_manager_hunting_priority: false
 forage_item: rock
 safe_room: 5713
 outdoor_room: 19162
@@ -119,7 +119,7 @@ hunting_info:
   - Parry Ability
   - Missile Mastery
   - Melee Mastery
-  - Large Blunt
+  #- Large Blunt
 
 # Gear settings
 gear:
@@ -215,18 +215,23 @@ offensive_spells:
 - skill: Targeted Magic
   name: Horn of the Black Unicorn
   abbrev: horn
-  mana: 1
+  mana: 3
   cast_only_to_train: true
-- skill: Debilitation
-  name: Soul Sickness
-  abbrev: sick
-  mana: 1
-  harmless: true
-- skill: Debilitation
-  name: Soul Bonding
-  abbrev: sb
-  mana: 1
-  harmless: true
+#- skill: Debilitation
+#  name: Soul Sickness
+#  abbrev: sick
+#  mana: 3
+#  harmless: true
+#- skill: Debilitation
+#  name: Soul Bonding
+#  abbrev: sb
+#  mana: 3
+#  harmless: true
+#- skill: Debilitation
+#  name: Malediction
+#  abbrev: mal
+#  mana: 5
+#  harmless: true
 dance_skill: Small Edged
 aiming_trainables:
 - Tactics

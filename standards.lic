@@ -7,6 +7,12 @@ waitrt?
 pause
 put "toggle shield arm"
 
+# set bundle location
+
+waitrt?
+pause
+put "toggle hidelogin
+
 waitrt?
 pause
 put "avoid !holding"
@@ -30,3 +36,4 @@ put "set combatbrief"
 waitrt?
 pause
 put "set battlebrief"
+"
