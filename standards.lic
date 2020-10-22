@@ -7,11 +7,19 @@ waitrt?
 pause
 put "toggle shield arm"
 
-# set bundle location
 
+
+
+# TODO: set bundle location
+
+
+# TODO: super annoying that these toggles flip instead of idempotent state setting
 waitrt?
 pause
-put "toggle hidelogin
+put "toggle hidelogin"
+waitrt?
+pause
+put "toggle appraisal"
 
 waitrt?
 pause
@@ -36,4 +44,15 @@ put "set combatbrief"
 waitrt?
 pause
 put "set battlebrief"
-"
+
+waitrt?
+pause
+put "set !logon"
+
+waitrt?
+pause
+put "set !logoff"
+
+waitrt?
+pause
+put "set !disconnect"

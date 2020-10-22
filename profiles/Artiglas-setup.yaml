@@ -7,7 +7,7 @@
 # 4 Lores (only 3 are needed to circle): Appraisal, Tactics, Scholarship
 
 hometown: Crossing
-training_manager_hunting_priority: false
+training_manager_hunting_priority: true
 forage_item: rock
 safe_room: 5713
 outdoor_room: 19162
@@ -24,15 +24,32 @@ sell_loot_skip_exchange: false
 sell_loot_skip_pouch_close: false
 #sale_pouches_container: haversack
 
+loot_additions:
+  - quartzite stone shard
+  - quartzite stone shards
+
+# defines a spell to train sorcery if Sorcery is on your crossing-training list
+crossing_training_sorcery:
+  # using the name first doesn't work here, i don't know why.
+  #Shadows:
+  # indent the rest if you use the name???
+  abbrev: my tattoo
+  prep: invoke
+  recast: 1
+  cambrinth:
+  - 8
+# what room to use when training sorcery - check JUSTICE beforehand
+crossing_training_sorcery_room: 19162
+
 #hunting-buddy will maintain a minimum of storebought ammo - will need more details outside crossing
 #You can specify custom restocking, advanced feature
 restock:
   arrow:
     quantity: 15
-  bolt:
-    quantity: 15
-  rock:
-    quantity: 15
+  #bolt:
+  #  quantity: 15
+  #rock:
+  #  quantity: 15
   #You can specify custom restocking, advanced feature
   # rock:
   #   hometown: Hibarnhvidar
@@ -64,9 +81,10 @@ storage_containers:
 # teach your hunting buddies
 combat_teaching_skill: Sling
 # how many mindstates to use a weapon for
-combat_trainer_target_increment: 6
+combat_trainer_target_increment: 8
 # how many actions to do if you dont hit the mindstate goal before swapping weapons
-combat_trainer_action_count: 12 # try 2 for every mindstate
+# might need to up this beyond 2 per mindstate for extra non-attack actions
+combat_trainer_action_count: 16 # try 2 for every mindstate
 # avoid losing ammo by killing the last opponent
 skip_last_kill: false
 loot_bodies: true
@@ -77,13 +95,13 @@ dump_item_count: 9
 
 priority_skills_lower_limit: 2
 empty_hunting_room_messages:
-- hello?
+  #- hello?
 hunting_buddies:
   - Magit
   - Emdrin
   - Slefkava
 # Max number of hunting buddies you want in room with you
-hunting_buddies_max: 2
+hunting_buddies_max: 3
 # A list of nemesis or people you do not want to hunt with.
 hunting_nemesis:
 stop_hunting_if_bleeding: true
@@ -97,6 +115,7 @@ skinning:
 
 # list of skills that will trigger a hunt loop if they go below the lower_limit. THIS MEANS ONLY COMBAT SKILLS SHOULD BE ON HERE
 training_manager_priority_skills:
+- Debilitation
 - Shield Usage
 #- Large Blunt
 hunting_info:
@@ -112,14 +131,18 @@ hunting_info:
   #- blood_dryad
   #- water_sprites_and_lipopods
   #- grass_eels
-  - reavers
+  #- reavers
+  #- beisswurms
+  - rock_trolls
+  #- fire_sprites
   :duration: 40
   stop_on:
   - Shield Usage
   - Parry Ability
   - Missile Mastery
   - Melee Mastery
-  #- Large Blunt
+  # basically: don't stop if you have this in here...
+  - Large Blunt
 
 # Gear settings
 gear:
@@ -198,19 +221,44 @@ buff_spells:
     recast: 1
     mana: 1
     cambrinth:
-    - 2
+    - 8
   Minor Physical Protection:
     abbrev: mpp
     recast: 1
     mana: 1
     cambrinth:
-    - 2
+    - 8
   Bless:
     abbrev: bless
     recast: 1
     mana: 1
     cambrinth:
-    - 2
+    - 8
+
+
+waggle_sets:
+#  default:
+#    << : *buffs
+#  prehunt_buffs:
+#    Ease Burden:
+#      abbrev: EASE
+#      recast: 1
+#      mana: 20
+#      cambrinth:
+#      - 20
+#      - 20
+#      - 20
+  sorcery:
+    Shadows:
+      abbrev: my tattoo
+      prep: invoke
+      recast: 1
+      cambrinth:
+      - 1
+
+
+
+
 offensive_spells:
 - skill: Targeted Magic
   name: Horn of the Black Unicorn
@@ -227,12 +275,13 @@ offensive_spells:
 #  abbrev: sb
 #  mana: 3
 #  harmless: true
-#- skill: Debilitation
-#  name: Malediction
-#  abbrev: mal
-#  mana: 5
-#  harmless: true
-dance_skill: Small Edged
+- skill: Debilitation
+  name: Malediction
+  abbrev: mal
+  mana: 5
+  harmless: true
+# off for dynamic dance (dance with all weapons or something)
+dance_skill: Brawling
 aiming_trainables:
 - Tactics
 - Brawling
@@ -303,8 +352,8 @@ training_spells:
     abbrev: mpp
   Utility:
     abbrev: bless
-cambrinth: cambrinth ring
-cambrinth_cap: 5
+cambrinth: cambrinth armband
+cambrinth_cap: 48
 favor_goal: 25
 favor_god: Faenella
 water_holder: chalice
@@ -321,7 +370,7 @@ appraisal_training:
 stop_pick_on_mindlock: true
 pick_blind: false
 use_lockpick_ring: true
-skip_lockpick_ring_refill: true
+skip_lockpick_ring_refill: false
 lockpick_container: lockpick ring
 lockpick_type: stout  #use 'stout iron' if in Shard
 harvest_traps: false
@@ -358,12 +407,12 @@ burgle_settings:
   max_search_count: 1
   loot_container: "backpack"
   safe_mode: true
-
-
-# defines a spell to train sorcery if Sorcery is on your crossing-training list
-#crossing_training_sorcery:
-# what room to use when training sorcery - check JUSTICE beforehand
-crossing_training_sorcery_room: 19162
+  use_lockpick_ring: true
+  lockpick_container: lockpick ring
+  loot: pawn
+  item_whitelist:
+    - memory orb
+    - keepsake box
 
 # https://elanthipedia.play.net/Lich_script_repository#theurgy
 theurgy_whitelist:
@@ -399,8 +448,8 @@ theurgy_blacklist:
 # Wave incense at an altar - NOTE: BROKEN DUE TO bput for 'nothing happens'
 - incense
 # theurgy_exp_threshold: 0 would run all possible things.
-#theurgy_exp_threshold: 33
-theurgy_exp_threshold: 0
+theurgy_exp_threshold: 33
+#theurgy_exp_threshold: 0
 theurgy_bead_carving_tool:
 theurgy_use_prayer_mat: false
 theurgy_prayer_mat_room:

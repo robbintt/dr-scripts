@@ -1,0 +1,396 @@
+
+# Hunting settings
+
+sanowret_no_use_scripts:
+- outdoorsmanship
+- combat-trainer
+- mech-lore
+- workorders
+
+training_manager_hunting_priority: true
+training_manager_priority_skills:
+- Small Edged
+- Light Thrown
+- Skinning
+- Backstab
+- Bow
+
+hunting_info:
+# :zone: sky_giants
+- :zone: young_wyverns
+
+  stop_on:
+  - Small Edged
+  - Light Thrown
+
+  :duration: 40
+
+hunting_buddies:
+- Rimort
+- Nezarra
+- Fizkinn
+- Gustaav
+- Mazrian
+
+# Gear settings
+gear:
+# Clownsuit
+- :adjective: scale
+  :name: gloves
+  :is_leather: false
+  :hinders_lockpicking: true
+  :is_worn: true
+- :adjective:
+  :name: mask
+  :is_leather: false
+  :hinders_lockpicking: true
+  :is_worn: true
+- :adjective: icesteel
+  :name: helm
+  :is_leather: false
+  :hinders_lockpicking: true
+  :is_worn: true
+#- :adjective: leather
+  #:name: cowl
+  #:is_leather: true
+  #:hinders_lockpicking: true
+  #:is_worn: true
+#- :adjective: fox
+  #:name: gloves
+  #:is_leather: true
+  #:hinders_lockpicking: true
+  #:is_worn: true
+- :adjective: coarse
+  :name: leathers
+  :is_leather: true
+  :hinders_lockpicking: true
+  :is_worn: true
+- :adjective: glaes
+  :name: buckler
+  :is_leather: false
+  :hinders_lockpicking: true
+  :is_worn: true
+- :adjective: parry
+  :name: stick
+  :is_leather: false
+  :hinders_lockpicking: false
+  :is_worn: true
+- :adjective: steel
+  :name: knuckles
+  :is_leather: false
+  :hinders_lockpicking: true
+  :is_worn: true
+- :adjective: elbow
+  :name: spikes
+  :is_leather: false
+  :hinders_lockpicking: false
+  :is_worn: true
+- :adjective: steel
+  :name: footwraps
+  :is_leather: false
+  :hinders_lockpicking: false
+  :is_worn: true
+- :adjective: knee
+  :name: spikes
+  :is_leather: false
+  :hinders_lockpicking: false
+  :is_worn: true
+- :adjective: throwing
+  :name: club
+  :is_leather: false
+  :hinders_lockpicking: false
+  :is_worn: false
+- :adjective: battle
+  :name: shortbow
+  :is_leather: true
+  :hinders_lockpicking: false
+  :is_worn: true
+- :adjective: slender
+  :name: blade
+  :is_leather: false
+  :hinders_lockpicking: false
+  :is_worn: false
+- :adjective: orange
+  :name: sword
+  :is_leather: false
+  :hinders_lockpicking: false
+  :is_worn: false
+  :swappable: true
+- :adjective: tei'oloh
+  :name: crossbow
+  :is_leather: true
+  :hinders_lockpicking: false
+  :is_worn: false
+- :adjective: shadowy-black
+  :name: sling
+  :is_leather: true
+  :hinders_lockpicking: false
+  :is_worn: false
+- :adjective: haralun
+  :name: katavdar
+  :is_leather: false
+  :hinders_lockpicking: false
+  :is_worn: false
+- :adjective: bronze
+  :name: fan
+  :is_leather: false
+  :hinders_lockpicking: false
+  :is_worn: false
+
+
+gear_sets:
+  standard:
+  - coarse leathers
+  #- fox gloves
+  #- leather cowl
+  - icesteel helm
+  - scale gloves
+  - mask
+  - glaes buckler
+  - parry stick
+  - steel knuckles
+  - elbow spikes
+  - knee spikes
+  - battle shortbow
+  - steel footwraps
+
+  stealing:
+  - parry stick
+  - elbow spikes
+  - knee spikes
+  - battle shortbow
+  - steel footwraps
+
+  pvp:
+  - coarse leathers
+  - fox gloves
+  - leather cowl
+  - glaes buckler
+  - parry stick
+  - steel knuckles
+  - elbow spikes
+  - knee spikes
+  - battle shortbow
+  - steel footwraps
+
+  naked: []
+
+loot_additions:
+- cambrinth lump
+- package
+- gold ring
+- signet ring
+- witch ball
+- satin pillow
+- license
+- title scroll
+- writ
+- permit
+- pass
+- profile
+- seastars
+- pendant
+- jasper
+- heliodor
+- tasialm
+- seastar
+- papyrus roll
+- silver nugget
+- gold nugget
+- platinum nugget
+- lumium nugget
+- ninium nugget
+- electrum nugget
+- muracite nugget
+- darkstone nugget
+- damite nugget
+- kertig nugget
+- haralun nugget
+- glaes nugget
+- animite nugget
+- covellite nugget
+- oravir nugget
+- pulzone
+- quadrello
+- broken book spine
+- front cover
+- shattered bloodlock
+- singed page
+- crumpled page
+
+# Combat settings
+empty_hunting_room_messages:
+
+- I have traveled far, and my wanderings bring me here to hunt.  Is anyone lurking nearby?
+- Narash, the dervish of Velaka has come to train his blades, would anyone stand in my way?
+- The Moons reveal anyone who would skulk about, for I am here to dance with steel.
+
+dont_stalk: true
+use_weak_attacks: true
+use_stealth_attacks: false
+backstab: Small Edged
+ambush: false
+backstab_past_mindlock: false
+stealth_attack_aimed_action: snipe
+dual_load: true
+force_unhide: true
+combat_trainer_target_increment: 6
+
+#stun_weapon: Gladius
+#stun_weapon_skill: ambush stun
+#stun_skill: Debilitation
+
+dance_threshold: 0
+dance_skill: Small Edged
+
+training_abilities:
+  #Stealth: 60
+  Analyze: 60
+  App Quick: 90
+  Hunt: 120
+  Recall: 1800
+
+weapon_training:
+  Brawling: ''
+  Small Edged: slender blade
+  Small Blunt: throwing club
+  Light Thrown: throwing club
+  Bow: battle shortbow
+  Offhand Weapon: throwing club
+  Large Edged: orange sword
+  Twohanded Edged: orange sword
+  Crossbow: tei'oloh crossbow
+  Slings: shadowy-black sling
+  Large Blunt: haralun katavdar
+  Heavy Thrown: haralun katavdar
+  Staves: bronze fan
+
+offhand_thrown: true
+
+cycle_armors:
+#  Plate Armor:
+#  - plate gauntlets
+#  Chain Armor:
+#  - chain gloves
+#  Brigandine:
+#  - scale gloves
+#  Light Armor:
+#  - black gloves
+
+kneel_khri: false
+buff_nonspells:
+  khri:
+  #- Darken
+  - Hasten
+  - Strike
+  - Terrify
+  - Avoidance
+  - Steady
+  - Elusion
+  # Focus
+  - Dampen
+  - Prowess
+  - Fright
+  #- Plunder
+  #- Sagacity
+  #- Guile
+
+skinning:
+  skin: true
+  arrange_all: false
+  arrange_count: 0
+  tie_bundle: true
+
+# Non-combat settings
+exp_timers:
+  Stealth: 300
+  Locksmithing: 600
+  Thievery: 600
+  Augmentation: 60
+listen: true
+lockpick_dismantle: thump
+lockpick_buffs:
+  khri:
+  - Focus
+  - Safe
+  - Sight
+  - Dampen
+  - Plunder
+  - Hasten
+stealing_buffs:
+  khri:
+  - Focus
+  - Darken
+  - Silence
+  - Dampen
+  - Plunder
+  - Slight
+
+  train_with_spells: false
+training_nonspells:
+  Augmentation: Khri Focus
+  Augmentation: Khri Darken
+  Utility: Khri Hasten
+  Debilitation: Khri Prowess
+
+crossing_training:
+- Locksmithing
+- Thievery
+#- Perception
+#- Appraisal
+- Athletics
+#- Scholarship
+# Alchemy
+- First Aid
+- Engineering
+- Mechanical Lore
+- Outdoorsmanship
+
+listen: true
+
+bin_stolen: true
+stealing_bag: backpack
+picking_box_source: backpack
+picking_box_storage: backpack
+stop_pick_on_mindlock: false
+skip_lockpick_ring_refill: true
+
+spare_gem_pouch_container: uaro's'sugi
+gem_pouch_adjective: black
+
+train_workorders:
+#- Alchemy
+
+#alchemy_belt:
+  #name: alchemist belt
+  #items:
+  #  - large bowl
+  #  - metal sieve
+  #  - mixing stick
+  #  - iron pestle
+  #  - iron mortar
+
+
+textbook: true
+textbook_type: quarto
+
+braid_item: grass
+footwear:
+
+crafting_container: alchemist's kit
+shaping_tools:
+- carving knife
+- shaper
+- drawknife
+- rasp
+
+#favor_goal: 40
+#favor_god: Hav'roth
+
+saferoom_health_threshold: 25
+safe_room: 12208
+engineering_room: 12208
+training_rooms:
+  - 1184
+status_monitor_no_window: true
+quit_on_status_warning: true

@@ -1,12 +1,20 @@
 ---
 
 hometown: Crossing
-crafting_container: cerulean sack
+safe_room: 19162
+
+enchanting_room: 19162
 enchanting_tools:
 - imbuement rod
-- felwood burin
+- precise burin
 - small brazier
+- augmenting loop
+workorders_repair: false
 workorder_diff: hard
+# grinding workorders for prestige
+craft_max_mindstate: 35
+crafting_container: cerulean sack
+
 cambrinth: cambrinth prism
 cambrinth_cap: 108
 divination_tool:

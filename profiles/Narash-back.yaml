@@ -1,0 +1,119 @@
+hunting_info:
+- :zone: sky_giants
+  stop_on:
+  - Small Edged
+  :duration: 15
+
+training_manager_priority_skills:
+- Small Edged
+
+dont_stalk: true
+use_weak_attacks: false
+use_stealth_attacks: false
+backstab: false
+ambush: false
+backstab_past_mindlock: false
+force_unhide: true
+combat_trainer_target_increment: 6
+
+
+
+dance_threshold: 0
+dance_skill: Small Edged
+
+#training_abilities:
+#  Hunt: 120
+#  Recall: 1800
+
+weapon_training:
+  Small Edged: slender blade
+
+skinning:
+  skin: false
+  arrange_all: false
+  arrange_count: 3
+  tie_bundle: true
+
+# Gear settings
+gear:
+- :adjective: scale
+  :name: gloves
+  :is_leather: false
+  :hinders_lockpicking: true
+  :is_worn: true
+- :adjective:
+  :name: mask
+  :is_leather: false
+  :hinders_lockpicking: true
+  :is_worn: true
+- :adjective: icesteel
+  :name: helm
+  :is_leather: false
+  :hinders_lockpicking: true
+  :is_worn: true
+- :adjective: fox
+  :name: leathers
+  :is_leather: true
+  :hinders_lockpicking: true
+  :is_worn: true
+- :adjective: glaes
+  :name: buckler
+  :is_leather: false
+  :hinders_lockpicking: true
+  :is_worn: true
+- :adjective: pugilist's
+  :name: armguard
+  :is_leather: false
+  :hinders_lockpicking: false
+  :is_worn: true
+- :adjective: steel
+  :name: knuckles
+  :is_leather: false
+  :hinders_lockpicking: true
+  :is_worn: true
+- :adjective: elbow
+  :name: spikes
+  :is_leather: false
+  :hinders_lockpicking: false
+  :is_worn: true
+- :adjective: steel
+  :name: footwraps
+  :is_leather: false
+  :hinders_lockpicking: false
+  :is_worn: true
+- :adjective: knee
+  :name: spikes
+  :is_leather: false
+  :hinders_lockpicking: false
+  :is_worn: true
+- :adjective: slender
+  :name: blade
+  :is_leather: false
+  :hinders_lockpicking: false
+  :is_worn: false
+
+
+
+gear_sets:
+  standard:
+  - fox leathers
+  - icesteel helm
+  - scale gloves
+  - mask
+  - glaes buckler
+  - pugilist's armguard
+  - steel knuckles
+  - elbow spikes
+  - knee spikes
+  - battle shortbow
+  - steel footwraps
+
+buff_nonspells:
+  khri:
+  - Hasten
+  - Strike
+  - Terrify
+  - Avoidance
+  - Elusion
+  - Prowess
+  - Fright

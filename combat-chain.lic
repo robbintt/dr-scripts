@@ -10,6 +10,15 @@ custom_require.call(%w[drinfomon common combat_methods util_methods])
 include Combat  # from combat_methods
 include UtilMethods # from util_methods
 
+waitrt?
+pause
+put "wield my scimitar"
+
+## TODO: use buff script
+
+# this never gets unpaused since this script is killed
+pause_script('percmoons')
+
 used_tarantula = 0 # track whether tarantula has been used in this iteration
 loop {
 
@@ -50,10 +59,10 @@ loop {
   end
 
   if DRSkill.getxp('Targeted Magic') < 33
-    target
+    target_pd
   end
   if DRSkill.getxp('Targeted Magic') < 33
-    target
+    target_pd
     cleanup
   end
 
@@ -107,3 +116,6 @@ loop {
   #  recall_critter(other_critter)
   #end
 }
+
+# this never gets unpaused since this script is killed
+unpause_script('percmoons')

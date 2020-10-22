@@ -87,6 +87,10 @@ module Combat
 
   def cleanup
 
+    # function to look and set variables: coin, gem, box, scroll
+    # need to "look junk" and "look"
+    # any helper functions for this in common? check combat-training?
+    # at each step if these are set, then grab them
     pause
     waitrt?
     put "arrange"
@@ -97,6 +101,9 @@ module Combat
     pause
     waitrt?
     put "loot goods"
+    pause
+    waitrt?
+    put "stow coin"
     pause
     waitrt?
     put "stow gem"
@@ -113,6 +120,9 @@ module Combat
     pause
     waitrt?
     put "loot goods"
+    pause
+    waitrt?
+    put "stow coin"
     pause
     waitrt?
     put "stow gem"
@@ -276,7 +286,7 @@ module Combat
     put "analyze"
   end
 
-  def target
+  def target_pd
     pause
     waitrt?
     fput "target pd 16", "attunement", "already"

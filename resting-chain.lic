@@ -9,8 +9,7 @@ custom_require.call(%w[common])
 include DRC  # wait_for_script_to_complete
 
 def power
-  # paused to run ;percmoons at all times
-  # now we pause percmoons during this script
+  # pause ;percmoons if using this
   pause
   waitrt?
   put "perc moons"
@@ -19,6 +18,7 @@ def power
   put "perc mana"
 end
 
+# this never gets unpaused since this script is killed
 pause_script('percmoons')
 loop {
 
@@ -30,6 +30,11 @@ loop {
   put "app my pouch careful"
   waitrt?
   pause
+
+  if DRSkill.getxp('Appraisal') < 25
+    power
+    wait_for_script_to_complete('study-art')
+  end
 
   power
   wait_for_script_to_complete('burgle',['start'])
@@ -58,12 +63,18 @@ loop {
   #  wait_for_script_to_complete('climb', [6])
   #end
 
-  if DRSkill.getxp('Enchanting') < 14
-    power
-    wait_for_script_to_complete('go2', ['19162'] ) # crossing urn
-    wait_for_script_to_complete('buff',['enchanting'])
-    wait_for_script_to_complete('workorders', ['artificing'] )
-  end
+  # grind more enchanting for possible maker's mark alteration at HE 2020
+  wait_for_script_to_complete('go2', ['19162'] ) # crossing urn
+  wait_for_script_to_complete('buff',['enchanting'])
+  wait_for_script_to_complete('workorders', ['artificing'] )
+  wait_for_script_to_complete('buff',['enchanting'])
+  wait_for_script_to_complete('workorders', ['artificing'] )
+  #if DRSkill.getxp('Enchanting') < 14
+  #  power
+  #  wait_for_script_to_complete('go2', ['19162'] ) # crossing urn
+  #  wait_for_script_to_complete('buff',['enchanting'])
+  #  wait_for_script_to_complete('workorders', ['artificing'] )
+  #end
 
   if DRSkill.getxp('Outdoorsmanship') < 30
     power
@@ -77,4 +88,6 @@ loop {
     wait_for_script_to_complete('study', [11])
   end
 }
+
+# this never gets unpaused since this script is killed
 unpause_script('percmoons')
