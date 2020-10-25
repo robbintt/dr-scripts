@@ -64,17 +64,24 @@ loop {
   #end
 
   # grind more enchanting for possible maker's mark alteration at HE 2020
-  wait_for_script_to_complete('go2', ['19162'] ) # crossing urn
-  wait_for_script_to_complete('buff',['enchanting'])
-  wait_for_script_to_complete('workorders', ['artificing'] )
-  wait_for_script_to_complete('buff',['enchanting'])
-  wait_for_script_to_complete('workorders', ['artificing'] )
-  #if DRSkill.getxp('Enchanting') < 14
-  #  power
-  #  wait_for_script_to_complete('go2', ['19162'] ) # crossing urn
-  #  wait_for_script_to_complete('buff',['enchanting'])
-  #  wait_for_script_to_complete('workorders', ['artificing'] )
-  #end
+  #wait_for_script_to_complete('go2', ['19162'] ) # crossing urn
+  #wait_for_script_to_complete('buff',['enchanting'])
+  #wait_for_script_to_complete('workorders', ['artificing'] )
+  #wait_for_script_to_complete('buff',['enchanting'])
+  #wait_for_script_to_complete('workorders', ['artificing'] )
+  if DRSkill.getxp('Enchanting') < 14
+    power
+    wait_for_script_to_complete('go2', ['19162'] ) # crossing urn
+    wait_for_script_to_complete('buff',['enchanting'])
+    wait_for_script_to_complete('workorders', ['artificing'] )
+
+    # replace with @settings.enchanting_tools
+    wait_for_script_to_complete('repair-tool',['imbuement rod'])
+    wait_for_script_to_complete('repair-tool',['precise burin'])
+    wait_for_script_to_complete('repair-tool',['small brazier'])
+    wait_for_script_to_complete('repair-tool',['augmenting loop'])
+
+  end
 
   if DRSkill.getxp('Outdoorsmanship') < 30
     power

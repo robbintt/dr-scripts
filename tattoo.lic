@@ -14,7 +14,7 @@ class TattooTrainer
   attr_accessor :justicearea
   def initialize
     @camb = "cambrinth prism"
-    @camb_charge = 8
+    @camb_charge = 11
 
     @justice_string = "After assessing the area, you think local law enforcement keeps an eye on what's going on here."
     @justicearea = ""
@@ -33,7 +33,6 @@ class TattooTrainer
 
     args = parse_args(arg_definitions)
 
-    current_exp = 0
     exp_max = 30
 
     # default to exp_max if arg not provided
@@ -88,6 +87,6 @@ end
 tattootrainer = TattooTrainer.new
 
 # there was an abstraction for going over all the named skills in hunting-buddy
-while !justicearea? and (DRSkill.getxp('Warding') < tattootrainer.skill_targets['Warding'] and DRSkill.getxp('Sorcery') < tattootrainer.skill_targets['Sorcery'])
+while !justicearea? and (DRSkill.getxp('Warding') < tattootrainer.skill_targets['Warding'] or DRSkill.getxp('Sorcery') < tattootrainer.skill_targets['Sorcery'])
   tattootrainer.cast
 end

@@ -16,7 +16,6 @@ class MagicTrainer
 
     args = parse_args(arg_definitions)
 
-    current_exp = 0
     exp_max = 30
 
     # default to exp_max if arg not provided
