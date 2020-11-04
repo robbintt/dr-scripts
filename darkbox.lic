@@ -1,0 +1,80 @@
+
+require 'time'
+
+custom_require.call(%w[drinfomon common util_methods])
+include UtilMethods # from util_methods
+
+
+class PlayDarkbox
+  include DRC
+
+  def take_herbs_heal_hands
+    potion_interval = 300
+    if not UserVars.yelith_tonic_timer or UserVars.yelith_tonic_timer + potion_interval < Time.now.to_i
+      UserVars.yelith_tonic_timer = Time.now.to_i
+      bput("drink yelith tonic", "You take a drink")
+    end
+
+    if not UserVars.belradi_elixir_timer or UserVars.belradi_elixir_timer + potion_interval < Time.now.to_i
+      UserVars.belradi_elixir_timer = Time.now.to_i
+      bput("drink belradi elixir", "You take a drink")
+    end
+  end
+
+  def filter_darkbox_items_and_stow
+    junk = ["sharkskin",
+            "tooth",
+            "kelp",
+            "root",
+            "flower",
+            "hat",
+            "belt",
+            "shirt",
+            "pants",
+            "rockweed"
+    ]
+
+    # put junk in bucket
+    inv_held = fput("inv held")
+
+    junk.each do |j|
+      # can have up to 2 of an item type
+      2.times do
+        if inv_held.include?(j)
+          fput("put #{j} in bucket")
+        end
+      end
+    end
+    stowheld
+  end
+
+  def play_darkbox
+    waitrt?
+    result = fput("play darkbox")
+
+    case result
+    when "You can't play the Darkbox with both hands full."
+      filter_darkbox_items_and_stow
+
+    when "Unfortunately, your wounds make it impossible for you to play the Darkbox."
+      take_herbs_heal_hands
+      echo("Waiting 30 seconds for hands to heal more...")
+      pause 30
+
+    when "Your injury increases the difficulty of the game, but you press on."
+      take_herbs_heal_hands
+      echo("Pausing 30 seconds for the herbs to catch up...")
+      pause 30
+
+    else
+      filter_darkbox_items_and_stow
+    end
+  end
+end
+
+play = PlayDarkbox.new
+
+loop {
+  play.play_darkbox
+}
+
