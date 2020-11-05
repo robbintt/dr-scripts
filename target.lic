@@ -2,7 +2,7 @@ custom_require.call(%w[common combat_methods])
 include Combat
 
 loop {
-  target
+  target_pd
   cleanup
   advance
 }

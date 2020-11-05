@@ -119,3 +119,7 @@ if variable[0] == 'xempath'
   wait_for_script_to_complete('go2', ['5713'])
 end
 
+if variable[0] == 'skirr'
+  wait_for_script_to_complete('go2', ['937'])
+end
+

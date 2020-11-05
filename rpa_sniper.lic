@@ -74,7 +74,7 @@ class RPASniper
       return
     end
 
-    if not UserVars.RPASpent or UserVars.RPASpent < Date.today.to_s       
+    if not UserVars.RPASpent or UserVars.RPASpent < Date.today.to_s
       # TODO: can i add a check for rested exp or something?
       # because this doesn't work if i login after midnight
       UserVars.RPASpent = Date.today.to_s

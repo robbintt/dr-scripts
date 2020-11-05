@@ -30,7 +30,7 @@ class CambWatcher
     @sleep_between_checks = 180
 
     # track state of each cambrinth
-    @worn_cambrinth = {'prism' => {'capacity' => 108, 'focused' => false, 'lines' => 0}, 'spiderling' => {'capacity' => 100, 'focused' => false, 'lines' => 0}}
+    @worn_cambrinth = {'dreamweave odaj' => {'capacity' => 100, 'focused' => false, 'lines' => 0}, 'prism' => {'capacity' => 108, 'focused' => false, 'lines' => 0}}
     # there is no code to support this variable yet
     @held_cambrinth = {}
 

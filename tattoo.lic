@@ -13,7 +13,7 @@ class TattooTrainer
   #include DRCT
   attr_accessor :justicearea
   def initialize
-    @camb = "cambrinth prism"
+    @camb = "dreamweave odaj"
     @camb_charge = 11
 
     @justice_string = "After assessing the area, you think local law enforcement keeps an eye on what's going on here."

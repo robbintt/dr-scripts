@@ -4,6 +4,9 @@ hometown: Crossing
 safe_room: 19162
 
 enchanting_room: 19162
+# list of items to only grab from crafting_container, aka - oil for forging
+crafting_items_in_container:
+- oil
 enchanting_tools:
 - imbuement rod
 - precise burin
@@ -11,12 +14,13 @@ enchanting_tools:
 - augmenting loop
 workorders_repair: false
 workorder_diff: hard
+mark_crafted_goods: true
 # grinding workorders for prestige
 craft_max_mindstate: 35
 crafting_container: cerulean sack
 
-cambrinth: cambrinth prism
-cambrinth_cap: 108
+cambrinth: dreamweave odaj
+cambrinth_cap: 100
 divination_tool:
   name: sapphire prism
   container: grey odaj
