@@ -100,7 +100,7 @@ gear:
   :is_leather: false
   :hinders_lockpicking: false
   :is_worn: false
-- :adjective: battle
+- :adjective: nisha
   :name: shortbow
   :is_leather: true
   :hinders_lockpicking: false
@@ -116,8 +116,8 @@ gear:
   :hinders_lockpicking: false
   :is_worn: false
   :swappable: true
-- :adjective: tei'oloh
-  :name: crossbow
+- :adjective:
+  :name: pelletbow
   :is_leather: true
   :hinders_lockpicking: false
   :is_worn: false
@@ -151,14 +151,14 @@ gear_sets:
   - steel knuckles
   - elbow spikes
   - knee spikes
-  - battle shortbow
+  - nisha shortbow
   - steel footwraps
 
   stealing:
   - parry stick
   - elbow spikes
   - knee spikes
-  - battle shortbow
+  - nisha shortbow
   - steel footwraps
 
   pvp:
@@ -170,7 +170,7 @@ gear_sets:
   - steel knuckles
   - elbow spikes
   - knee spikes
-  - battle shortbow
+  - nisha shortbow
   - steel footwraps
 
   naked: []
@@ -255,11 +255,11 @@ weapon_training:
   Small Edged: slender blade
   Small Blunt: throwing club
   Light Thrown: throwing club
-  Bow: battle shortbow
+  Bow: nisha shortbow
   Offhand Weapon: throwing club
   Large Edged: orange sword
   Twohanded Edged: orange sword
-  Crossbow: tei'oloh crossbow
+  Crossbow: pelletbow
   Slings: shadowy-black sling
   Large Blunt: haralun katavdar
   Heavy Thrown: haralun katavdar

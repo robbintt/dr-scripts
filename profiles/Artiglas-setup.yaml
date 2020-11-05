@@ -24,9 +24,13 @@ sell_loot_skip_exchange: false
 sell_loot_skip_pouch_close: false
 #sale_pouches_container: haversack
 
+# TESTING: supposed to help pick up ammo
 loot_additions:
   - quartzite stone shard
   - quartzite stone shards
+# TESTING: supposed to help pick up ammo
+buff_nonspells:
+    stow feet: 20
 
 # defines a spell to train sorcery if Sorcery is on your crossing-training list
 crossing_training_sorcery:
@@ -134,6 +138,7 @@ hunting_info:
   #- reavers
   #- beisswurms
   - rock_trolls
+  #- endrus_serpents
   #- fire_sprites
   :duration: 40
   stop_on:
@@ -376,8 +381,8 @@ lockpick_type: stout  #use 'stout iron' if in Shard
 harvest_traps: false
 #live box source
 picking_box_source: backpack
+#picking_box_source: haversack
 # Keep this empty to drop too-hard boxes on the ground
-picking_box_storage: haversack
 #pet box source
 picking_pet_box_source: haversack
 #number of boxes to make with ;pick pets
