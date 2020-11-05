@@ -1,0 +1,22 @@
+class Search
+  def initialize
+    arg_definitions = [
+      [
+        { name: 'target', regex: /^[A-z\s\-]+$/i, variable: true, description: 'Object to search' }
+      ]
+    ]
+    args = parse_args(arg_definitions)
+    @target = args.target
+
+    examine_object
+  end
+
+  def examine_object
+    fput("look in #{@target}")
+    fput("look on #{@target}")
+    fput("look under #{@target}")
+    fput("look behind #{@target}")
+  end
+end
+
+Search.new
