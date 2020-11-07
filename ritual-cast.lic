@@ -1,0 +1,110 @@
+custom_require.call(%w[common])
+include DRC
+
+ritual_focus = "loimic spiral"
+ritual_focus_worn = "true"
+# use if you don't/can't wear your ritual focus
+#focus_container = "backpack"
+
+# each spell has special cases handled below, except dc
+prep_sizes = {"rtr" => "630", "dc" => "590", "iots" => "640"}
+
+# allowlist of spells
+if ["iots", "rtr", "dc"].include?(variable[0])
+  $spell = variable[0]
+  $mana = prep_sizes[$spell]
+  echo("Casting #{$spell} at #{$mana}.")
+  pause
+else
+  echo("ERROR: That spell is not castable. Must be in: ['iots', 'rtr', 'dc']")
+  exit
+end
+
+def prepare_spell(spell, mana)
+  if spell == "iots"
+    fput("release iots")
+  end
+  if spell == "rtr"
+    fput("kneel")
+  end
+  fput("prep #{spell} #{mana}")
+end
+
+
+def find_planet(planet)
+  planet_presence = bput("observe #{planet}", "The planet", "Your search for the planet #{planet} turns up fruitless.", "The planet #{planet} is too faint for you to pick out with your naked eye.")
+  if planet_presence == "Your search for the planet #{planet} turns up fruitless."
+    echo("Planet DOWN: #{planet}")
+    return false
+  elsif planet_presence == "The planet #{planet} is too faint for you to pick out with your naked eye." or planet_presence == "The planet"
+    echo("Planet UP: #{planet}")
+    return true
+  else
+    echo("ERROR: Cannot determine if the planet is up, probably match related.")
+    echo("DEBUG: #{planet_presence}")
+  end
+end
+
+
+def cast_with_focus(ritual_focus, ritual_focus_worn)
+
+  if ritual_focus_worn == "true"
+    remove_focus = bput("remove #{ritual_focus}", "You take off", "Remove what?")
+    if remove_focus == "Remove what?"
+      echo("ERROR: You aren't wearing the #{ritual_focus}. Exiting.")
+      exit
+    end
+  else
+    get_focus = bput("get my #{ritual_focus}", "You get", "What were you referring to?")
+    if get_focus == "What were you referring to?"
+      echo("ERROR: You don't have the #{ritual_focus}. Exiting.")
+      exit
+    end
+  end
+
+  wisdom_planets = ["Durgaulda", "Yoakena", "Ismenia", "Er'qutra"]
+
+
+  prepare_spell($spell, $mana)
+
+  fput("invoke my #{ritual_focus}")
+
+  if $spell == "iots"
+    planet = false
+    wisdom_planets.each do |p|
+      if find_planet(p)
+        planet = p
+        break
+      end
+    end
+    if !planet
+      echo("ERROR: No wisdom planet available. Exiting.")
+      exit
+    end
+  end
+
+
+  waitfor("fully prepared")
+  pause 5 # get a little extra oomph
+  if $spell == "iots"
+    cast_result = fput("cast #{planet}")
+    waitrt?
+    fput("invoke circle")
+  else
+    cast_result = fput("cast")
+  end
+
+  #if cast_result == "You don't have a spell prepared!"
+  #   TODO: handle this
+  #  echo("ERROR: You lost your spell -- start over.")
+  #end
+
+  if ritual_focus_worn == "true"
+    fput("wear my #{ritual_focus}")
+  else
+    fput("put my #{ritual_focus} in my #{focus_container}")
+  end
+
+end
+
+cast_with_focus(ritual_focus, ritual_focus_worn)

@@ -1,0 +1,20 @@
+
+waitrt?
+pause
+put "esp listen general"
+waitrt?
+pause
+put "esp listen trade"
+waitrt?
+pause
+put "esp listen personal"
+waitrt?
+pause
+put "esp listen guild"
+waitrt?
+pause
+put "esp listen race"
+waitrt?
+pause
+put "esp listen local"
+
