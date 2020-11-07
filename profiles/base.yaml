@@ -590,6 +590,8 @@ alcohol_container:
 water_container:
 # container used to hold herbs for remedy.lic (optional)
 herb_container:
+# override craft.lic training items
+craft_overrides:
 
 # Workorder settings
 # https://elanthipedia.play.net/Lich_script_repository#workorders
@@ -787,7 +789,11 @@ use_lockpick_ring: true
 skip_lockpick_ring_refill: false
 lockpick_container: lockpick ring
 lockpick_type: ordinary
+# If you harvest traps when disarming boxes
+# and you set the component_container property
+# then you might also want to set sell_loot_traps: true
 harvest_traps: true
+# When harvesting traps from boxes, this is where you store the traps.
 component_container:
 picking_box_source: duffel bag
 # Keep this empty to drop too-hard boxes on the ground
@@ -812,6 +818,9 @@ bankbot_enabled: false
 sell_loot: true
 sell_loot_pouch: true
 sell_loot_bundle: true
+# For thieves to sell their component pouch of harvested traps.
+# If set to true, you likely also want to set harvest_traps and component_container.
+sell_loot_traps: false
 sell_loot_money_on_hand: 3 silver
 sell_loot_skip_bank: false
 sell_loot_skip_exchange: false
@@ -1326,6 +1335,7 @@ theurgy_bead_carving_tool:
 theurgy_use_prayer_mat: false
 theurgy_prayer_mat_room:
 pray_to_chadatru: false
+holy_weapon:
 
 # https://elanthipedia.play.net/Lich_script_repository#fill-dirt
 dirt_stacker:
@@ -1527,3 +1537,8 @@ use_tessera_during_crossing_training: false
 # then the script will move to your `safe_room`.
 # Example: 992 # Crossing, [Northeast Wilds, Outside Northeast Gate]
 feed_cloak_room: 
+
+#Flying mount setting
+#Currently only used by bescort for the Faldesu and Segoltha.
+#Example: flying_mount: silk carpet
+flying_mount: 
