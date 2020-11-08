@@ -1,0 +1,37 @@
+require 'json'
+
+filename = "qiran-inquisition.json"
+names_asked = nil
+
+if File.file?(filename)
+  echo("Using existing names asked file...")
+  File.open(filename,"r") do |f|
+    names_asked = JSON.load f
+  end
+  echo("Current list: #{names_asked}")
+else
+  echo("Creating new names asked file...")
+  names_asked = []
+    File.open(filename,"w") do |f|
+      f.puts(names_asked.to_json)
+    end
+end
+
+loop {
+  arrived_string = waitfor("just arrived")
+  matched_name = arrived_string.match(/(\w+)\sjust arrived\./)[1]
+
+  if !names_asked.include?(matched_name)
+
+    names_asked.push(matched_name)
+
+    File.open(filename,"w") do |f|
+      f.puts(names_asked.to_json)
+    end
+
+    put("whisper #{matched_name} Hello! Did you see an almanac here earlier today? One was lost.")
+    put("ooc #{matched_name} This ask is on a timer so you should not get it again today.")
+  end
+
+  echo("Current list: #{names_asked}")
+}
