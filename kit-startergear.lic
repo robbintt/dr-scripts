@@ -7,6 +7,7 @@ custom_require.call(%w[common common-travel drinfomon util_methods])
 class BuyStarterGear
   include DRC
   include DRCT
+  include UtilMethods
 
   def initialize
     arg_definitions = [
@@ -109,7 +110,7 @@ class BuyStarterGear
     buy_fast("rugged leathers")
     waitrt?
     pause
-    fput("wear my rugged leathers", "You work your way")
+    fput("wear my rugged leathers", "You work your way", "You are already wearing that.")
     waitrt?
     pause
     buy_fast("scale aventail")
