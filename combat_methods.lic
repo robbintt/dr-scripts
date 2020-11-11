@@ -308,7 +308,7 @@ module Combat
     fput "cast", "You"
   end
 
-  def kill
+  def kill_pd
     pause
     waitrt?
     fput "target pd 16", "attunement", "already"
@@ -348,6 +348,7 @@ module Combat
     elbow
 
     if result == "There is nothing else to face!"
+      put("release spell")
       return
     end
 

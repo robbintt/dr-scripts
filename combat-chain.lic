@@ -24,34 +24,27 @@ loop {
 
   #critter = "gryphon"
   #critter = "basilisk"
-  critter = "gremlin"
+  #critter = "gremlin"
+  critter = "beast"
   other_critter = "other #{critter}"
 
   if used_tarantula == 0
     used_tarantula = use_tarantula_if_full("Light Armor")
   end
 
-  circle # get some balance
+  circle # get some balance & tactics
 
   # currently use debil to hit elbows and backtrain... for how long?
   if DRSkill.getxp('Debilitation') < 33 or DRSkill.getxp('Brawling') < 33
     debil
   end
-  # we brawl plenty at the moment
-  #if DRSkill.getxp('Brawling') < 33
-  #  circle
-  #  elbow
-  #  elbow
-  #  elbow
-  #  cleanup
-  #end
 
   # currently use debil to hit elbows and backtrain... for how long?
   if DRSkill.getxp('Debilitation') < 33 or DRSkill.getxp('Brawling') < 33
     debil
   end
   if DRSkill.getxp('Brawling') < 33
-    circle
+    circle # get some balance & tactics
     elbow
     elbow
     elbow
@@ -59,31 +52,36 @@ loop {
   end
 
   if DRSkill.getxp('Targeted Magic') < 33
-    target_pd
-  end
-  if DRSkill.getxp('Targeted Magic') < 33
-    target_pd
+    debil
+    circle # get some balance & tactics
+    kill_pd
+    kill_pd
+    kill_pd
+    cleanup
+    kill_pd
+    kill_pd
+    kill_pd
     cleanup
   end
 
-  if DRSkill.getxp('Stealth') < 33
-    ambush_feint
-    ambush_feint
-    cleanup
-  end
+  #if DRSkill.getxp('Stealth') < 33
+  #  ambush_feint
+  #  ambush_feint
+  #  cleanup
+  #end
 
-  if DRSkill.getxp('Stealth') < 33
-    ambush_feint
-    ambush_feint
-    cleanup
-  end
+  #if DRSkill.getxp('Stealth') < 33
+  #  ambush_feint
+  #  ambush_feint
+  #  cleanup
+  #end
 
-  if DRSkill.getxp('Small Edged') < 33
-    feint
-    feint
-    feint
-    cleanup
-  end
+  #if DRSkill.getxp('Small Edged') < 33
+  #  feint
+  #  feint
+  #  feint
+  #  cleanup
+  #end
 
   if DRSkill.getxp('Arcana') < 33
     gazecrystal
@@ -108,13 +106,12 @@ loop {
     app_critter(other_critter)
   end
 
-
-  #if DRSkill.getxp('Scholarship') < 33
-  #  recall_critter(critter)
-  #end
-  #if DRSkill.getxp('Scholarship') < 33
-  #  recall_critter(other_critter)
-  #end
+  if DRSkill.getxp('Scholarship') < 33
+    recall_critter(critter)
+  end
+  if DRSkill.getxp('Scholarship') < 33
+    recall_critter(other_critter)
+  end
 }
 
 # this never gets unpaused since this script is killed
