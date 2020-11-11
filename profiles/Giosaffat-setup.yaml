@@ -3,6 +3,59 @@
 hometown: Crossing
 safe_room: 19162
 
+tarantula_noun: biomechanical tarantula
+tarantula_debug: false  #This is only necessary if you want it true.  Script defaults to false.
+
+cambrinth_invoke_exact_amount: true
+
+tarantula:
+  Armor:
+    combat:
+    - Light Armor
+  Weapon:
+    combat:
+    - Melee Mastery
+    - Missile Mastery
+  Magic:
+    combat:
+    - Arcana
+    - Lunar Magic
+    non_combat:
+    - Arcana
+    - Lunar Magic
+  Survival:
+    combat:
+    - Evasion
+    - Skinning
+    non_combat:
+    - Outdoorsmanship
+    - Thievery
+  Lore:
+    combat:
+    - Tactics
+    non_combat:
+    - Performance
+    - Scholarship
+
+tarantula_excluded_skills:
+  - Forging
+  - Outfitting
+  - Alchemy
+  - Enchanting
+  - Engineering
+  - Chain Armor
+  - Plate Armor
+  - Brigandine
+  - Shield Usage
+  - Parry
+  - Small Edged
+  - Brawling
+  - First Aid
+  - Locksmithing
+  - Targeted Magic
+  - Debilitation
+  - Perception
+
 enchanting_room: 19162
 # list of items to only grab from crafting_container, aka - oil for forging
 crafting_items_in_container:
@@ -37,10 +90,10 @@ use_lockpick_ring: true
 lockpick_container: lockpick ring
 skip_lockpick_ring_refill: true
 balance_lockpick_container: true
-picking_box_source: "scavenger's belt"
 picking_box_storage: "old backpack"
+picking_box_source: "scavenger's belt"
 #picking_box_source: "old backpack"
-#picking_box_storage: "old backpack"
+#picking_box_source: "haversack"
 
 train_with_burgle: true
 burgle_settings:
@@ -88,6 +141,50 @@ waggle_sets:
       cambrinth:
       - 38
       - 38
+  pick:
+    Mechanic's Touch:
+      abbrev: mt
+      recast: 10
+      mana: 20
+      cambrinth:
+      - 36
+      - 36
+  prehunt_buffs:
+    Seer's Sense:
+      abbrev: seer
+      recast: 1000
+      mana: 30
+      cambrinth:
+      - 30
+      - 30
+      before:
+      - message: release seer
+        matches:
+        - Release what
+        - You feel the energy
+    Minor Physical Protection:
+      prep: invoke
+      abbrev: my tattoo
+      recast: 28
+      cambrinth:
+      - 35
+      - 35
+      - 35
+    #Invocation of the Spheres:
+    #  abbrev: iots
+    #  mana: 700
+    #  recast: 1000
+    #  ritual: true
+    #  focus: loimic spiral
+    #  worn_focus: true
+    #  before:
+    #  - message: release iots
+    #    matches:
+    #    - Release what
+    #    - You feel the energy
+    #  stats:
+    #  - Intelligence
+    #  - Agility
 
 gear:
 - :name: leathers
