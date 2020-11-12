@@ -10,13 +10,14 @@ class PlayDarkbox
 
   def take_herbs_heal_hands
     potion_interval = 300
-    if not UserVars.yelith_tonic_timer or UserVars.yelith_tonic_timer + potion_interval < Time.now.to_i
-      UserVars.yelith_tonic_timer = Time.now.to_i
+    time_now = Time.now.to_i
+    if not UserVars.yelith_tonic_timer or UserVars.yelith_tonic_timer + potion_interval < time_now
+      UserVars.yelith_tonic_timer = time_now
       bput("drink yelith tonic", "You take a drink")
     end
 
-    if not UserVars.belradi_elixir_timer or UserVars.belradi_elixir_timer + potion_interval < Time.now.to_i
-      UserVars.belradi_elixir_timer = Time.now.to_i
+    if not UserVars.belradi_elixir_timer or UserVars.belradi_elixir_timer + potion_interval < time_now
+      UserVars.belradi_elixir_timer = time_now
       bput("drink belradi elixir", "You take a drink")
     end
   end
@@ -26,6 +27,7 @@ class PlayDarkbox
             "tooth",
             "kelp",
             "root",
+            "stew",
             "flower",
             "hat",
             "belt",
@@ -35,6 +37,7 @@ class PlayDarkbox
     ]
 
     # put junk in bucket
+    waitrt? # issue with inv held updating too slowly after darkbox pull
     inv_held = fput("inv held")
 
     junk.each do |j|
