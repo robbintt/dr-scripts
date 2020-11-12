@@ -101,6 +101,7 @@ def cast_with_focus(ritual_focus, ritual_focus_worn)
 
   if ritual_focus_worn == "true"
     fput("wear my #{ritual_focus}")
+    fput("sort auto head")
   else
     fput("put my #{ritual_focus} in my #{focus_container}")
   end
