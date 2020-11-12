@@ -5,8 +5,9 @@
     -
 =end
 
-custom_require.call(%w[common])
+custom_require.call(%w[common common-travel])
 include DRC  # wait_for_script_to_complete
+include DRCT # walk_to
 
 def power
   # pause ;percmoons if using this
@@ -18,6 +19,61 @@ def power
   put "perc mana"
 end
 
+def hunt_trainer(society)
+  if ['enchanting', 'forging', 'outfitting', 'alchemy'].include?(society)
+    waitrt?
+    wait_for_script_to_complete('go2', [society] ) # crossing urn
+    pause
+    waitrt?
+    put('hunt')
+    pause
+    waitrt?
+    put('hunt 1')
+  end
+end
+
+# from training-manager
+def check_favors
+  include DRC
+  @settings = get_settings
+  return unless @settings.favor_goal
+  /(\d+)/ =~ bput('favor', 'You currently have \d+', 'You are not currently')
+  favor_count = Regexp.last_match(1).to_i
+  return if favor_count >= @settings.favor_goal
+
+  if /could not/ =~ bput("tap my #{@settings.favor_god} orb", 'The orb is delicate', 'I could not find')
+    run_favors
+    fput('stow my orb')
+  elsif rub_orb?
+    walk_to(@hometown['favor_altar']['id'])
+    fput("get my #{@settings.favor_god} orb")
+    fput('put my orb on altar')
+    if favor_count + 1 < @settings.favor_goal
+      run_favors
+      fput('stow my orb')
+    end
+  end
+end
+def rub_orb?
+  case bput("rub my #{@settings.favor_god} orb", 'not yet fully prepared', 'lacking in the type of sacrifice the orb requires', 'your sacrifice is properly prepared')
+  when 'not yet fully prepared'
+    false
+  when 'lacking in the type of sacrifice the orb requires'
+    false
+  when 'your sacrifice is properly prepared'
+    true
+  end
+end
+def run_favors
+  if @use_favor_altars
+    wait_for_script_to_complete('favor', [@settings.favor_god])
+  else
+    wait_for_script_to_complete('favor')
+  end
+end
+
+studied_art = 0
+
 # this never gets unpaused since this script is killed
 pause_script('percmoons')
 loop {
@@ -27,14 +83,19 @@ loop {
   # standin for appraisal
   pause
   waitrt?
-  put "app my pouch careful"
+  put "app my red pouch careful"
   waitrt?
   pause
 
-  if DRSkill.getxp('Appraisal') < 25
-    power
-    wait_for_script_to_complete('study-art')
-  end
+  hunt_trainer('enchanting')
+
+  check_favors
+
+  #if DRSkill.getxp('Appraisal') < 25 and studied_art == 0
+  #  power
+  #  studied_art = 1 # do this once only for now
+  #  wait_for_script_to_complete('study-art')
+  #end
 
   power
   wait_for_script_to_complete('burgle',['start'])
@@ -63,12 +124,8 @@ loop {
   #  wait_for_script_to_complete('climb', [6])
   #end
 
-  # grind more enchanting for possible maker's mark alteration at HE 2020
-  #wait_for_script_to_complete('go2', ['19162'] ) # crossing urn
-  #wait_for_script_to_complete('buff',['enchanting'])
-  #wait_for_script_to_complete('workorders', ['artificing'] )
-  #wait_for_script_to_complete('buff',['enchanting'])
-  #wait_for_script_to_complete('workorders', ['artificing'] )
+  hunt_trainer('enchanting')
+
   if DRSkill.getxp('Enchanting') < 14
     power
     wait_for_script_to_complete('go2', ['19162'] ) # crossing urn
@@ -80,13 +137,14 @@ loop {
     wait_for_script_to_complete('repair-tool',['precise burin'])
     wait_for_script_to_complete('repair-tool',['small brazier'])
     wait_for_script_to_complete('repair-tool',['augmenting loop'])
-
   end
+
+  hunt_trainer('enchanting')
 
   if DRSkill.getxp('Outdoorsmanship') < 30
     power
     wait_for_script_to_complete('go2', ['19162'] ) # crossing urn
-    wait_for_script_to_complete('rocks', [6])
+    wait_for_script_to_complete('rocks', [10])
   end
 
   if DRSkill.getxp('First Aid') < 30
