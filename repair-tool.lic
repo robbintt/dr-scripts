@@ -69,11 +69,10 @@ class RepairTool
   def repair_item
     waitrt?
     pause
-    bput "get my #{@tool} from my #{@bag}", "You get", "What were you referring to?"
-    pause
+    bput("get my #{@tool} from my #{@bag}", "You get", "What were you referring to?")
 
     brush_resp = bput "get my #{@brush} from my #{@bag}", "You get", "What were you referring to?"
-    if brush_resp.include?("What were you referring to")  # TODO: why does this lose the question mark
+    if brush_resp.include?("What were you referring to")
       replenish_repair_tools(@brush_part_name)
     end
 
@@ -93,7 +92,7 @@ class RepairTool
       replenish_repair_tools(@oil_part_name)
     end
 
-    fput "pour my #{@oil} on my #{@tool}", "You pour"
+    bput("pour my #{@oil} on my #{@tool}", "You pour", "You cannot figure out how to do that.")
     pause
     waitrt?
     fput "put my #{@oil} in my #{@bag}", "You put", "What were you referring to?"
