@@ -1,5 +1,13 @@
-custom_require.call(%w[common combat_methods])
+custom_require.call(%w[common combat_methods util_methods])
+
 include Combat
+include UtilMethods
+
+stowheld
+
+bput("get my Katamba globe", "You get", "What")
+
+bput("invoke my Katamba globe", "You raise the globe up, and a cold white glow surrounds it.")
 
 loop {
   target_pd
