@@ -152,7 +152,7 @@ waggle_sets:
   prehunt_buffs:
     Seer's Sense:
       abbrev: seer
-      recast: 1000
+      recast: 30
       mana: 30
       cambrinth:
       - 30
@@ -165,26 +165,26 @@ waggle_sets:
     Minor Physical Protection:
       prep: invoke
       abbrev: my tattoo
-      recast: 28
+      recast: 30
       cambrinth:
       - 35
       - 35
-      - 35
-    #Invocation of the Spheres:
-    #  abbrev: iots
-    #  mana: 700
-    #  recast: 1000
-    #  ritual: true
-    #  focus: loimic spiral
-    #  worn_focus: true
-    #  before:
-    #  - message: release iots
-    #    matches:
-    #    - Release what
-    #    - You feel the energy
-    #  stats:
-    #  - Intelligence
-    #  - Agility
+      - 30
+    Invocation of the Spheres:
+      abbrev: iots
+      mana: 630
+      recast: 1000
+      ritual: true
+      focus: loimic spiral
+      worn_focus: true
+      before:
+      - message: release iots
+        matches:
+        - Release what
+        - You feel the energy
+      stats:
+      #- Intelligence
+      - Agility
 
 gear:
 - :name: leathers
