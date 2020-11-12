@@ -1,0 +1,3 @@
+waitrt?
+fput("get my #{variable[1]} from my #{variable[2]}")
+fput("put my #{variable[1]} in my #{variable[3]}")
