@@ -17,7 +17,7 @@ class Examine
     fput("recall #{@target}")
     fput("study #{@target}")
     fput("analyze #{@target}")
-    fput("focus #{@target}")
+    bput("focus #{@target}", "You focus")
     fput("appraise #{@target}")
   end
 end
