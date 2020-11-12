@@ -119,8 +119,10 @@ skinning:
 
 # list of skills that will trigger a hunt loop if they go below the lower_limit. THIS MEANS ONLY COMBAT SKILLS SHOULD BE ON HERE
 training_manager_priority_skills:
-- Debilitation
+#- Targeted Magic
+#- Debilitation
 - Shield Usage
+- Brawling
 #- Large Blunt
 hunting_info:
   #can find zones with notes in base-hunting.yaml in the data file
@@ -137,8 +139,8 @@ hunting_info:
   #- grass_eels
   #- reavers
   #- beisswurms
-  - rock_trolls
-  #- endrus_serpents
+  #- rock_trolls
+  - endrus_serpents
   #- fire_sprites
   :duration: 40
   stop_on:
@@ -146,8 +148,9 @@ hunting_info:
   - Parry Ability
   - Missile Mastery
   - Melee Mastery
+  - Brawling
   # basically: don't stop if you have this in here...
-  - Large Blunt
+  - Targeted Magic
 
 # Gear settings
 gear:
@@ -460,3 +463,50 @@ theurgy_use_prayer_mat: false
 theurgy_prayer_mat_room:
 pray_to_chadatru: false
 
+tarantula_noun: harvester spider
+tarantula_debug: false  #This is only necessary if you want it true.  Script defaults to false.
+
+tarantula:
+  Armor:
+    combat:
+    - Defending
+    - Light Armor
+  Weapon:
+    combat:
+    - Melee Mastery
+    - Missile Mastery
+  Magic:
+    combat:
+    - Arcana
+    non_combat:
+    - Arcana
+  Survival:
+    combat:
+    - Evasion
+    - Skinning
+    non_combat:
+    - Outdoorsmanship
+    - Thievery
+  Lore:
+    combat:
+    - Tactics
+    non_combat:
+    - Appraisal
+    - Performance
+    - Scholarship
+
+tarantula_excluded_skills:
+  - Forging
+  - Outfitting
+  - Alchemy
+  - Enchanting
+  - Engineering
+  - Slings
+  - Bow
+  - Crossbow
+  - Thievery
+  - First Aid
+  - Stealth
+  - Locksmithing
+  - Targeted Magic
+  - Theurgy

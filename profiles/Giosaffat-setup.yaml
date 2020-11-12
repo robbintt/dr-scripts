@@ -43,6 +43,7 @@ tarantula_excluded_skills:
   - Alchemy
   - Enchanting
   - Engineering
+  - Defending
   - Chain Armor
   - Plate Armor
   - Brigandine
@@ -172,7 +173,8 @@ waggle_sets:
       - 30
     Invocation of the Spheres:
       abbrev: iots
-      mana: 630
+      mana: 640
+      prep_time: 30
       recast: 1000
       ritual: true
       focus: loimic spiral
