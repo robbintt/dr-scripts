@@ -3,6 +3,9 @@
 hometown: Crossing
 safe_room: 19162
 
+hollow_eve_loot_container: watery portal
+dice_bet_amount: 10
+
 tarantula_noun: biomechanical tarantula
 tarantula_debug: false  #This is only necessary if you want it true.  Script defaults to false.
 
@@ -38,6 +41,7 @@ tarantula:
     - Scholarship
 
 tarantula_excluded_skills:
+  - Appraisal
   - Forging
   - Outfitting
   - Alchemy
@@ -48,7 +52,7 @@ tarantula_excluded_skills:
   - Plate Armor
   - Brigandine
   - Shield Usage
-  - Parry
+  - Parry Ability
   - Small Edged
   - Brawling
   - First Aid
@@ -99,7 +103,8 @@ picking_box_source: "scavenger's belt"
 train_with_burgle: true
 burgle_settings:
   room: 851
-  entry_type: cycle
+  entry_type: rope
+  #entry_type: cycle
   max_search_count: 1
   loot_container: "backpack"
   safe_mode: true
