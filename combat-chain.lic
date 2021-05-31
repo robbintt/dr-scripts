@@ -15,6 +15,7 @@ pause
 put "wield my scimitar"
 
 ## TODO: use buff script
+echo("*** Did you use ';buff prehunt-buffs'?? ***")
 
 # this never gets unpaused since this script is killed
 pause_script('percmoons')
@@ -43,26 +44,41 @@ loop {
   if DRSkill.getxp('Debilitation') < 33 or DRSkill.getxp('Brawling') < 33
     debil
   end
-  if DRSkill.getxp('Brawling') < 33
-    circle # get some balance & tactics
-    elbow
-    elbow
-    elbow
-    cleanup
-  end
 
-  if DRSkill.getxp('Targeted Magic') < 33
+  if DRSkill.getxp('Targeted Magic') < 33 and DRSkill.getxp('Small Edged') < 33
     debil
     circle # get some balance & tactics
     kill_pd
     kill_pd
     kill_pd
     cleanup
-    kill_pd
-    kill_pd
-    kill_pd
+  end
+
+  if DRSkill.getxp('Targeted Magic') < 33 and DRSkill.getxp('Brawling') < 33
+    debil
+    circle # get some balance & tactics
+    elbow_pd
+    elbow_pd
+    elbow_pd
     cleanup
   end
+
+  if DRSkill.getxp('Targeted Magic') < 33 and DRSkill.getxp('Brawling') >= 33 and DRSkill.getxp('Small Edged') >= 33
+    debil
+    target_pd
+    target_pd
+    target_pd
+    cleanup
+  end
+
+  #if DRSkill.getxp('Brawling') < 33
+  #  circle # get some balance & tactics
+  #  elbow
+  #  elbow
+  #  elbow
+  #  cleanup
+  #end
+
 
   #if DRSkill.getxp('Stealth') < 33
   #  ambush_feint

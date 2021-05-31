@@ -109,7 +109,7 @@ module Combat
     put "stow gem"
     pause
     waitrt?
-    put "fill my pou with my scav belt"
+    put "fill my pou with my poke"
   end
 
   def cleanupall
@@ -128,7 +128,7 @@ module Combat
     put "stow gem"
     pause
     waitrt?
-    put "fill my pou with my scav belt"
+    put "fill my pou with my poke"
   end
 
   def attack
@@ -298,6 +298,29 @@ module Combat
 
     circle
     circle
+
+    if result == "There is nothing else to face!"
+      return
+    end
+
+    pause # 1 sec
+    waitrt?
+    fput "cast", "You"
+  end
+
+  def elbow_pd
+    pause
+    waitrt?
+    fput "target pd 16", "attunement", "already"
+
+    pause # 1 sec
+    waitrt?
+    # how to abstract this with the method??
+    result = fput "circle", "You", "There is nothing else to face!" # 4 sec
+
+    elbow
+    elbow
+    elbow
 
     if result == "There is nothing else to face!"
       return
