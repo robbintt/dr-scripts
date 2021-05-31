@@ -159,7 +159,6 @@ class ScriptManager
     @paste_bin_url = 'https://pastebin.com/api/api_post.php'
     @firebase_url = 'https://dr-scripts.firebaseio.com/'
     @status_url = 'https://api.github.com/repos/rpherbig/dr-scripts/git/trees/master'
-    @item_url = 'https://api.github.com/repos/rpherbig/dr-scripts/git/blobs/'
     @lich_url = 'https://api.github.com/repos/dragon-realms/dr-lich/git/trees/master'
     UserVars.autostart_scripts ||= []
     UserVars.autostart_scripts.uniq!
@@ -448,13 +447,12 @@ class ScriptManager
 
   def make_request(raw_uri)
     uri = URI.parse(raw_uri)
-    args = { access_token: @git_token }
-    uri.query = URI.encode_www_form(args)
     http = Net::HTTP.new(uri.host, uri.port)
     http.use_ssl = true
     http.verify_mode = OpenSSL::SSL::VERIFY_NONE
 
     request = Net::HTTP::Get.new(uri.request_uri)
+    request['Authorization'] = "token #{@git_token}"
 
     response = http.request(request)
     JSON.parse(response.body)
@@ -919,6 +917,12 @@ class SetupFiles
      .select do |spell, i|
        spells.select { |_name, data| data['abbrev'].casecmp(spell['abbrev'].downcase).zero? }
              .each_value { |data| s.lockpick_buffs['spells'][i] = data.merge(spell) }
+     end
+
+    s.necromancer_healing
+     .each do |key, value|
+       spells.select { |name, _data| key.downcase == name.downcase }
+             .each_value { |data| s.necromancer_healing[key] = data.merge(value) }
      end
 
     s.waggle_sets

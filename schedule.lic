@@ -1,0 +1,50 @@
+=begin
+  Documentation: https://elanthipedia.play.net/Lich_script_repository#schedule
+=end
+
+custom_require.call(%w[common])
+
+class Schedule
+  include DRC
+
+  def initialize(args = nil)
+    UserVars.schedule ||= {}
+    if args.nil? || args.empty? || args[0] == "help"
+      show_usage
+    else
+      commands = clean_arguments(args[0]).split(',').map(&:strip)
+      timer_label = commands.shift.to_s
+      timer_minutes = commands.shift.to_i
+      if UserVars.schedule[timer_label].nil? || Time.now > UserVars.schedule[timer_label]
+        next_time = Time.now + (60 * timer_minutes)
+        UserVars.schedule[timer_label] = next_time
+        # The multi script expects a single argument with details comma separated.
+        # This is why we rejoin the commands together and send as one argument.
+        DRC.wait_for_script_to_complete('multi', [commands.join(',')])
+      else
+        echo "Action for timer label #{timer_label} will be skipped until #{UserVars.schedule[timer_label]}"
+      end
+    end
+  end
+
+  def clean_arguments(args)
+    # If this script is invoked from DRC.wait_for_script_to_complete
+    # then the arguments may be enclosed in literal double quotes.
+    # That breaks the parsing logic so if we detect that situation
+    # we strip the leading and trailing double quote.
+    if args =~ /^\"(.*)\"$/
+      args = Regexp.last_match[1]
+    end
+    # Support either ',' or ';' as command delimiter
+    # because Genie can't use semicolons, but normalize on ',' for parsing.
+    args = args =~ /,/ ? args : args.gsub(';', ',')
+    return args
+  end
+
+  def show_usage
+    DRC.message("For usage, see https://elanthipedia.play.net/Lich_script_repository#schedule")
+  end
+
+end
+
+Schedule.new(script.vars)

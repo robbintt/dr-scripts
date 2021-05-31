@@ -42,6 +42,7 @@ class LockPicker
         break
       end
       balance_lockpick_container
+      get_next_box(box)
       attempt_open(box)
       break if @make_pets && @pet_count >= @pet_goal
     end
@@ -146,6 +147,8 @@ class LockPicker
     @harvest_traps = !@make_pets && @settings.harvest_traps
     @component_container = @settings.component_container
     @stop_pick_on_mindlock = !@make_pets && @settings.stop_pick_on_mindlock
+    @never_pick_blind = @settings.never_pick_blind
+    @always_pick_blind = @settings.pick_blind || @settings.always_pick_blind
     @loot_nouns = @settings.lootables
     echo "Loot nouns: #{@loot_nouns}" if UserVars.lockpick_debug
 
@@ -226,15 +229,18 @@ class LockPicker
     end
 
     ensure_copper_on_hand(cost * lockpicks_needed, @settings)
-    refill_lockpick_container(@settings.lockpick_type, @settings.hometown, @settings.lockpick_container, lockpicks_needed)
+    DRCT.refill_lockpick_container(@settings.lockpick_type, @settings.hometown, @settings.lockpick_container, lockpicks_needed)
+  end
+
+  def get_next_box(box)
+    waitrt?
+    echo "get_next_box(#{box})" if UserVars.lockpick_debug
+    bput("get my #{box} from my #{@settings.picking_box_source}", 'You get a .* from inside ')
   end
 
   def attempt_open(box)
-    waitrt?
     echo "attempt_open(#{box})" if UserVars.lockpick_debug
-    bput("get my #{box} from my #{@settings.picking_box_source}", 'You get a .* from inside ')
-
-    unless disarm?(box)
+    unless unlock_box_with_key?(box) || disarm?(box)
       if @settings.picking_box_storage && right_hand
         case bput("put my #{box} in my #{@settings.picking_box_storage}", 'You put your .* in ', "You just can\'t get", "There isn\'t any more")
         when "You just can\'t get", "There isn\'t any more"
@@ -246,21 +252,32 @@ class LockPicker
       return
     end
 
-    if @make_pets
-      case bput("put my #{box} in my #{@settings.picking_pet_box_source}", 'You put your', "You just can\'t get", "There isn\'t any more")
-      when "You just can\'t get", "There isn\'t any more"
-        bput("put my #{box} in my #{@settings.picking_box_source}", 'You put your')
-        @pet_count = @pet_goal
-      when 'You put your'
-        @pet_count += 1
+    unless @settings.use_skeleton_key
+      if @make_pets
+        case bput("put my #{box} in my #{@settings.picking_pet_box_source}", 'You put your', "You just can\'t get", "There isn\'t any more")
+        when "You just can\'t get", "There isn\'t any more"
+          bput("put my #{box} in my #{@settings.picking_box_source}", 'You put your')
+          @pet_count = @pet_goal
+        when 'You put your'
+          @pet_count += 1
+        end
+        return
       end
-      return
+
+      if DRStats.thief?
+        if DRC.bput("glance my #{box}", /there.*(no|\d) traps? left/, 'I could').scan(/there.*(no|\d) traps? left/)[0].first.to_i > 0
+          DRC.message("Hit the Thief Hasten bug, disarming again!") if UserVars.lockpick_debug
+          attempt_open(box)
+        else
+          attempt_pick(box)
+        end
+      else
+        attempt_pick(box)
+      end
     end
 
-    attempt_pick(box)
-
     waitrt?
-    fput('stow left') unless @settings.use_lockpick_ring
+    stow_hands_except(box)
 
     waitrt?
     loot(box)
@@ -268,12 +285,23 @@ class LockPicker
     waitrt?
   end
 
+  # Put away lockpick or skeleton key, need both hands to loot and dismantle box.
+  def stow_hands_except(item)
+    fput('stow left') unless DRC.left_hand.nil? || DRCI.in_left_hand?(item)
+    fput('stow right') unless DRC.right_hand.nil? || DRCI.in_right_hand?(item)
+  end
+
   def dismantle(box)
     release_invisibility
     command = "dismantle my #{box} #{@settings.lockpick_dismantle}"
-    case bput(command, 'repeat this request in the next 15 seconds', 'Roundtime', 'You must be holding the object you wish to dismantle')
+    case bput(command, 'repeat this request in the next 15 seconds', 'Roundtime', 'You must be holding the object you wish to dismantle', 'Your hands are too full for that', 'You can not dismantle that')
     when 'repeat this request in the next 15 seconds'
       dismantle(box)
+    when 'Your hands are too full for that'
+      stow_hands_except(box)
+      dismantle(box)
+    when 'You can not dismantle that'
+      dispose_trash(box)
     end
   end
 
@@ -331,6 +359,14 @@ class LockPicker
     end
   end
 
+  def unlock_box_with_key?(box)
+    return false unless @settings.use_skeleton_key
+    DRCI.get_item_if_not_held?(@settings.skeleton_key)
+    result = bput("turn my #{@settings.skeleton_key} at my #{box}", "^You turn", "that doesn't seem to do much", "I could not find", "What were you referring")
+    waitrt?
+    return result =~ /^You turn/
+  end
+
   def attempt_pick(box)
     find_lockpick unless @settings.use_lockpick_ring
     pause 0.5 while pick(box)
@@ -350,14 +386,18 @@ class LockPicker
     when *@pick_quick
       pick_speed(box, 'quick')
     when *@pick_blind
-      pick_speed(box, 'blind')
+      if @never_pick_blind
+        pick_speed(box, 'quick')
+      else
+        pick_speed(box, 'blind')
+      end
     when *@pick_retry
       pick(box)
     end
   end
 
   def pick_speed(box, speed)
-    if @settings.pick_blind && DRSkill.getxp('Locksmithing') < 34
+    if @always_pick_blind && DRSkill.getxp('Locksmithing') < 34
       @original_speed = speed != 'blind' ? speed : nil
       speed = 'blind'
     end
@@ -386,7 +426,13 @@ class LockPicker
     return if left_hand
     waitrt?
 
-    case bput('get my lockpick', 'referring to\?', '^You get ')
+    case bput('get my lockpick', 'referring to\?', 'You get')
+    when 'You get'
+      # If we had to find a loose lockpick then either
+      # the player isn't using a lockpick ring or
+      # the lockpick ring is now empty. Toggle setting
+      # so that script will stow the left hand.
+      @settings.use_lockpick_ring = false
     when 'referring to?'
       echo '***OUT OF LOCKPICKS***'
       beep

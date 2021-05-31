@@ -95,13 +95,18 @@ module DRC
   # before performing command and do smart retries.
   # Will wait for matching text up to 15 seconds then timeout.
   def bput(message, *matches)
-    wput(message, 15, matches)
-  end
+    options = (matches.shift if matches.first.is_a?(Hash)) || {}
+    options['timeout'] ||= 15
 
-  # Like `fput` but better because will wait for RT
-  # before performing command and do smart retries.
-  # Will wait for matching text up til the given timeout in seconds.
-  def wput(message, timeout, *matches)
+    timeout = options['timeout']
+    suppress = options['suppress_no_match']
+
+    if options['debug']
+      echo "bput.message=#{message}"
+      echo "bput.options=#{options}"
+      echo "bput.matches=#{matches}"
+    end
+
     waitrt?
     log = []
     matches.flatten!
@@ -154,11 +159,15 @@ module DRC
         end
       end
     end
-    echo "*** No match was found after #{timeout} seconds, dumping info"
-    echo "messages seen length: #{log.length}"
-    log.reverse.each { |logged_response| echo "message: #{logged_response}" }
-    echo "checked against #{matches}"
-    echo "for command #{message}"
+
+    unless suppress
+      echo "*** No match was found after #{timeout} seconds, dumping info"
+      echo "messages seen length: #{log.length}"
+      log.reverse.each { |logged_response| echo "message: #{logged_response}" }
+      echo "checked against #{matches}"
+      echo "for command #{message}"
+    end
+
     ''
   end
 
@@ -210,7 +219,25 @@ module DRC
   end
 
   def collect(item)
-    case bput("collect #{item}", 'You manage to collect a pile', 'The room is too cluttered', 'believe you would probably have better luck trying to find a dragon', 'if you had a bit more luck.', 'You cannot collect anything', 'You forage around but are unable to find anything', 'You wander around and poke your fingers', 'You survey the area and realize that any collecting efforts would be futile', 'You are sure you knew', 'You begin to forage around,','As you rummage around')
+    messages = [
+        'As you rummage around',
+        'believe you would probably have better luck trying to find a dragon',
+        'if you had a bit more luck',
+        'The room is too cluttered',
+        'one hand free to properly collect',
+        'You are sure you knew',
+        'You begin to forage around,',
+        'You begin scanning the area before you',
+        'You find something dead and lifeless',
+        'You cannot collect anything',
+        'you fail to find anything',
+        'You forage around but are unable to find anything',
+        'You manage to collect a pile',
+        'You survey the area and realize that any collecting efforts would be futile',
+        'You wander around and poke your fingers',
+        'You forage around for a while and manage to stir up a small mound of fire ants!'
+    ]
+    case bput("collect #{item}", messages)
     when 'The room is too cluttered'
       return unless kick_pile?
       collect(item)
@@ -327,7 +354,7 @@ module DRC
     end
 
     def short_regex
-      @adjective ? /#{adjective}.*\b#{@name}/i : /\b#{@name}/i
+      @adjective ? /\b#{adjective}.*\b#{@name}/i : /\b#{@name}/i
     end
   end
 
@@ -483,9 +510,9 @@ module DRC
       play_command = play_command + " on my #{instrument}"
     end
     fput('release ecry') if DRSpells.active_spells["Eillie's Cry"].to_i > 0
-    result = bput(play_command, 'dirtiness may affect your performance', 'slightest hint of difficulty', 'fumble slightly', /Your .+ is submerged in the water/, 'You begin a', 'You struggle to begin', 'You\'re already playing a song', 'You effortlessly begin', 'You begin some', 'You cannot play', 'Play on what instrument', 'now isn\'t the best time to be playing', 'Perhaps you should find somewhere drier before trying to play', 'You should stop practicing')
+    result = bput(play_command, 'too damaged to play', 'dirtiness may affect your performance', 'slightest hint of difficulty', 'fumble slightly', /Your .+ is submerged in the water/, 'You begin a', 'You struggle to begin', 'You\'re already playing a song', 'You effortlessly begin', 'You begin some', 'You cannot play', 'Play on what instrument', 'Are you sure that\'s the right instrument', 'now isn\'t the best time to be playing', 'Perhaps you should find somewhere drier before trying to play', 'You should stop practicing')
     case result
-    when 'Play on what instrument'
+    when 'Play on what instrument', 'Are you sure that\'s the right instrument'
       snapshot = "#{right_hand}#{left_hand}"
       fput("get #{instrument}")
       return false if snapshot == "#{right_hand}#{left_hand}"
@@ -533,7 +560,7 @@ module DRC
   def clean_instrument(settings, worn = true)
     cloth = settings.cleaning_cloth
     instrument = worn ? settings.worn_instrument : settings.instrument
-    case bput("get my #{cloth}", 'You get', 'What were you')
+    case bput("get my #{cloth}", 'You get', 'You are already holding', 'What were you')
     when 'What were you'
       echo('You have no chamois cloth -- this could cause problems with playing an instrument!')
       beep

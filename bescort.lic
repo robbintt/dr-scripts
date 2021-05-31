@@ -223,7 +223,7 @@ class Bescort
       [
         { name: 'currach', regex: /currach/i, description: "Row a currach between Halasa Temple and Aesry Surlaenis'a." },
         { name: 'mode', options: %w[halasa aesry], description: "halasa or aesry?" }
-      ]  
+      ]
     ]
 
     args = parse_args(arg_definitions)
@@ -305,15 +305,23 @@ class Bescort
     mode = mode.downcase
     case mode
     when 'mount'
-      bput("get my #{type}", /You get /, /You are already holding/)
+      bput("get my #{type}", /You get/, /You pick up/, /You are already holding/, /What were you referring/)
       case type
-      when /broom/i, /dirigible/i
-        bput("mount my #{type}", /You mount your/)
+      when /broom|dirigible/i
+        case bput("mount my #{type}", /You mount your/, /You are already mounted/, /What were you referring/)
+        when /What were you referring/
+          message("Can't mount your #{type}, where is it?")
+          exit
+        end
         bput("command #{type} to #{speed}", /You command your/)
-      when /carpet/i
-        bput(right_hand == type ? "lower ground right" : "lower ground left", /You lower/)
-        bput("unroll #{type}", /You carefully unroll/)
-        bput("mount #{type}", /You step onto your carpet which comes to life and slowly raises up off of the ground/)
+      when /carpet|rug/i
+        bput(right_hand == type ? "lower ground right" : "lower ground left", /You lower/, /But you aren't holding/)
+        bput("unroll #{type}", /You carefully unroll/, /You can't unroll/, /What were you referring/)
+        case bput("mount #{type}", /You step onto your .* which comes to life and slowly raises up off of the ground/, /You are already mounted/, /What were you referring/)
+        when /What were you referring/
+          message("Can't mount your #{type}, where is it?")
+          exit
+        end
         bput("command #{type} to #{speed}", /You command your/)
       else
         message("#{type} is not a valid type of flying mount.")
@@ -321,13 +329,13 @@ class Bescort
       end
     when 'dismount'
       case type
-      when /broom/i, /dirigible/i
-        bput('dismount', /Your (broom|dirigible) floats down to the ground/)
+      when /broom|dirigible/i
+        bput('dismount', /Your .* floats down to the ground/, /You climb off/)
         EquipmentManager.new.empty_hands
-      when /carpet/i
-        bput('dismount', /Your carpet floats down to the ground/)
-        bput("roll #{type}", /You roll up/)
-        bput("stow my #{type}", /You pick up/)
+      when /carpet|rug/i
+        bput('dismount', /Your .* floats down to the ground/, /You climb off/)
+        bput("roll #{type}", /You roll up/, /You can't roll/)
+        bput("stow my #{type}", /You put/, /You pick up/, /Stow what?/)
       else
         message("#{type} is not a valid type of flying mount.")
         exit
@@ -338,10 +346,10 @@ class Bescort
   def currach(mode)
     if (mode.include?('aesry') && [5555, 5557, 5558].include?(Room.current.id))
       echo "You're already there silly!"
-      exit    
+      exit
     elsif (mode.include?('halasa') && [15863].include?(Room.current.id))
       echo "You're already there silly!"
-      exit    
+      exit
     elsif mode == 'aesry'
       row_direction = 'pier'
     elsif mode == 'halasa'
@@ -349,7 +357,7 @@ class Bescort
     else
       echo("Unrecognized argument: #{mode}")
       exit
-    end  
+    end
 
     if [5555, 5557, 5558, 15863].include?(Room.current.id)
       move "go currach"
@@ -365,7 +373,7 @@ class Bescort
       else
         bput("row #{row_direction}", 'You pull strongly', 'What were you referring to',  "You can't do that right now")
       end
-    end 
+    end
   end
 
   def jolas(mode)
@@ -377,7 +385,7 @@ class Bescort
 
     if (mode.include?('merkresh') && Room.current.id == 6542) || (mode.include?('harajaal') && Room.current.id == 15253)
       echo "You're already there silly!"
-      exit    
+      exit
     elsif (mode.include?('merkresh') && Room.current.id == 15253) || (mode.include?('harajaal') && Room.current.id == 6542)
       hide? unless DRRoom.room_objs.find { |x| x =~ /The Jolas/ }
       pause 1 until DRRoom.room_objs.find { |x| x =~ /The Jolas/ }
@@ -393,8 +401,8 @@ class Bescort
       else
         jolas(mode)
       end
-    end       
-  end   
+    end
+  end
 
   def hara_polo(mode)
     hara_polo_direction(mode)
@@ -410,7 +418,7 @@ class Bescort
     else
       find_room_list(%w[ne ne ne])
     end
-  end 
+  end
 
   def hara_polo_direction(mode)
     if mode == /up/i && (Room.current.id != 11411 || Room.current.id != 11412)
@@ -421,11 +429,11 @@ class Bescort
       exit
     elsif mode == /hunt/i && (Room.current.id != 11416 || Room.current.id != 11412)
       echo('Going hunting must begin in room 11416 or 11412.')
-      exit      
+      exit
     else
       move 'n' if mode.include?('hunt')
     end
-  end 
+  end
 
   def enter_brocket(mode)
     if mode !~ /exit/i && Room.current.id != 3462
@@ -1376,7 +1384,7 @@ class Bescort
   def power_walk(pattern)
     fput 'exit' if dead? || Flags['ap-danger']
     if Flags['harness-check']
-      harness_mana([20]) unless Flags['harness-check'].include?('effortlessly')
+      harness_mana([20]) unless Flags['harness-check'][1] == 'effortlessly'
       Flags.reset('harness-check')
     end
     result = bput('pow', pattern)
@@ -1386,7 +1394,12 @@ class Bescort
     if Flags['pattern-shift']
       Flags.reset('pattern-shift')
     else
+      Flags.reset('walking-circles')
       move Regexp.last_match[:direction]
+      # If you only walk in circles then you failed to move, try again.
+      if Flags['walking-circles']
+        power_walk(pattern)
+      end
     end
   end
 
@@ -1437,6 +1450,7 @@ class Bescort
     Flags.add('pattern-shift', 'A wave of rippling air sweeps through the conduit!  The streams of mana writhe violently before settling into new patterns')
     Flags.add('gate-failure', 'With supreme effort, you are able to bring the spell to an end without harm.')
     Flags.add('ap-danger', "Unlike most astral phenomena, the static does not go away after a few moments. In fact, it's getting stronger. Closer.")
+    Flags.add('walking-circles', "You end up walking in circles")
 
     room_id_to_shard = {
       9999 => "Asharshpar'i",
@@ -1765,6 +1779,7 @@ before_dying do
   Flags.delete('pattern-shift')
   Flags.delete('gate-failure')
   Flags.delete('ap-danger')
+  Flags.delete('walking-circles')
 end
 
 Bescort.new

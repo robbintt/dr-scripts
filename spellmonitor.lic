@@ -1,25 +1,38 @@
-# quiet
 =begin
   Documentation: https://elanthipedia.play.net/Lich_script_development#spellmonitor
 =end
 
-custom_require.call %w[drinfomon]
+custom_require.call(%w[drinfomon])
+
 no_kill_all
 no_pause_all
-# hide_me
-setpriority(0)
 
-$CYCLICAL = 1001
+setpriority(0)
 
 class DRSpells
   @@active_spells = {}
+  @@known_spells = {}
+  @@known_feats = {}
   @@refresh_data = {}
   @@slivers = false
 
-  @@grabbing_spell_data = false
+  @@grabbing_active_spells = false
+  @@grabbing_known_spells = false
+
+  # Use this to silence the initial output
+  # of calling 'spells' command to populate our data.
+  @@silence_known_spells_hook = false
 
   def self.active_spells
     @@active_spells
+  end
+
+  def self.known_spells
+    @@known_spells
+  end
+
+  def self.known_feats
+    @@known_feats
   end
 
   def self.refresh_data
@@ -34,155 +47,220 @@ class DRSpells
     @@slivers = val
   end
 
-  def self.grabbing_spell_data
-    @@grabbing_spell_data
+  def self.grabbing_active_spells
+    @@grabbing_active_spells
   end
 
-  def self.grabbing_spell_data=(val)
-    @@grabbing_spell_data = val
+  def self.grabbing_active_spells=(val)
+    @@grabbing_active_spells = val
+  end
+
+  def self.grabbing_known_spells
+    @@grabbing_known_spells
+  end
+
+  def self.grabbing_known_spells=(val)
+    @@grabbing_known_spells = val
+  end
+
+  def self.silence_known_spells_hook
+    @@silence_known_spells_hook
+  end
+
+  def self.silence_known_spells_hook=(val)
+    @@silence_known_spells_hook = val
+  end
+
+  # Call this method to cause the script to recheck for known spells and feats.
+  # Should be called whenever the character learns (or forgets) a spell or feat.
+  # Example scenarios: learning from a guild leader, Ozursus, scrolls, Throne City, rerolling, death.
+  def self.refresh_known_spells
+    @@silence_known_spells_hook = true
+    fput('spells')
+    pause 1
+    @@silence_known_spells_hook = false
   end
 end
 
-pause 5 # kludge fix for simu's bullshit until they fix it.
-spell_action = if DRStats.barbarian?
-                 proc do |server_string|
-                   if server_string =~ %r{<clearStream id="percWindow"/>}
-                     DRSpells.slivers = false
-                     DRSpells.refresh_data.each_key { |k| DRSpells.refresh_data[k] = false }
-                     begin
-                       Thread.new do
-                         sleep 0.5
-                         DRSpells.refresh_data.each do |key, state|
-                           unless state
-                             DRSpells.active_spells.delete(key)
-                             DRSpells.refresh_data.delete(key)
-                           end
-                         end
-                       end
-                     rescue => e
-                       echo(e)
-                       echo('Error in spell monitor')
-                     end
-                   elsif server_string =~ %r{pushStream id="percWindow"/>\s([^<>]+)\s\s\((\d+) roisaen\)}
-                     DRSpells.active_spells[Regexp.last_match(1)] = Regexp.last_match(2).to_i
-                     DRSpells.refresh_data[Regexp.last_match(1)] = true
-                   elsif server_string =~ %r{pushStream id="percWindow"/>\s([^<>]+)\s\s\((\d+) roisan\)}
-                     DRSpells.active_spells[Regexp.last_match(1)] = Regexp.last_match(2).to_i
-                     DRSpells.refresh_data[Regexp.last_match(1)] = true
-                   elsif server_string =~ %r{pushStream id="percWindow"/>\s([^<>]+)\s\s\(Fading\)}
-                     DRSpells.active_spells[Regexp.last_match(1)] = 0
-                     DRSpells.refresh_data[Regexp.last_match(1)] = true
-                   elsif server_string =~ %r{pushStream id="percWindow"/>(.+)<popStream/><pushStream id="percWindow"/>  \((\d+) roisaen\)}
-                     DRSpells.active_spells[Regexp.last_match(1)] = Regexp.last_match(2).to_i
-                     DRSpells.refresh_data[Regexp.last_match(1)] = true
-                   elsif server_string =~ %r{pushStream id="percWindow"/>(.+)<popStream/><pushStream id="percWindow"/>  \((\d+) roisan\)}
-                     DRSpells.active_spells[Regexp.last_match(1)] = Regexp.last_match(2).to_i
-                     DRSpells.refresh_data[Regexp.last_match(1)] = true
-                   elsif server_string =~ %r{pushStream id="percWindow"/>(.+)<popStream/><pushStream id="percWindow"/>  \(Indefinite\)}
-                     DRSpells.active_spells[Regexp.last_match(1)] = $CYCLICAL # is there a better solution?
-                     DRSpells.refresh_data[Regexp.last_match(1)] = true
-                   elsif server_string =~ %r{pushStream id="percWindow"/>(.+)<popStream/><pushStream id="percWindow"/>  \(OM\)}
-                     DRSpells.active_spells[Regexp.last_match(1)] = 1000 # is there a better solution?
-                     DRSpells.refresh_data[Regexp.last_match(1)] = true
-                   elsif server_string =~ %r{<pushStream id="percWindow"/>.*orbiting sliver.*}
-                     DRSpells.slivers = true
-                   elsif server_string =~ %r{pushStream id="percWindow"/>(.+)<popStream/><pushStream id="percWindow"/>\s*$}
-                     DRSpells.active_spells[Regexp.last_match(1)] = 1000 # is there a better solution?
-                     DRSpells.refresh_data[Regexp.last_match(1)] = true
-                   elsif server_string =~ %r{pushStream id="percWindow"/>(.+)<popStream/><pushStream id="percWindow"/>\s+\((\d+)%\)}
-                     DRSpells.active_spells[Regexp.last_match(1)] = Regexp.last_match(2).to_i
-                     DRSpells.refresh_data[Regexp.last_match(1)] = true
-                   elsif server_string =~ %r{pushStream id="percWindow"/>(.+)<popStream/><pushStream id="percWindow"/>  \(Fading\)}
-                     DRSpells.active_spells[Regexp.last_match(1)] = 0
-                     DRSpells.refresh_data[Regexp.last_match(1)] = true
-                   elsif server_string =~ %r{<pushStream id="percWindow"/> (.*) \((\d+) roisaen\)}
-                     DRSpells.active_spells[Regexp.last_match(1)] = Regexp.last_match(2).to_i
-                     DRSpells.refresh_data[Regexp.last_match(1)] = true
-                   elsif server_string =~ %r{<popStream/><pushStream id="percWindow"/> (.+) \((\d+) roisaen\)}
-                     DRSpells.active_spells[Regexp.last_match(1)] = Regexp.last_match(2).to_i
-                     DRSpells.refresh_data[Regexp.last_match(1)] = true
-                   end
+# Some spells may last for an unknown duration,
+# such as cyclic spells that last as long as
+# the caster can harness mana for it.
+# Or, barbarian abilities when the character
+# doesn't have Power Monger mastery to see true
+# durations but only vague guestimates.
+# In those situations, we set use this value.
+UNKNOWN_DURATION = 1000 unless defined?(UNKNOWN_DURATION)
 
-                   server_string
-                 end
-               else
-                 proc do |server_string|
-                   if server_string =~ %r{<clearStream id="percWindow"/>}
-                     DRSpells.slivers = false
-                     DRSpells.refresh_data.each_key { |k| DRSpells.refresh_data[k] = false }
-                     begin
-                       Thread.new do
-                         sleep 0.5
-                         DRSpells.refresh_data.each do |key, state|
-                           unless state
-                             DRSpells.active_spells.delete(key)
-                             DRSpells.refresh_data.delete(key)
-                           end
-                         end
-                       end
-                     rescue => e
-                       echo(e)
-                       echo('Error in spell monitor')
-                     end
+# This method receives a line of data from DragonRealms
+# and determines if it refers to active spells on the character.
+# It keeps the global class DRSpells updated with such data
+# that then other scripts can take advantage of.
+#
+# The XML stream for DragonRealms is whack at best.
+#
+# Examples of the data we're looking for:
+#     <clearStream id="percWindow"/>
+#     <pushStream id="percWindow"/> Wildfire (thoroughly inflamed)
+#     <popStream/><pushStream id="percWindow"/> Avalanche (thoroughly inflamed)
+#     <popStream/><pushStream id="percWindow"/>Righteous Wrath  (8 roisaen)
+#     Rage of the Clans  (4 roisaen)
+#     <popStream/><prompt time="1609379003">&gt;</prompt>
+#
+# <clearStream> indicates that the following tags are the latest active spells snapshot.
+#
+# <pushStream id="percWindow"> indicates a spell or spells that are active and their duration.
+#
+# <popStream/> indicates the end of content for the prior listed spell or spells for the <pushStream> tag.
+#
+# One or more spells may be listed between a <pushStream/> <popStream/> pair,
+# but only one spell and its duration are ever listed per line.
+#
+active_spells_hook = proc do |server_string|
+  # New information about active spells, reset our cached data.
+  if server_string =~ %r{<clearStream id="percWindow"/>}
+    DRSpells.slivers = false
+    DRSpells.refresh_data.each_key { |k| DRSpells.refresh_data[k] = false }
+    begin
+      Thread.new do
+        sleep 0.5
+        DRSpells.refresh_data.each do |key, state|
+          unless state
+            DRSpells.active_spells.delete(key)
+            DRSpells.refresh_data.delete(key)
+          end
+        end
+      end
+    rescue StandardError => e
+      echo(e)
+      echo('Error in spell monitor')
+    end
+    next server_string
+  end
 
-                     next server_string
-                   end
+  # Abilities may be prefixed or suffixed by
+  # a control character that appears like whitespace
+  # but isn't whitespace so 'strip' doesn't remove it.
+  # Replace all instances of codepoint 32 with ' '.
+  data = server_string.dup.gsub(32.chr, ' ').strip
 
-                   data = server_string.dup
-                   if server_string =~ %r{pushStream id="percWindow"/>}
-                     DRSpells.grabbing_spell_data = true
-                     data.slice!(0, 29)
-                   end
+  # Indicates we're done with the prior <pushStream/> tag.
+  # However, the next characters in the line might be
+  # another <pushStream/> or something else, so keep going.
+  if data =~ %r{^<popStream/>}
+    DRSpells.grabbing_active_spells = false
+    data.slice!(0, 12).strip!
+  end
 
-                   if DRSpells.grabbing_spell_data
-                     if server_string =~ %r{popStream/}
-                       DRSpells.grabbing_spell_data = false
-                       next server_string
-                     end
+  # The start of one or more active spells!
+  if data =~ %r{<pushStream id="percWindow"/>}
+    DRSpells.grabbing_active_spells = true
+    index = data.index("<pushStream id=\"percWindow\"/>")
+    data.slice!(0, index+29).strip!
+  end
 
-                     case data
-                     when /([^<>]+)\s\s\((\d+) roisaen\)/
-                       DRSpells.active_spells[Regexp.last_match(1)] = Regexp.last_match(2).to_i
-                       DRSpells.refresh_data[Regexp.last_match(1)] = true
-                     when /([^<>]+)\s\s\((\d+) roisan\)/
-                       DRSpells.active_spells[Regexp.last_match(1)] = Regexp.last_match(2).to_i
-                       DRSpells.refresh_data[Regexp.last_match(1)] = true
-                     when /([^<>]+)\s\s\(.+\s(\d+) roisaen\)/
-                       DRSpells.active_spells[Regexp.last_match(1)] = Regexp.last_match(2).to_i
-                       DRSpells.refresh_data[Regexp.last_match(1)] = true
-                     when /([^<>]+)\s\s\(.+\s(\d+) roisan\)/
-                       DRSpells.active_spells[Regexp.last_match(1)] = Regexp.last_match(2).to_i
-                       DRSpells.refresh_data[Regexp.last_match(1)] = true
-                     when /([^<>]+)\s\s\(Fading\)/
-                       DRSpells.active_spells[Regexp.last_match(1)] = 0
-                       DRSpells.refresh_data[Regexp.last_match(1)] = true
-                     when /(.+)  \(Indefinite\)/
-                       DRSpells.active_spells[Regexp.last_match(1)] = $CYCLICAL # is there a better solution?
-                       DRSpells.refresh_data[Regexp.last_match(1)] = true
-                     when /(.+)  \(OM\)/
-                       DRSpells.active_spells[Regexp.last_match(1)] = 1000 # is there a better solution?
-                       DRSpells.refresh_data[Regexp.last_match(1)] = true
-                     when /.*orbiting sliver.*/
-                       DRSpells.slivers = true
-                     when /(.+)  \((\d+)%\)/
-                       DRSpells.active_spells[Regexp.last_match(1)] = Regexp.last_match(2).to_i
-                       DRSpells.refresh_data[Regexp.last_match(1)] = true
-                     when /^*$/
-                       DRSpells.active_spells[Regexp.last_match(1)] = 1000 # is there a better solution?
-                       DRSpells.refresh_data[Regexp.last_match(1)] = true
-                     end
-                   end
+  if DRSpells.grabbing_active_spells
+    spell = nil
+    duration = nil
+    case data
+    when /(?<spell>[^<>]+?)\s+\((?:\D*)(?<duration>\d+)\s*(?:%|roisae?n)\)/i
+      # Spell with known duration remaining
+      spell = Regexp.last_match[:spell]
+      duration = Regexp.last_match[:duration].to_i
+    when /(?<spell>[^<>]+?)\s+\(fading\)/i
+      # Spell fading away
+      spell = Regexp.last_match[:spell]
+      duration = 0
+    when /(?<spell>[^<>]+?)\s+\((?<duration>indefinite|om)\)/i
+      # Cyclic spell or Osrel Meraud cyclic spell
+      spell = Regexp.last_match[:spell]
+      duration = UNKNOWN_DURATION
+    when /(?<spell>[^<>]+?)\s+\(.+\)/i
+      # Spells with inexact duration verbiage, such as with
+      # Barbarians without knowledge of Power Monger mastery
+      spell = Regexp.last_match[:spell]
+      duration = UNKNOWN_DURATION
+    when /.*orbiting sliver.*/i
+      # Moon Mage slivers
+      DRSpells.slivers = true
+    when /^(.*)$/
+      # No idea what we received, just a general catch all
+      spell = Regexp.last_match(1)
+      duration = UNKNOWN_DURATION
+    end
+    spell.strip!
+    if spell
+      DRSpells.active_spells[spell] = duration
+      DRSpells.refresh_data[spell] = true
+    end
+  end
+  server_string
+end
 
-                   server_string
-                 end
-               end
+known_spells_hook = proc do |server_string|
+  case server_string
+  when /^You recall the spells you have learned/
+    DRSpells.grabbing_known_spells = true
+    DRSpells.known_spells.clear()
+    DRSpells.known_feats.clear()
+    server_string = nil if DRSpells.silence_known_spells_hook
+  when /^In the chapter entitled|^You have temporarily memorized/
+    if DRSpells.grabbing_known_spells
+      server_string
+        .sub(/^In the chapter entitled "[\w\s\'-]+", you have notes on the /, '')
+        .sub(/^You have temporarily memorized the /, '')
+        .sub(/ spells?\./, '')
+        .sub(/,? and /, ',')
+        .split(',')
+        .map { |spell| spell.include?('[') ? spell.slice(0, spell.index('[')) : spell }
+        .map(&:strip)
+        .reject { |spell| spell.nil? || spell.empty? }
+        .each { |spell| DRSpells.known_spells[spell] = true }
+    end
+    server_string = nil if DRSpells.silence_known_spells_hook
+  when /^You recall proficiency with the magic feats of/
+    if DRSpells.grabbing_known_spells
+      # The feats are listed without the Oxford comma separating the last item.
+      # This makes splitting the string by comma difficult because the next to last and last
+      # items would be captured together. The workaround is we'll replace ' and ' with a comma
+      # and hope no feats ever have the word 'and' in them...
+      server_string
+        .sub(/^You recall proficiency with the magic feats of/, '')
+        .sub(/,? and /, ',')
+        .sub('.', '')
+        .split(',')
+        .map(&:strip)
+        .reject { |feat| feat.nil? || feat.empty? }
+        .each { |feat| DRSpells.known_feats[feat] = true }
+    end
+    server_string = nil if DRSpells.silence_known_spells_hook
+  when /^You have \d+ spell slots? available/
+    server_string = nil if DRSpells.silence_known_spells_hook
+  when /^You can use SPELL STANCE|^You have (no|yet to receive any) training in the magical arts|^You really shouldn't be loitering here|\(Use SPELL|\(Use PREPARE/
+    DRSpells.grabbing_known_spells = false
+    server_string = nil if DRSpells.silence_known_spells_hook
+  end
+  server_string
+end
 
-DownstreamHook.remove('spell_action')
-DownstreamHook.add('spell_action', spell_action)
+# Unsure the historical significance of this pause
+# https://github.com/rpherbig/dr-scripts/commit/04b7474b21c809d960ccb0c720808b44ae0f1ff8
+pause 5
+
+DownstreamHook.remove('active_spells_hook')
+DownstreamHook.add('active_spells_hook', active_spells_hook)
+
+DownstreamHook.remove('known_spells_hook')
+DownstreamHook.add('known_spells_hook', known_spells_hook)
 
 before_dying do
-  DownstreamHook.remove('spell_action')
+  DownstreamHook.remove('active_spells_hook')
+  DownstreamHook.remove('known_spells_hook')
 end
 
+# Do an initial capture of known spells and feats.
+DRSpells.refresh_known_spells
+
 until script.gets.nil?
+  # Keep script alive while game is connected
+  # so that we continue to receive and parse data.
 end

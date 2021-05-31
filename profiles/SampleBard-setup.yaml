@@ -23,6 +23,12 @@
 #    - You can find all the BASE settings inside the base.yaml within this same folder! Search the file for keywords for more settings!
 #    - If you can "TAP ADJECTIVE NOUN" for an item, then you can use that for the adjective & noun of the item within the scripts!
 
+# High-level example YAMLS:
+#  - Erendel
+
+# TUTORIALS
+# https://github.com/rpherbig/dr-scripts/wiki/Bard-Tutorials
+
 # This file can be used with ;training-manager or ;t2.  The T2 specifics are at the very bottom.
 
 #all the settings to make you do allll the stuff in your safe room versus random rooms around town
@@ -480,7 +486,7 @@ restock:
 
 # Lockpicking settings - follow it carefully to avoid springing traps!
 stop_pick_on_mindlock: true  
-pick_blind: false
+always_pick_blind: false
 use_lockpick_ring: true
 skip_lockpick_ring_refill: false
 lockpick_container: lockpick ring
@@ -622,7 +628,7 @@ sanowret_no_use_scripts:
 - buff
 
 
-#### T2 Setup
+#### T2 Setup - https://github.com/rpherbig/dr-scripts/wiki/T2-Tutorial
 training_list:
  
 - skill:           #header for each section and the dash out front matters

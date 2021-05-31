@@ -30,12 +30,14 @@ class Athletics
         { name: 'undergondola', regex: /^un.*/i, optional: true, description: 'Climb branch etc undergondola' },
         { name: 'xalas', regex: /^xala.*/i, optional: true, description: 'Climb xalas in zoluren in instead of undergondola' },
         { name: 'stationary', regex: /^stat.*/i, optional: true, description: 'Stand still and use a climbing rope' },
-        { name: 'cliffs', regex: /^cliff.*/i, optional: true, description: 'Climb undergondola without attempting branch' }
+        { name: 'cliffs', regex: /^cliff.*/i, optional: true, description: 'Climb undergondola without attempting branch' },
+        { name: 'max', regex: /^max/i, optional: true, description: 'Keep training until 29/34+' }
       ]
     ]
 
     args = parse_args(arg_definitions)
 
+    @end_exp = 29 if args.max
     start_script('skill-recorder') unless Script.running?('skill-recorder')
     if args.wyvern || (@settings.climbing_target == 'wyvern')
       climb_wyvern
@@ -64,6 +66,16 @@ class Athletics
     end
 
     stow_athletics_items
+  end
+
+  def outdoorsmanship_waiting(n)
+    start = Time.now
+    walk_to(@outdoorsmanship_rooms.sample) unless @outdoorsmanship_rooms.empty?
+    stow_athletics_items
+    wait_for_script_to_complete('outdoorsmanship', [n])
+    remaining_pause = ((n*15) - (Time.now - start))
+    pause remaining_pause if remaining_pause > 0
+    get_athletics_items
   end
 
   def get_athletics_items
@@ -217,10 +229,10 @@ class Athletics
       end
     elsif UserVars.athletics < 450
       override_location_and_practice('segoltha_bank')
-    elsif UserVars.athletics < 600
+    else
+      message("The xalas argument will train faster at 650+ athletics.  Be aware that it's potentially dangerous.") if UserVars.athletics > 650
       override_location_and_practice('arthelun_rocks')
-    elsif UserVars.athletics
-      climb_xalas
+      message("The xalas argument will train faster at 650+ athletics.  Be aware that it's potentially dangerous.") if UserVars.athletics > 650
     end
   end
 
@@ -248,6 +260,10 @@ class Athletics
         override_location_and_practice('ratha_rock_gorge')
       elsif DRSkill.getrank('Stealth') >= 130
         override_location_and_practice('ratha_deep_crack')
+      else
+        # stops in infinte loop when > 185 ranks in athletics and < 130 ranks in stealth
+        DRC.message("You don't meet current requirements for Ratha climbing. You need at least 130 stealth.")
+        break
       end
     end
   end
@@ -326,17 +342,14 @@ class Athletics
       override_location_and_practice('undergondola_branch')
     elsif UserVars.athletics < 850
       walk_to(9607)
-      walk_to(19_464)
+      walk_to(9515)
       until done_training?
         walk_to(2245)
         walk_to(9607)
         walk_to(11_126)
-        walk_to(19_464)
+        walk_to(9515)
         break if done_training?
-        walk_to(@outdoorsmanship_rooms.sample) unless @outdoorsmanship_rooms.empty?
-        stow_athletics_items
-        wait_for_script_to_complete('outdoorsmanship', ['4'])
-        get_athletics_items
+        outdoorsmanship_waiting(4)
       end
     else
       climb_wyvern
@@ -350,10 +363,7 @@ class Athletics
       walk_to(9607)
       walk_to(2900)
       break if done_training?
-      walk_to(@outdoorsmanship_rooms.sample) unless @outdoorsmanship_rooms.empty?
-      stow_athletics_items
-      wait_for_script_to_complete('outdoorsmanship', ['4'])
-      get_athletics_items
+      outdoorsmanship_waiting(4)
     end
   end
 
@@ -369,10 +379,7 @@ class Athletics
       walk_to(13_117)
       walk_to(6443)
       break if done_training?
-      walk_to(@outdoorsmanship_rooms.sample) unless @outdoorsmanship_rooms.empty?
-      stow_athletics_items
-      wait_for_script_to_complete('outdoorsmanship', ['3'])
-      get_athletics_items
+      outdoorsmanship_waiting(3)
     end
   end
 
@@ -382,10 +389,7 @@ class Athletics
       walk_to(12_838)
       walk_to(6154)
       break if done_training?
-      walk_to(@outdoorsmanship_rooms.sample) unless @outdoorsmanship_rooms.empty?
-      stow_athletics_items
-      wait_for_script_to_complete('outdoorsmanship', ['4'])
-      get_athletics_items
+      outdoorsmanship_waiting(4)
     end
   end
 end

@@ -1,0 +1,57 @@
+=begin
+  Documentation: https://elanthipedia.play.net/Lich_script_repository#multi
+=end
+
+custom_require.call(%w[common])
+
+class Multi
+  include DRC
+
+  def initialize(args = nil)
+    if args.nil? || args.empty? || args[0] == "help"
+      show_usage
+    else
+      commands = clean_arguments(args[0]).split(',').map(&:strip)
+      # In case the user puts the number of times to execute at the end instead of the beginning
+      num = commands[0] =~ /^\d+$/ ? commands.shift.to_i : commands.pop.to_i
+      num.times {
+        commands.each { |command|
+          # To run a script, prefix its name with either a semicolon ; or a colon :
+          # Genie users will need to use a colon : because smicolons ; are stripped.
+          # To specify arguments for the script, include a spaces between them.
+          waitrt?
+          if command !~ /^[;:]/ then
+            fput(command)
+          else
+            # Identify the name and arguments of the script to call.
+            script_name_and_args = command[1..-1].split(' ')
+            script_name = script_name_and_args[0]
+            script_args = script_name_and_args[1..-1]
+            DRC.wait_for_script_to_complete(script_name, script_args)
+          end
+        }
+      }
+    end
+  end
+
+  def clean_arguments(args)
+    # If this script is invoked from DRC.wait_for_script_to_complete
+    # then the arguments may be enclosed in literal double quotes.
+    # That breaks the parsing logic so if we detect that situation
+    # we strip the leading and trailing double quote.
+    if args =~ /^\"(.*)\"$/
+      args = Regexp.last_match[1]
+    end
+    # Support either ',' or ';' as command delimiter
+    # because Genie can't use semicolons, but normalize on ',' for parsing.
+    args = args =~ /,/ ? args : args.gsub(';', ',')
+    return args
+  end
+
+  def show_usage
+    DRC.message("For usage, see https://elanthipedia.play.net/Lich_script_repository#multi")
+  end
+
+end
+
+Multi.new(script.vars)

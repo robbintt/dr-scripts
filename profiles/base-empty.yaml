@@ -11,6 +11,7 @@ empty_values:
   necromancer_healing: {}
   zombie: {}
   empath_healing: {}
+  healme: {}
   storage_containers: []
   summoned_weapons: []
   stances: {}
@@ -57,6 +58,7 @@ empty_values:
   attack_overrides: {}
   astrology_training: []
   attunement_rooms: []
+  perceive_health_rooms: []
   restock: {}
   athletics_outdoorsmanship_rooms: []
   combat_spell_training: {}
@@ -70,6 +72,7 @@ empty_values:
   almanac_skills: []
   held_athletics_items: []
   training_list: []
+  t2_avoids: []
   stabbity: {}
   telescope_storage: {}
   smoke: {}
@@ -93,3 +96,11 @@ empty_values:
   pattern_hues: {}
   holy_weapon: {}
   hollow_eve_loot_container: []
+  wands: []
+  wand_watcher_no_use_scripts: []
+  wand_watcher_no_use_rooms: []
+  buff_watcher_no_use_scripts: []
+  buff_watcher_no_use_rooms: []
+  noheal_empathylink: []
+  repair_heuristic_gear: []
+  sell_loot_ignored_metals_and_stones: []

@@ -42,7 +42,7 @@ hunting_info:
   - Twohanded Edged
   - Large Blunt
   - Twohanded Blunt
-prehunt_buffs: 705
+prehunt_buffing_room: 705
 waggle_sets:
   prehunt_buffs:
     Senses of the Tiger:
@@ -200,7 +200,7 @@ combat_spell_training:
     abbrev: EY
     use_auto_mana: true
     symbiosis: true
-pick_blind: true
+always_pick_blind: true
 dynamic_dance_skill: true
 training_abilities:
   Stealth: 30
