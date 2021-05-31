@@ -135,8 +135,9 @@ loop {
     # replace with @settings.enchanting_tools
     wait_for_script_to_complete('repair-tool',['imbuement rod'])
     wait_for_script_to_complete('repair-tool',['precise burin'])
-    wait_for_script_to_complete('repair-tool',['small brazier'])
+    wait_for_script_to_complete('repair-tool',['uthamar brazier'])
     wait_for_script_to_complete('repair-tool',['augmenting loop'])
+    wait_for_script_to_complete('repair-tool',['basic stamp'])
   end
 
   hunt_trainer('enchanting')

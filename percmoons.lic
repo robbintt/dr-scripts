@@ -2,7 +2,7 @@
 
 
 # needs custom_require loaded at startup
-pause 4
+pause 10
 
 no_kill_all
 no_pause_all

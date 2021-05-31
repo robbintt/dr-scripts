@@ -8,9 +8,9 @@ destination=../lich/scripts
 # NOTE: this requires gnutools on macos homebrew
 
 # Delete all symlinks from lich/scripts
-gfind $destination -maxdepth 1 -type l -exec rm -f {} \;
+find $destination -maxdepth 1 -type l -exec rm -f {} \;
 
 # Link all the things
-gln -rs *.lic $destination
-gln -rs profiles $destination/profiles
-gln -rs data $destination/data
+ln -rs *.lic $destination
+ln -rs profiles $destination/profiles
+ln -rs data $destination/data

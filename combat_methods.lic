@@ -1,4 +1,4 @@
-custom_require.call(%w[common])
+custom_require.call(%w[common spellmonitor])
 
 # mandatory for many things including hide?
 include DRC
@@ -29,6 +29,12 @@ module Combat
       return true
     end
     return false
+  end
+
+  def sheath_right
+    pause
+    waitrt?
+    put "sheath right"
   end
 
   def lob
@@ -109,7 +115,7 @@ module Combat
     put "stow gem"
     pause
     waitrt?
-    put "fill my pou with my poke"
+    put "fill my gem pou with my poke"
   end
 
   def cleanupall
@@ -128,7 +134,7 @@ module Combat
     put "stow gem"
     pause
     waitrt?
-    put "fill my pou with my poke"
+    put "fill my gem pou with my poke"
   end
 
   def attack
@@ -326,6 +332,7 @@ module Combat
       return
     end
 
+    circle
     pause # 1 sec
     waitrt?
     fput "cast", "You"
@@ -352,6 +359,38 @@ module Combat
     pause # 1 sec
     waitrt?
     fput "cast", "You"
+  end
+
+  def release_shw
+      pause
+      waitrt?
+      put "release shw"
+  end
+
+  def debil_shw
+    if !DRSpells.active_spells.include?('Shadow Web')
+      pause
+      waitrt?
+      put "prep shw 18"
+
+      pause # 1 sec
+      waitrt?
+      # how to abstract this with the method??
+      result = fput "circle", "You", "There is nothing else to face!" # 4 sec
+
+      # 3 sec
+      elbow
+      # 3 sec
+      elbow
+      # 3 sec
+      elbow
+      # 3 sec
+      elbow
+
+      pause
+      waitrt?
+      fput "cast", "You"
+    end
   end
 
   def debil

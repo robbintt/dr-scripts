@@ -11,24 +11,42 @@ tarantula_debug: false  #This is only necessary if you want it true.  Script def
 
 cambrinth_invoke_exact_amount: true
 
+wands:
+  icy crystal:
+    activation message: Mentally steeling yourself in preparation
+    activation verb: tap
+    container: spidersilk pouch
+    cooldown: 60
+    count: 2
+
+wand_watcher_no_use_scripts:
+  - burgle
+  - go2
+  - bescort
+
+wand_watcher_no_use_rooms:
+  - 1900
+  - Knife Clan, Triage                            # Dokt - silenced room
+  - !ruby/regexp '/^(?:First )?Provincial Bank,/' # Crossing Bank - mapped, but 1 regex- -> 3 rooms
+  - !ruby/regexp '/Carousel (?:Booth|Chamber)$/'  # Vaults - unmapped silenced / nomagic
+
 tarantula:
   Armor:
     combat:
     - Light Armor
   Weapon:
     combat:
+    - Small Edged
     - Melee Mastery
     - Missile Mastery
   Magic:
     combat:
-    - Arcana
-    - Lunar Magic
+    - Debilitation
     non_combat:
     - Arcana
     - Lunar Magic
   Survival:
     combat:
-    - Evasion
     - Skinning
     non_combat:
     - Outdoorsmanship
@@ -41,6 +59,7 @@ tarantula:
     - Scholarship
 
 tarantula_excluded_skills:
+  - Astrology
   - Appraisal
   - Forging
   - Outfitting
@@ -53,12 +72,11 @@ tarantula_excluded_skills:
   - Brigandine
   - Shield Usage
   - Parry Ability
-  - Small Edged
+  - Evasion
   - Brawling
   - First Aid
   - Locksmithing
   - Targeted Magic
-  - Debilitation
   - Perception
 
 enchanting_room: 19162
@@ -68,10 +86,11 @@ crafting_items_in_container:
 enchanting_tools:
 - imbuement rod
 - precise burin
-- small brazier
+- uthamar brazier
 - augmenting loop
+- basic stamp
 workorders_repair: false
-workorder_diff: hard
+workorder_diff: challenging
 mark_crafted_goods: true
 # grinding workorders for prestige
 craft_max_mindstate: 35
@@ -94,11 +113,18 @@ telescope_storage:
 use_lockpick_ring: true
 lockpick_container: lockpick ring
 skip_lockpick_ring_refill: true
+harvest_traps: false
 balance_lockpick_container: true
 picking_box_storage: "old backpack"
-picking_box_source: "scavenger's belt"
+#picking_box_source: "watery portal"
+picking_box_source: "leather poke"
 #picking_box_source: "old backpack"
 #picking_box_source: "haversack"
+
+tie_gem_pouches: true
+spare_gem_pouch_container: old backpack
+gem_pouch_adjective: red
+gem_pouch_noun: pouch
 
 train_with_burgle: true
 burgle_settings:
@@ -156,13 +182,20 @@ waggle_sets:
       - 36
       - 36
   prehunt_buffs:
+    Shadowling:
+      abbrev: seer
+      recast: 30
+      mana: 30
+      cambrinth:
+      - 35
+      - 35
     Seer's Sense:
       abbrev: seer
       recast: 30
       mana: 30
       cambrinth:
       - 30
-      - 30
+      - 25 # 30 when fully healed
       before:
       - message: release seer
         matches:

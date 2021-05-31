@@ -10,6 +10,11 @@ custom_require.call(%w[drinfomon common combat_methods util_methods])
 include Combat  # from combat_methods
 include UtilMethods # from util_methods
 
+before_dying do
+  sheath_right
+  unpause_script('percmoons')
+end
+
 waitrt?
 pause
 put "wield my scimitar"
@@ -20,6 +25,9 @@ echo("*** Did you use ';buff prehunt-buffs'?? ***")
 # this never gets unpaused since this script is killed
 pause_script('percmoons')
 
+debil_full = 0 # track rising and falling edge of debil
+debil_rising_edge = 33
+debil_falling_edge = 23
 used_tarantula = 0 # track whether tarantula has been used in this iteration
 loop {
 
@@ -35,14 +43,21 @@ loop {
 
   circle # get some balance & tactics
 
-  # currently use debil to hit elbows and backtrain... for how long?
-  if DRSkill.getxp('Debilitation') < 33 or DRSkill.getxp('Brawling') < 33
-    debil
+  #bring it down
+  if DRSkill.getxp('Debilitation') >= debil_rising_edge
+    debil_full = 1
+    release_shw
   end
 
-  # currently use debil to hit elbows and backtrain... for how long?
-  if DRSkill.getxp('Debilitation') < 33 or DRSkill.getxp('Brawling') < 33
-    debil
+  # bring it up
+  if DRSkill.getxp('Debilitation') < debil_falling_edge and debil_full = 1
+    debil_full = 0
+    debil_shw
+  end
+
+  # keep it up in case it is not
+  if DRSkill.getxp('Debilitation') < debil_rising_edge and debil_full = 0
+    debil_shw
   end
 
   if DRSkill.getxp('Targeted Magic') < 33 and DRSkill.getxp('Small Edged') < 33
@@ -129,6 +144,3 @@ loop {
     recall_critter(other_critter)
   end
 }
-
-# this never gets unpaused since this script is killed
-unpause_script('percmoons')
