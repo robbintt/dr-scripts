@@ -183,7 +183,7 @@ waggle_sets:
       - 36
   prehunt_buffs:
     Shadowling:
-      abbrev: seer
+      abbrev: shadowling
       recast: 30
       mana: 30
       cambrinth:
