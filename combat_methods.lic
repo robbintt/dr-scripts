@@ -115,7 +115,7 @@ module Combat
     put "stow gem"
     pause
     waitrt?
-    put "fill my gem pou with my poke"
+    put "fill my red pou with my poke"
   end
 
   def cleanupall
@@ -134,7 +134,7 @@ module Combat
     put "stow gem"
     pause
     waitrt?
-    put "fill my gem pou with my poke"
+    put "fill my red pou with my poke"
   end
 
   def attack
