@@ -11,6 +11,43 @@ tarantula_debug: false  #This is only necessary if you want it true.  Script def
 
 cambrinth_invoke_exact_amount: true
 
+stacker_container: encompassing.shadows
+scroll_stackers:
+  - verdant booklet
+  - brown booklet
+  - hefty booklet
+  - wizard tome
+  - eventide-hued tome
+  - crystal-bound tome
+  - blue tome
+  - abyssal-black codex
+  - carmine codex
+  - swirled codex
+  - platinum folio
+  - leather folio
+  - scroll folio
+  - small poke
+
+discard_scrolls:
+  - ease burden
+  - strange arrow
+  - gauge flow
+  - burden
+  - manifest force
+  - lay ward
+  - seal cambrinth
+  - dispel
+  - imbue
+
+custom_scrolls:
+  - inky-black scroll
+  - glittery-pink scroll
+  - Yavash-red scroll
+  - silvered scroll
+  - cerulean scroll
+  - honey-hued scroll
+
+wand_watcher_startup_delay: 10
 wands:
   icy crystal:
     activation message: Mentally steeling yourself in preparation
@@ -100,7 +137,7 @@ cambrinth: dreamweave odaj
 cambrinth_cap: 100
 divination_tool:
   name: sapphire prism
-  container: grey odaj
+  container: spidersilk pouch
 divination_bones_storage:
 astrology_training:
   - events
@@ -108,21 +145,21 @@ astrology_training:
   - rtr
 have_telescope: true
 telescope_storage:
-  container: telescope case
+  container: old.backpack
 
 use_lockpick_ring: true
 lockpick_container: lockpick ring
 skip_lockpick_ring_refill: true
 harvest_traps: false
 balance_lockpick_container: true
-picking_box_storage: "old backpack"
+picking_box_storage: old.backpack
 #picking_box_source: "watery portal"
 picking_box_source: "leather poke"
-#picking_box_source: "old backpack"
+#picking_box_source: old.backpack
 #picking_box_source: "haversack"
 
 tie_gem_pouches: true
-spare_gem_pouch_container: old backpack
+spare_gem_pouch_container: old.backpack
 gem_pouch_adjective: red
 gem_pouch_noun: pouch
 
@@ -189,6 +226,13 @@ waggle_sets:
       cambrinth:
       - 35
       - 35
+    Starlight Sphere:
+      abbrev: sls
+      mana: 14
+      cast: cast spider #offense
+      cyclic: true
+      night: true
+      day: false
     Seer's Sense:
       abbrev: seer
       recast: 30

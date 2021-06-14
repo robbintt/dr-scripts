@@ -1,0 +1,24 @@
+# empty the stacker, currently just for scrolls...
+stacker = "scroll.case"
+# maybe get the stacker in the right hand and just `stow left` instead of storing the item
+item = "scroll"
+
+empty_msg = "This section is empty."
+lastone_msg = "This was the last"
+remove_msg = "Carefully, you remove a copy"
+
+fput "flip my #{stacker}", "You flip through"
+fput "open my #{stacker}", "You open your", "is already open"
+
+turn_result = ""
+until turn_result.include? "You've reached the end" do
+  empty_one = ""
+  until empty_one.include? empty_msg or empty_one.include? lastone_msg do
+    empty_one = fput "pull my #{stacker}", lastone_msg, empty_msg, remove_msg, "You need an empty"
+    fput "stow my #{item}"
+  end
+  turn_result = fput "turn my #{stacker}", "You've reached the end", "You turn to a new section"
+end
+
+echo "Stacker emptied!"
+fput "flip my #{stacker}", "You flip through"
