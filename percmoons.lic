@@ -22,7 +22,7 @@ class PercMoons
       pause
       waitrt?
       # let this fail out, it runs constantly
-      put "perc moons"
+      fput "perc moons", "Roundtime:", ">", "...", "Katamba"
       pause
       waitrt?
       unpause_other_scripts

@@ -35,6 +35,17 @@ module UtilMethods
     return 0
   end
 
+  def collect_rock
+    # for tarantula... i guess the point is to train perception not outdoorsmanship? currently getting perc in hunting again...
+    #use_tarantula_if_full("Outdoorsmanship")
+    pause
+    waitrt?
+    fput "kick pile", "You take a step back and run up to the pile of rocks.", "I could not find what you were referring to.", "Assuming you mean"
+    fput "kick pile", "You take a step back and run up to the pile of rocks.", "I could not find what you were referring to.", "Assuming you mean"
+    pause
+    fput "collect rock", "Your concentration slips", "You feel fully prepared", "You manage", "You move", "You manage to collect a pile of rocks.", "You wander around and poke your fingers", "Mindlessly you begin to forage the area before you.", "With skill and nimble fingers you avoid the centipede that runs along in front of your fingers.", "You begin scanning the area before you, trying to find just the right spot to forage.", "You move slightly to the right, hoping to find a better foraging spot.", "Hawkishly"
+  end
+
   def buy(item, cost)
     # typically offer a higher cost so you don't have to deal with barter
     # this can be fixed later to read and say the price the merchant offers
