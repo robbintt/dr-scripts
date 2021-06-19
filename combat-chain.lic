@@ -15,9 +15,14 @@ before_dying do
   unpause_script('percmoons')
 end
 
+# only use is in "wield"
+weapon = "steel foil"
+
 waitrt?
 pause
-put "wield my scimitar"
+put "wield my #{weapon}"
+
+set_stance("shield")
 
 ## TODO: use buff script
 echo("*** Did you use ';buff prehunt-buffs'?? ***")
@@ -26,7 +31,7 @@ echo("*** Did you use ';buff prehunt-buffs'?? ***")
 pause_script('percmoons')
 
 debil_full = 0 # track rising and falling edge of debil
-debil_rising_edge = 33
+debil_rising_edge = 31 # MB should keep it full
 debil_falling_edge = 23
 used_tarantula = 0 # track whether tarantula has been used in this iteration
 loop {
@@ -55,13 +60,22 @@ loop {
     debil_shw
   end
 
+  # swap every full rotation if staying balanced, else rebalance
+  if DRSkill.getxp('Shield Usage') < DRSkill.getxp('Parry Ability')
+    set_stance("shield")
+  else
+    set_stance("parry")
+  end
+
   # keep it up in case it is not
   if DRSkill.getxp('Debilitation') < debil_rising_edge and debil_full = 0
     debil_shw
   end
 
   if DRSkill.getxp('Targeted Magic') < 33 and DRSkill.getxp('Small Edged') < 33
-    debil
+    if DRSkill.getxp('Debilitation') < 34
+      debil
+    end
     circle # get some balance & tactics
     kill_pd
     kill_pd
@@ -70,7 +84,9 @@ loop {
   end
 
   if DRSkill.getxp('Targeted Magic') < 33 and DRSkill.getxp('Brawling') < 33
-    debil
+    if DRSkill.getxp('Debilitation') < 34
+      debil
+    end
     circle # get some balance & tactics
     elbow_pd
     elbow_pd
@@ -79,7 +95,9 @@ loop {
   end
 
   if DRSkill.getxp('Targeted Magic') < 33 and DRSkill.getxp('Brawling') >= 33 and DRSkill.getxp('Small Edged') >= 33
-    debil
+    if DRSkill.getxp('Debilitation') < 34
+      debil
+    end
     target_pd
     target_pd
     target_pd
@@ -114,9 +132,10 @@ loop {
   #  cleanup
   #end
 
-  if DRSkill.getxp('Arcana') < 33
-    gazecrystal
-  end
+  # use lich sanowret
+  #if DRSkill.getxp('Arcana') < 33
+  #  gazecrystal
+  #end
 
   if DRSkill.getxp('Perception') < 33
     hunt

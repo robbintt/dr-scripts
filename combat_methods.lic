@@ -31,6 +31,27 @@ module Combat
     return false
   end
 
+  def set_stance(stance)
+
+    if stance == "shield"
+      fput "stance set 86 0 100 100", "Setting your"
+
+    elsif stance == "parry"
+      fput "stance set 86 100 0 100", "Setting your"
+
+    elsif stance == "evasion"
+      fput "stance set 100 86 0 100", "Setting your"
+
+    elsif stance == "balanced"
+      fput "stance set 100 43 43 100", "Setting your"
+
+    else
+      fput "stance set 100 86 0 100", "Setting your"
+    end
+
+  end
+
+
   def sheath_right
     pause
     waitrt?

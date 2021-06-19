@@ -48,13 +48,13 @@ custom_scrolls:
   - honey-hued scroll
 
 wand_watcher_startup_delay: 10
-wands:
-  icy crystal:
-    activation message: Mentally steeling yourself in preparation
-    activation verb: tap
-    container: spidersilk pouch
-    cooldown: 60
-    count: 2
+#wands:
+#  icy crystal:
+#    activation message: Mentally steeling yourself in preparation
+#    activation verb: tap
+#    container: spidersilk pouch
+#    cooldown: 60
+#    count: 2
 
 wand_watcher_no_use_scripts:
   - burgle
@@ -67,15 +67,17 @@ wand_watcher_no_use_rooms:
   - !ruby/regexp '/^(?:First )?Provincial Bank,/' # Crossing Bank - mapped, but 1 regex- -> 3 rooms
   - !ruby/regexp '/Carousel (?:Booth|Chamber)$/'  # Vaults - unmapped silenced / nomagic
 
+# primary/2ndary pools are bigger, we must alternate so do primary at least 50% of the time.
+# so we already know we want to do 0 tert skills.  Now lets get secondary into a tight band of skills easy to lock.
 tarantula:
   Armor:
     combat:
-    - Light Armor
+    #- Light Armor
   Weapon:
     combat:
-    - Small Edged
-    - Melee Mastery
-    - Missile Mastery
+    #- Small Edged
+    #- Melee Mastery
+    #- Missile Mastery
   Magic:
     combat:
     - Debilitation
@@ -86,14 +88,14 @@ tarantula:
     combat:
     - Skinning
     non_combat:
-    - Outdoorsmanship
     - Thievery
+    - Outdoorsmanship
   Lore:
     combat:
     - Tactics
     non_combat:
-    - Performance
-    - Scholarship
+    #- Performance
+    #- Scholarship
 
 tarantula_excluded_skills:
   - Astrology
@@ -115,6 +117,8 @@ tarantula_excluded_skills:
   - Locksmithing
   - Targeted Magic
   - Perception
+  - Utility
+  - Augmentation
 
 enchanting_room: 19162
 # list of items to only grab from crafting_container, aka - oil for forging
@@ -131,10 +135,16 @@ workorder_diff: challenging
 mark_crafted_goods: true
 # grinding workorders for prestige
 craft_max_mindstate: 35
-crafting_container: cerulean sack
+crafting_container: gold bag
 
-cambrinth: dreamweave odaj
-cambrinth_cap: 100
+cambrinth_items:
+#- name: dreamweave odaj
+#  cap: 100
+#  stored: false
+- name: sishav tashahai
+  cap: 200
+  stored: true
+
 divination_tool:
   name: sapphire prism
   container: spidersilk pouch
@@ -181,6 +191,10 @@ burgle_settings:
 favor_goal: 25
 favor_god: Faenella
 
+
+buff_nonspells:
+  fill my red pouch with my leather poke: 500
+
 buff_spells: &buffs
   shadows:
     abberv: shadows
@@ -224,8 +238,8 @@ waggle_sets:
       recast: 30
       mana: 30
       cambrinth:
-      - 35
-      - 35
+      - 30
+      - 30
     Starlight Sphere:
       abbrev: sls
       mana: 14
@@ -248,14 +262,16 @@ waggle_sets:
     Minor Physical Protection:
       prep: invoke
       abbrev: my tattoo
-      recast: 30
+      recast: 25
       cambrinth:
       - 35
       - 35
       - 30
+      before:
+        - message: harness 50
     Invocation of the Spheres:
       abbrev: iots
-      mana: 640
+      mana: 620
       prep_time: 30
       recast: 1000
       ritual: true
@@ -289,8 +305,16 @@ gear:
   :adjective: plate
   :hinders_lockpicking: true
   :is_worn: true
-- :name: sipar
-  :adjective: round
+- :name: shield
+  :adjective: ka'hurst
+  :hinders_lockpicking: true
+  :is_worn: true
+- :name: handwraps
+  :adjective: steelsilk
+  :hinders_lockpicking: true
+  :is_worn: true
+- :name: footwraps
+  :adjective: steelsilk
   :hinders_lockpicking: true
   :is_worn: true
 - :name: stick
@@ -327,12 +351,14 @@ gear:
 
 gear_sets:
   standard:
-  - round sipar
+  - ka'hurst shield
   - parry stick
   - thick leathers
   - scale gloves
   - ring helm
   - plate mask
+  - steelsilk handwraps
+  - steelsilk footwraps
   stealing:
   - parry stick
   swimming:
