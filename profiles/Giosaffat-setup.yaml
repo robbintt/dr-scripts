@@ -149,6 +149,7 @@ enchanting_tools:
 - uthamar brazier
 - augmenting loop
 - basic stamp
+use_own_brazier: true
 workorders_repair: false
 workorder_diff: challenging
 mark_crafted_goods: true
