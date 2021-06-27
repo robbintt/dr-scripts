@@ -9,6 +9,8 @@ custom_require.call(%w[common common-travel])
 include DRC  # wait_for_script_to_complete
 include DRCT # walk_to
 
+no_pause_all
+
 def power
   # pause ;percmoons if using this
   pause
