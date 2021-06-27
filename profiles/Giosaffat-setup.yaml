@@ -11,6 +11,19 @@ tarantula_debug: false  #This is only necessary if you want it true.  Script def
 
 cambrinth_invoke_exact_amount: true
 
+autostart_scripts_delay: 5
+autostart_scripts:
+  - moonwatch
+  - wand-watcher
+  - spellmonitor
+  - drinfomon
+  - tarantula
+  - percmoons
+  - rpa_sniper
+  - sanowret-crystal
+  - skill-recorder
+
+
 stacker_container: encompassing.shadows
 scroll_stackers:
   - verdant booklet
