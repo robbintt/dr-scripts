@@ -112,11 +112,9 @@ loop {
   check_favors
   hunt_trainer('enchanting')
 
-  #if DRSkill.getxp('Appraisal') < 25 and studied_art == 0
-  #  power
-  #  studied_art = 1 # do this once only for now
-  #  wait_for_script_to_complete('study-art')
-  #end
+  if DRSkill.getxp('Appraisal') < 25
+    wait_for_script_to_complete('study-art')
+  end
 
   power
   wait_for_script_to_complete('burgle',['start'])
