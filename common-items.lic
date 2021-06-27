@@ -135,7 +135,7 @@ module DRCI
   @@put_away_item_success_patterns = [
     /^You put your .* in/,
     /^You hold out/,
-    /^You tuck your/,
+    /^You tuck/,
     # The next message is when item crumbles when stowed, like a moonblade.
     /^As you open your hand to release the/,
     # You're a thief and you binned a stolen item.
@@ -208,7 +208,7 @@ module DRCI
     /^You open/,
     /^You slowly open/,
     /^You unbutton/,
-    /^That is already open/,
+    /is already open/,
     /^You spread your arms, carefully holding your bag well away from your body/
   ]
 
@@ -227,7 +227,7 @@ module DRCI
     /^You close/,
     /^You quickly close/,
     /^You pull/,
-    /^That is already closed/
+    /is already closed/
   ]
 
   @@close_container_failure_patterns = [
@@ -378,6 +378,20 @@ module DRCI
     end
   end
 
+  def have_item_by_look?(item, container)
+    return false unless item
+
+    item = item.delete_prefix('my ')
+    preposition = 'in my' if container && !(container =~ /^((in|on|under|behind|from) )?my /i)
+
+    case DRC.bput("look at my #{item} #{preposition} #{container}", "#{item}", 'You see nothing unusual', 'I could not find', 'What were you referring to')
+    when 'You see nothing unusual', "#{item}"
+      true
+    else
+      false
+    end
+  end
+
   #########################################
   # COUNT ITEMS
   #########################################
@@ -488,10 +502,14 @@ module DRCI
 
   # Same as 'get_item_unsafe' but ensures that
   # the container argument is prefixed with 'my' qualifier.
-  def get_item_safe(item, container = nil)
+  def get_item_safe?(item, container = nil)
     item = "my #{item}" if item && !(item =~ /^my /i)
     container = "my #{container}" if container && !(container =~ /^((in|on|under|behind|from) )?my /i)
     get_item_unsafe(item, container)
+  end
+
+  def get_item_safe(item, container = nil)
+    get_item_safe?(item, container)
   end
 
   # Gets an item, optionally from a specific container.

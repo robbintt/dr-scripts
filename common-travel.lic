@@ -77,7 +77,11 @@ module DRCT
 
     count.times do
       buy_item(room, "#{lockpick_type} lockpick")
-      DRC.bput("put my lockpick on my #{container}", 'You put')
+      case DRC.bput("put my lockpick on my #{container}", 'You put', 'different kinds of lockpicks on the same lockpick ring')
+      when 'different kinds of lockpicks on the same lockpick ring'
+        DRC.message('There is something wrong with your lockpick settings. Mixing types in a container is not allowed.')
+        break
+      end
     end
 
     # Be polite to Thieves, who need the room to be empty
@@ -86,7 +90,8 @@ module DRCT
   end
 
   def walk_to(target_room, restart_on_fail = true)
-    Flags.add('closed-shop', 'The door is locked up tightly for the night', 'You smash your nose', '^A servant (blocks|stops)')
+    Flags.add('travel-closed-shop', 'The door is locked up tightly for the night', 'You smash your nose', '^A servant (blocks|stops)')
+    Flags.add('travel-engaged', 'You are engaged')
 
     target_room = tag_to_id(target_room) if target_room.is_a?(String) && target_room.count("a-zA-Z") > 0
 
@@ -118,27 +123,37 @@ module DRCT
     timer = Time.now
     prev_room = XMLData.room_description + XMLData.room_title
     while Script.running.include?(script_handle)
-      if Flags['closed-shop']
-        Flags.reset('closed-shop')
+      # Shop closed, stop script and open door then restart
+      if Flags['travel-closed-shop']
+        Flags.reset('travel-closed-shop')
         kill_script(script_handle)
         if /You open/ !~ DRC.bput('open door', 'It is locked', 'You .+', 'What were')
           return false
         end
         timer = Time.now
-        script_handle = start_script 'go2', [room_num.to_s]
+        script_handle = start_script('go2', [room_num.to_s])
       end
+      # You're engaged, stop script and retreat then restart
+      if Flags['travel-engaged']
+        Flags.reset('travel-engaged')
+        kill_script(script_handle)
+        DRC.retreat
+        timer = Time.now
+        script_handle = start_script('go2', [room_num.to_s])
+      end
+      # Something interferred with movement, stop script then restart
       if (Time.now - timer) > 90
         kill_script(script_handle)
         pause 0.5 while Script.running.include?(script_handle)
         timer = Time.now
-
         break unless restart_on_fail
-
         script_handle = start_script('go2', [room_num.to_s])
       end
+      # If an escort script is running or we're making progress then update our timer so we don't timeout (see above)
       if Script.running?('escort') || Script.running?('bescort') || (XMLData.room_description + XMLData.room_title) != prev_room || XMLData.room_description =~ /The terrain constantly changes as you travel along on your journey/
         timer = Time.now
       end
+      # Where did you come from, where did you go? Where did you come from, Cotten-Eye Joe?
       prev_room = XMLData.room_description + XMLData.room_title
       pause 0.5
     end
@@ -146,7 +161,7 @@ module DRCT
     # Consider just returning this boolean and letting callers decide what to do on a failed move.
     if room_num != Room.current.id && restart_on_fail
       echo "Failed to navigate to room #{room_num}, attempting again"
-      walk_to room_num
+      walk_to(room_num)
     end
     room_num == Room.current.id
   end
@@ -185,14 +200,17 @@ module DRCT
     DRC.retreat(ignored_npcs)
   end
 
-  def find_empty_room(search_rooms, idle_room, predicate = nil, min_mana = 0, strict_mana = false)
+  def find_empty_room(search_rooms, idle_room, predicate = nil, min_mana = 0, strict_mana = false, max_search_attempts = Float::INFINITY)
+    search_attempt = 0
     check_mana = min_mana > 0
     loop do
+      search_attempt = search_attempt + 1
+      echo "*** Search attempt #{search_attempt} of #{max_search_attempts} to find a suitable room ***"
       found_empty = false
       search_rooms.each do |room_id|
         walk_to(room_id)
         pause 0.1 until room_id == Room.current.id
-        suitable_room = predicate ? predicate.call : (DRRoom.pcs - DRRoom.group_members).empty?
+        suitable_room = predicate ? predicate.call(search_attempt) : (DRRoom.pcs - DRRoom.group_members).empty?
         if suitable_room && check_mana && !DRStats.moon_mage?
           found_empty = true
           suitable_room = (DRCA.perc_mana >= min_mana)
@@ -208,14 +226,14 @@ module DRCT
 
       (check_mana = min_mana > 0) && !check_mana
 
-      if idle_room
+      if idle_room && search_attempt < max_search_attempts
         idle_room = idle_room.sample if idle_room.is_a?(Array)
         walk_to(idle_room)
         wait_time = rand(20..40)
-        echo "***Failed to find an empty room, pausing #{wait_time} sec***"
+        echo "*** Failed to find an empty room, pausing #{wait_time} seconds ***"
         pause wait_time
       else
-        echo '***Failed to find an empty room, stopping the search***'
+        echo '*** Failed to find an empty room, stopping the search ***'
         return false
       end
     end
