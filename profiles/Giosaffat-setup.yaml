@@ -48,13 +48,19 @@ custom_scrolls:
   - honey-hued scroll
 
 wand_watcher_startup_delay: 10
-#wands:
+wands:
 #  icy crystal:
 #    activation message: Mentally steeling yourself in preparation
 #    activation verb: tap
 #    container: spidersilk pouch
 #    cooldown: 60
 #    count: 2
+  bloodwood branch:
+    activation message: The world around you seems to slow as the spell grips your mind.
+    activation verb: tap
+    container: spidersilk pouch
+    cooldown: 30
+    count: 2
 
 wand_watcher_no_use_scripts:
   - burgle
@@ -163,10 +169,9 @@ skip_lockpick_ring_refill: true
 harvest_traps: false
 balance_lockpick_container: true
 picking_box_storage: old.backpack
-#picking_box_source: "watery portal"
 picking_box_source: "leather poke"
+#picking_box_source: "watery portal"
 #picking_box_source: old.backpack
-#picking_box_source: "haversack"
 
 tie_gem_pouches: true
 spare_gem_pouch_container: old.backpack
@@ -190,6 +195,7 @@ burgle_settings:
 
 favor_goal: 25
 favor_god: Faenella
+use_favor_altars: false
 
 
 buff_nonspells:
@@ -233,6 +239,14 @@ waggle_sets:
       - 36
       - 36
   prehunt_buffs:
+    Aura Sight:
+      abbrev: aus
+      recast: 30
+      mana: 5
+      cambrinth:
+      - 31
+      - 32
+      - 32
     Shadowling:
       abbrev: shadowling
       recast: 30
@@ -305,8 +319,10 @@ gear:
   :adjective: plate
   :hinders_lockpicking: true
   :is_worn: true
-- :name: shield
-  :adjective: ka'hurst
+#- :name: shield
+# :adjective: demonscale
+- :name: buckler
+  :adjective: glaes
   :hinders_lockpicking: true
   :is_worn: true
 - :name: handwraps
@@ -351,7 +367,7 @@ gear:
 
 gear_sets:
   standard:
-  - ka'hurst shield
+  - glaes buckler
   - parry stick
   - thick leathers
   - scale gloves

@@ -36,11 +36,20 @@ end
 def check_favors
   include DRC
   @settings = get_settings
+  town_data = get_data('town')
+  @hometown = town_data[@settings.hometown]
   return unless @settings.favor_goal
   /(\d+)/ =~ bput('favor', 'You currently have \d+', 'You are not currently')
   favor_count = Regexp.last_match(1).to_i
   return if favor_count >= @settings.favor_goal
 
+  # TODO: dry it out
+  if /could not/ =~ bput("tap my other #{@settings.favor_god} orb", 'The orb is delicate', 'I could not find')
+  elsif rub_other_orb?
+    walk_to(@hometown['favor_altar']['id'])
+    fput("get my #{@settings.favor_god} orb")
+    fput('put my orb on altar')
+  end
   if /could not/ =~ bput("tap my #{@settings.favor_god} orb", 'The orb is delicate', 'I could not find')
     run_favors
     fput('stow my orb')
@@ -52,6 +61,17 @@ def check_favors
       run_favors
       fput('stow my orb')
     end
+  end
+end
+# TODO: dry it out
+def rub_other_orb?
+  case bput("rub my other #{@settings.favor_god} orb", 'not yet fully prepared', 'lacking in the type of sacrifice the orb requires', 'your sacrifice is properly prepared')
+  when 'not yet fully prepared'
+    false
+  when 'lacking in the type of sacrifice the orb requires'
+    false
+  when 'your sacrifice is properly prepared'
+    true
   end
 end
 def rub_orb?
@@ -87,9 +107,8 @@ loop {
   waitrt?
   pause
 
-  hunt_trainer('enchanting')
-
   check_favors
+  hunt_trainer('enchanting')
 
   #if DRSkill.getxp('Appraisal') < 25 and studied_art == 0
   #  power
@@ -124,6 +143,7 @@ loop {
   #  wait_for_script_to_complete('climb', [6])
   #end
 
+  check_favors
   hunt_trainer('enchanting')
 
   if DRSkill.getxp('Enchanting') < 14
@@ -140,9 +160,11 @@ loop {
     wait_for_script_to_complete('repair-tool',['basic stamp'])
   end
 
+  check_favors
   hunt_trainer('enchanting')
 
-  if DRSkill.getxp('Outdoorsmanship') < 30
+  # probably use perception as the trigger instead...
+  if DRSkill.getxp('Outdoorsmanship') < 10 or DRSkill.getxp('Perception') < 10
     power
     wait_for_script_to_complete('go2', ['19162'] ) # crossing urn
     wait_for_script_to_complete('rocks', [10])
@@ -153,6 +175,9 @@ loop {
     # need to tell study whether to pass in a point in the book or continue from last
     wait_for_script_to_complete('study', [11])
   end
+
+  check_favors
+  hunt_trainer('enchanting')
 }
 
 # this never gets unpaused since this script is killed

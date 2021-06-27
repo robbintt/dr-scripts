@@ -24,7 +24,7 @@ put "wield my #{weapon}"
 
 set_stance("shield")
 
-## TODO: use buff script
+## TODO: use buff script and put the hunting area goto in here?
 echo("*** Did you use ';buff prehunt-buffs'?? ***")
 
 # this never gets unpaused since this script is killed
@@ -39,7 +39,8 @@ loop {
   #critter = "gryphon"
   #critter = "basilisk"
   #critter = "gremlin"
-  critter = "beast"
+  #critter = "beast"
+  critter = "gargoyle"
   other_critter = "other #{critter}"
 
   if used_tarantula == 0

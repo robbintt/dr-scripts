@@ -30,44 +30,78 @@ class MagicTrainer
     end
   end
 
+  def prep_task(spell, mana)
+    pause
+    waitrt?
+    put "prep #{spell} #{mana}"
+    if DRSkill.getxp("Outdoorsmanship") < 32 and DRSkill.getxp("Perception") < 32
+      collect_rock
+    end
+    waitfor "fully prepared to cast"
+    pause 5
+  end
+
+  def prep_notask(spell, mana)
+    pause
+    waitrt?
+    put "prep #{spell} #{mana}"
+    if DRSkill.getxp("Outdoorsmanship") < 32 and DRSkill.getxp("Perception") < 32
+      collect_rock
+    end
+    waitfor "fully prepared to cast"
+    pause 5
+  end
+
+  def prep_symbiosis
+    put "prep symbiosis"
+  end
+
   def skill_targets
     @skill_targets
   end
 
   def utilmagic
+    spell = "pg"
+    mana = 28
     pause
     waitrt?
     put "release"
     pause
     waitrt?
-    put "prep symbiosis"
-    pause
-    waitrt?
-    put "prep pg 28"
-    waitfor "fully prepared to cast"
-    pause 5
+    prep_symbiosis
+    #prep_notask spell, mana
+    prep_task spell, mana
     fput "cast", "You gesture", "You don't have a spell prepared!"
   end
 
   def augmagic
+    spell = "aus"
+    mana = 28
     pause
     waitrt?
     put "release"
     pause
     waitrt?
-    put "prep symbiosis"
+    prep_symbiosis
+    #prep_notask spell, mana
+    prep_task spell, mana
+    fput "cast", "You gesture", "You don't have a spell prepared!"
+  end
+
+  def caster(spell, mana)
     pause
     waitrt?
-    put "prep aus 28"
-    waitfor "fully prepared to cast"
-    pause 5
+    put "release"
+    pause
+    waitrt?
+    prep_symbiosis
+    #prep_notask spell, mana
+    prep_task spell, mana
     fput "cast", "You gesture", "You don't have a spell prepared!"
   end
 end
 
 magictrainer = MagicTrainer.new
-
-# need to thread an RT thing into this script
 
 used_tarantula = 0 # track whether tarantula has been used in this iteration
 
@@ -77,13 +111,13 @@ while DRSkill.getxp('Utility') < magictrainer.skill_targets['Utility'] or DRSkil
   end
   # keep running this spell with primary magic until PM also locked
   if DRSkill.getxp('Utility') < magictrainer.skill_targets['Utility'] or DRSkill.getxp('Lunar Magic') < magictrainer.skill_targets['Lunar Magic']
-    magictrainer.utilmagic
+    magictrainer.caster "pg", 28
   end
   if used_tarantula == 0
     used_tarantula = use_tarantula_if_full("Lunar Magic")
   end
   # keep running this spell with primary magic until PM also locked
   if DRSkill.getxp('Augmentation') < magictrainer.skill_targets['Augmentation'] or DRSkill.getxp('Lunar Magic') < magictrainer.skill_targets['Lunar Magic']
-    magictrainer.augmagic
+    magictrainer.caster "aus", 28
   end
 end

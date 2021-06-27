@@ -7,16 +7,16 @@ ritual_focus_worn = "true"
 #focus_container = "backpack"
 
 # each spell has special cases handled below, except dc
-prep_sizes = {"rtr" => "630", "dc" => "590", "iots" => "640"}
+prep_sizes = {"rtr" => "630", "dc" => "590", "iots" => "640", "bc" => "660"}
 
 # allowlist of spells
-if ["iots", "rtr", "dc"].include?(variable[0])
+if ["iots", "rtr", "dc", "bc"].include?(variable[0])
   $spell = variable[0]
   $mana = prep_sizes[$spell]
   echo("Casting #{$spell} at #{$mana}.")
   pause
 else
-  echo("ERROR: That spell is not castable. Must be in: ['iots', 'rtr', 'dc']")
+  echo("ERROR: That spell is not castable. Must be in: ['iots', 'rtr', 'dc', 'bc']")
   exit
 end
 

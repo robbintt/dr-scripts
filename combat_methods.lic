@@ -267,7 +267,7 @@ module Combat
       @@timer_gazecrystal = Time.now
       pause
       waitrt?
-      put "gaze my sano crystal"
+      put "exhale my sano crystal"
     end
   end
 

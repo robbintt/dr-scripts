@@ -115,6 +115,8 @@ prep_messages:
 - You are now prepared to cast
 - You already have a cantrip prepared!
 - Invoke what
+- You have yet to receive any training in the magical arts
+- You have no idea how to cast that spell
 
 cast_messages:
 - You clench your fists
@@ -451,6 +453,7 @@ spell_data:
     mana: 5
     recast: 1
     mana_type: life
+    harmless: true
   Aesrela Everild:
     skill: Targeted Magic
     abbrev: AE
@@ -506,6 +509,7 @@ spell_data:
     mana: 5
     recast: 1
     mana_type: life
+    harmless: true
   Air Blast:
     skill: cantrip
     abbrev: C AI B
@@ -614,6 +618,7 @@ spell_data:
     mana: 15
     recast: 1
     mana_type: life
+    harmless: true
   Awaken Forest:
     skill: Utility
     abbrev: AF
@@ -675,6 +680,7 @@ spell_data:
     mana: 5
     recast: 1
     mana_type: life
+    harmless: true
   Blufmor Garaen:
     skill: Targeted Magic
     abbrev: BG
@@ -794,6 +800,7 @@ spell_data:
     mana: 150
     ritual: true
     mana_type: life
+    harmless: true
   Clarity:
     skill: Augmentation
     abbrev: clarity
@@ -818,6 +825,7 @@ spell_data:
     abbrev: COMPEL
     mana: 15
     mana_type: life
+    harmless: true
   Compost:
     skill: Utility
     abbrev: COMPOST
@@ -984,6 +992,7 @@ spell_data:
     abbrev: EASE
     mana: 1
     mana_type: ap
+    harmless: true
   Eagle's Cry:
     skill: Targeted Magic
     mana: 1
@@ -1162,6 +1171,7 @@ spell_data:
     mana: 15
     recast: 1
     mana_type: life
+    harmless: true
   Focus Moonbeam:
     skill: Utility
     abbrev: FM
@@ -1191,6 +1201,7 @@ spell_data:
     mana: 30
     expire: You no longer feel especially strained from invoking the Fountain of Creation
     mana_type: life
+    harmless: true
   Frostbite:
     skill: Debilitation
     harmless: true
@@ -1207,6 +1218,7 @@ spell_data:
     mana: 5
     abbrev: GAF
     mana_type: ap
+    harmless: true
   Gar Zeng:
     skill: Targeted Magic
     abbrev: GZ
@@ -1229,6 +1241,7 @@ spell_data:
     mana: 5
     recast: 1
     mana_type: life
+    harmless: true
   Glythtide's Gift:
     skill: Augmentation
     abbrev: GG
@@ -1260,6 +1273,7 @@ spell_data:
     prep_type: prepare
     mana: 5
     mana_type: life
+    harmless: true
   Gust of Wind:
     skill: cantrip
     abbrev: C G O W
@@ -1325,21 +1339,25 @@ spell_data:
     mana: 15
     abbrev: heal
     mana_type: life
+    harmless: true
   Heal Scars:
     skill: Utility
     abbrev: HS
     mana: 1
     mana_type: life
+    harmless: true
   Heal Wounds:
     skill: Utility
     mana: 1
     abbrev: HW
     mana_type: life
+    harmless: true
   Heart Link:
     skill: Utility
     mana: 15
     abbrev: HL
     mana_type: life
+    harmless: true
   Heighten Pain:
     skill: Debilitation
     harmless: true
@@ -1423,6 +1441,7 @@ spell_data:
         - The lingering effects of your Innocence spell fade away
         - Release what?
     mana_type: life
+    harmless: true
   Instinct:
     skill: Augmentation
     abbrev: INST
@@ -1458,6 +1477,7 @@ spell_data:
     mana: 5
     recast: 1
     mana_type: life
+    harmless: true
   Ivory Mask:
     skill: Augmentation
     abbrev: IVM
@@ -1480,6 +1500,7 @@ spell_data:
     mana: 5
     recast: 1
     mana_type: ap
+    harmless: true
   Lethargy:
     skill: Debilitation
     harmless: true
@@ -1528,6 +1549,7 @@ spell_data:
     mana: 5
     recast: 1
     mana_type: ap
+    harmless: true
   Mantle of Flame:
     skill: Augmentation
     harmless: true
@@ -1592,6 +1614,7 @@ spell_data:
     mana: 5
     recast: 1
     mana_type: life
+    harmless: true
   Meraud's Cry:
     skill: Debilitation
     abbrev: MC
@@ -1702,6 +1725,7 @@ spell_data:
     abbrev: PARALYSIS
     mana: 2
     mana_type: life
+    harmless: true
   Partial Displacement:
     skill: Targeted Magic
     abbrev: PD
@@ -1723,6 +1747,7 @@ spell_data:
     mana: 300
     ritual: true
     mana_type: life
+    harmless: true
   Persistence of Mana:
     skill: Augmentation
     abbrev: POM
@@ -1808,6 +1833,7 @@ spell_data:
     mana: 15
     recast: 1
     mana_type: life
+    harmless: true
   Read the Ripples:
     skill: Utility
     abbrev: RtR
@@ -1845,6 +1871,7 @@ spell_data:
     mana: 5
     recast: 1
     mana_type: life
+    harmless: true
   Regalia:
     abbrev: REGAL
     mana: 15
@@ -1858,6 +1885,7 @@ spell_data:
     cyclic: true
     mana: 5
     mana_type: life
+    harmless: true
   Reinforce Stone:
     skill: cantrip
     abbrev: C R S
@@ -2328,6 +2356,7 @@ spell_data:
     mana: 15
     recast: 1
     mana_type: life
+    harmless: true
   Tremor:
     skill: Debilitation
     harmless: true
@@ -2394,6 +2423,7 @@ spell_data:
     mana: 15
     recast: 1
     mana_type: life
+    harmless: true
   Viscous Solution:
     skill: Debilitation
     harmless: true
@@ -2411,6 +2441,7 @@ spell_data:
     mana: 5
     abbrev: VH
     mana_type: life
+    harmless: true
   Vivisection:
     skill: Targeted Magic
     abbrev: vivisection

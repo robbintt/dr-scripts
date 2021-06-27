@@ -16,7 +16,7 @@ class TattooTrainer
     @camb = "dreamweave odaj"
     #@camb_charge = 11
     #@camb_charge = 15
-    @camb_charge = 18
+    @camb_charge = 21
 
     @justice_string = "After assessing the area, you think local law enforcement keeps an eye on what's going on here."
     @justicearea = ""
