@@ -48,11 +48,29 @@ class TestDRCI < Minitest::Test
   # WEAR ITEM
   #########################################
 
-  def test_wear_item_you_toss_one_strap
+  def test_wear_item__you_toss_one_strap
     run_drci_command(
       ["You toss one strap of the harness over your shoulder, pull it down and buckle it to its mate."],
       'wear_item?',
       ["weapon harness"],
+      [assert_result]
+    )
+  end
+
+  def test_wear_item__you_tug
+    run_drci_command(
+      ["You tug on the chain gloves, flexing your hand as you pull them on for a snug fit."],
+      'wear_item?',
+      ["chain gloves"],
+      [assert_result]
+    )
+  end
+
+  def test_wear_item__you_pull
+    run_drci_command(
+      ["You pull the chain balaclava over your head, tugging at the links to smooth them into optimal coverage."],
+      'wear_item?',
+      ["chain balaclava"],
       [assert_result]
     )
   end
@@ -160,6 +178,15 @@ class TestDRCI < Minitest::Test
     )
   end
 
+  def test_get_item__should_not_get_with_injured_hand
+    run_drci_command(
+      ["Your right hand is too injured to do that."],
+      'get_item?',
+      ["anything"],
+      [refute_result]
+    )
+  end
+
   def test_get_item__should_need_to_tend_wound
     run_drci_command(
       ["The crossbow bolt needs to be tended to be removed."],
@@ -233,11 +260,102 @@ class TestDRCI < Minitest::Test
   end
 
   #########################################
+  # PUT AWAY ITEM
+  #########################################
+
+  def test_put_away_item__you_put
+    run_drci_command(
+      ["You put your arrow in your thigh quiver."],
+      'put_away_item?',
+      ["arrow", "quiver"],
+      [assert_result]
+    )
+  end
+
+  def test_put_away_item__you_tuck
+    run_drci_command(
+      ["You tuck your jaguar-spotted kitten safely into its comfortable cat cottage."],
+      'put_away_item?',
+      ["kitten", ["cottage", "home"]],
+      [assert_result]
+    )
+  end
+
+  def test_put_away_item__you_open_your_hand
+    run_drci_command(
+      ["As you open your hand to release the moonblade, it is consumed in a cold blue-white fire."],
+      'put_away_item?',
+      ["moonblade"],
+      [assert_result]
+    )
+  end
+
+  def test_put_away_item__drop_in_bin
+    run_drci_command(
+      ["A bored-looking Human boy nods toward you as your silvered rapier falls into the azurite bin."],
+      'put_away_item_unsafe?',
+      ["rapier", "bin"],
+      [assert_result]
+    )
+  end
+
+  def test_put_away_item__open_closed_container
+    run_drci_command(
+      [
+        "There isn't any more room in the backpack for that.",
+        "That is closed.",
+        "You open the cat cottage.",
+        "You tuck your jaguar-spotted kitten safely into its comfortable cat cottage."
+      ],
+      'put_away_item?',
+      ["kitten", ["backpack", "cottage"]],
+      [assert_result]
+    )
+  end
+
+  #########################################
   # DISPOSE TRASH
   #########################################
 
-  def test_dispose_trash_in_bin
-    # TODO get test coverage for various trash bins
+  def test_dispose_trash__early_exit__no_item
+    run_drci_command(
+      [
+      ],
+      'dispose_trash',
+      [nil],
+      [refute_result]
+    )
+  end
+
+  def test_dispose_trash__worn_trashcan__retries
+    run_drci_command(
+      [
+        'perhaps try doing that again',
+        'You drop a rock into a portable silversteel bucket with a flared rim.  Glancing inside, you notice the item being swirled in a whirlpool before dropping to the bottom of the bucket.',
+        'You drum your fingers on the bucket rhythmically.',
+        '[OOC: TAP the bucket again within the next 30 seconds to flush it.].',
+        'You drum your fingers on the bucket rhythmically.',
+        'After a moment, a dull THUD echoes from within the bucket.'
+      ],
+      'dispose_trash',
+      ["rock", "silversteel bucket", "tap"],
+      [assert_result]
+    )
+  end
+
+  def test_dispose_trash__worn_trashcan__happy_path
+    run_drci_command(
+      [
+        'You drop a rock into a portable silversteel bucket with a flared rim.  Glancing inside, you notice the item being swirled in a whirlpool before dropping to the bottom of the bucket.',
+        'You drum your fingers on the bucket rhythmically.',
+        '[OOC: TAP the bucket again within the next 30 seconds to flush it.].',
+        'You drum your fingers on the bucket rhythmically.',
+        'After a moment, a dull THUD echoes from within the bucket.'
+      ],
+      'dispose_trash',
+      ["rock", "silversteel bucket", "tap"],
+      [assert_result]
+    )
   end
 
   def test_dispose_trash__should_drop_ocarina_on_ground
@@ -309,6 +427,15 @@ class TestDRCI < Minitest::Test
   #########################################
   # OPEN CONTAINER
   #########################################
+
+  def test_open_container__should_slowly_open
+    run_drci_command(
+      ["You slowly open some dark encompassing shadows, glancing around suspiciously."],
+      'open_container?',
+      ["shadows"],
+      [assert_result]
+    )
+  end
 
   def test_open_container__should_unbutton
     run_drci_command(
@@ -463,6 +590,15 @@ class TestDRCI < Minitest::Test
       ["You close your medicine pouch."],
       'close_container?',
       ["medicine pouch"],
+      [assert_result]
+    )
+  end
+
+  def test_close_container__should_quickly_close
+    run_drci_command(
+      ["You quickly close your bag."],
+      'close_container?',
+      ["bag"],
       [assert_result]
     )
   end
