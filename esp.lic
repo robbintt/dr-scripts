@@ -9,3 +9,5 @@ bput("esp listen personal", "With a moment of focus")
 bput("esp listen guild", "With a moment of focus")
 bput("esp listen race", "With a moment of focus")
 bput("esp listen local", "With a moment of focus")
+
+bput("esp send general", "You prepare to project")
