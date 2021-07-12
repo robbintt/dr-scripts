@@ -1,19 +1,26 @@
 # This is designed to start with lich and run constantly
 
-
-# needs custom_require loaded at startup
+# needs custom_require loaded at startup, stall for a bit
 pause 10
+
+custom_require.call(%w[common util_methods drinfomon spellmonitor])
 
 no_kill_all
 no_pause_all
 
-custom_require.call(%w[common util_methods drinfomon spellmonitor])
-
 include UtilMethods # from util_methods
 
 class PercMoons
-  @@interval_percmoons = 300
+  include DRC
+  @@interval_percmoons = 210 # from Lagu: 200-210
   @@timer_percmoons = Time.now - @@interval_percmoons # set to start right away
+
+  @@interval_percmana = 60 # from Lagu: 60
+  @@timer_percmana = Time.now - @@interval_percmana # set to start right away
+
+  @@interval_app_redpouch = 300 # learning is a ratio of (300 - last) so you will learn partial between timers
+  @@timer_app_redpouch = Time.now - @@interval_app_redpouch # set to start right away
+
 
   def percmoons
     if (Time.now - @@timer_percmoons) > @@interval_percmoons
@@ -22,7 +29,35 @@ class PercMoons
       pause
       waitrt?
       # let this fail out, it runs constantly
-      fput "perc moons", "Roundtime:", ">", "...", "Katamba"
+      bput("perc moons", "Roundtime:", "Katamba")
+      pause
+      waitrt?
+      unpause_other_scripts
+    end
+  end
+
+  def percmana
+    if (Time.now - @@timer_percmana) > @@interval_percmana and DRSkill.getxp("Attunement") < 34
+      @@timer_percmana = Time.now
+      pause_other_scripts
+      pause
+      waitrt?
+      # let this fail out, it runs constantly
+      bput("perc mana", "Roundtime:")
+      pause
+      waitrt?
+      unpause_other_scripts
+    end
+  end
+
+  def app_redpouch
+    if (Time.now - @@timer_app_redpouch) > @@interval_app_redpouch and DRSkill.getxp("Attunement") < 34
+      @@timer_app_redpouch = Time.now
+      pause_other_scripts
+      pause
+      waitrt?
+      # let this fail out, it runs constantly
+      bput("app my red pouch", "Roundtime:")
       pause
       waitrt?
       unpause_other_scripts
@@ -34,5 +69,9 @@ end
 pm = PercMoons.new
 loop {
   pm.percmoons
-  pause 2
+  pause 10
+  pm.percmana
+  pause 10
+  pm.app_redpouch
+  pause 10
 }

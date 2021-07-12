@@ -1,6 +1,10 @@
 
 custom_require.call(%w[drinfomon common spellmonitor])
 
+before_dying do
+  put "stow my guide"
+end
+
 class FirstAidTrainer
   # not yet used
   attr_reader :skillnames
@@ -42,6 +46,12 @@ class FirstAidTrainer
     put "stow right"
   end
 
+  def setupguide
+    pause
+    waitrt?
+    put "turn my guide to lanky grey lach"
+  end
+
   def turnguide
     pause
     waitrt?
@@ -74,19 +84,27 @@ firstaidtrainer = FirstAidTrainer.new
 
 firstaidtrainer.stow
 firstaidtrainer.getguide
+firstaidtrainer.setupguide
 
 no_learning_counter = 0
 while DRSkill.getxp('First Aid') < firstaidtrainer.skill_targets['First Aid']
 
   prev_fa_level = DRSkill.getxp('First Aid')
   prev_scholar_level = DRSkill.getxp('Scholarship')
+
+  # only measure progress every 2 study actions
+  firstaidtrainer.studyguide
+  firstaidtrainer.turnguide
   firstaidtrainer.studyguide
 
   # stop wasting time if not training
-  if DRSkill.getxp('First Aid') - prev_fa_level < 1 or DRSkill.getxp('Scholarship') - prev_scholar_level < 1
+  if DRSkill.getxp('First Aid') - prev_fa_level < 1 and DRSkill.getxp('Scholarship') - prev_scholar_level < 1
     no_learning_counter += 1
     if no_learning_counter > 3
-      break
+      7.times do
+        firstaidtrainer.turnguide
+      end
+      no_learning_counter = 0
     end
   else
     no_learning_counter = 0

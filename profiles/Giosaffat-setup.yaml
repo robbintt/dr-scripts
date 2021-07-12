@@ -11,7 +11,7 @@ tarantula_debug: false  #This is only necessary if you want it true.  Script def
 
 cambrinth_invoke_exact_amount: true
 
-autostart_scripts_delay: 5
+autostart_scripts_delay: 10
 autostart_scripts:
   - moonwatch
   - wand-watcher
@@ -22,7 +22,8 @@ autostart_scripts:
   - rpa_sniper
   - sanowret-crystal
   - skill-recorder
-
+  - roomnumbers
+  - exp-monitor
 
 stacker_container: encompassing.shadows
 scroll_stackers:
@@ -88,6 +89,7 @@ wand_watcher_no_use_rooms:
 
 # primary/2ndary pools are bigger, we must alternate so do primary at least 50% of the time.
 # so we already know we want to do 0 tert skills.  Now lets get secondary into a tight band of skills easy to lock.
+# tarantula basically ignores this?
 tarantula:
   Armor:
     combat:
@@ -102,6 +104,7 @@ tarantula:
     - Debilitation
     non_combat:
     - Arcana
+    - Attunement
     - Lunar Magic
   Survival:
     combat:
@@ -117,27 +120,29 @@ tarantula:
     #- Scholarship
 
 tarantula_excluded_skills:
-  - Astrology
-  - Appraisal
-  - Forging
-  - Outfitting
   - Alchemy
+  - Appraisal
+  - Astrology
+  - Athletics
+  - Augmentation
+  - Brigandine
+  - Chain Armor
+  - Defending
   - Enchanting
   - Engineering
-  - Defending
-  - Chain Armor
-  - Plate Armor
-  - Brigandine
-  - Shield Usage
-  - Parry Ability
   - Evasion
-  - Brawling
   - First Aid
+  - Forging
   - Locksmithing
-  - Targeted Magic
+  - Outfitting
+  - Parry Ability
   - Perception
+  - Plate Armor
+  - Shield Usage
+  - Sorcery
+  - Targeted Magic
   - Utility
-  - Augmentation
+  - Warding
 
 enchanting_room: 19162
 # list of items to only grab from crafting_container, aka - oil for forging
@@ -156,6 +161,10 @@ mark_crafted_goods: true
 # grinding workorders for prestige
 craft_max_mindstate: 35
 crafting_container: gold bag
+
+spellbook_case: spellbook case
+spellbook_name: diamondwood spellbook
+spellbook_scrolls_chapter: 10
 
 cambrinth_items:
 #- name: dreamweave odaj
@@ -177,6 +186,8 @@ have_telescope: true
 telescope_storage:
   container: old.backpack
 
+#climbing_target: cliffs
+
 use_lockpick_ring: true
 lockpick_container: lockpick ring
 skip_lockpick_ring_refill: true
@@ -194,7 +205,8 @@ gem_pouch_noun: pouch
 
 train_with_burgle: true
 burgle_settings:
-  room: 851
+  #room: 851
+  room: 1879 # boar clan
   entry_type: rope
   #entry_type: cycle
   max_search_count: 1
@@ -206,8 +218,9 @@ burgle_settings:
   item_whitelist:
     - memory orb
     - keepsake box
+    - witch ball
 
-favor_goal: 25
+favor_goal: 20
 favor_god: Faenella
 use_favor_altars: false
 
@@ -217,14 +230,21 @@ buff_nonspells:
 
 buff_spells: &buffs
   shadows:
-    abberv: shadows
+    abbrev: shadows
     recast: 3
     mana: 20
     cambrinth:
     - 38
     - 38
-
 waggle_sets:
+  predicting:
+    Clear Vision:
+      abbrev: cv
+      recast: 10
+      mana: 10
+      cambrinth:
+      - 45
+      - 45
 #  default:
 #    << : *buffs
 #  prehunt_buffs:
@@ -268,13 +288,13 @@ waggle_sets:
       cambrinth:
       - 30
       - 30
-    Starlight Sphere:
-      abbrev: sls
-      mana: 14
-      cast: cast spider #offense
-      cyclic: true
-      night: true
-      day: false
+    #Starlight Sphere:
+    #  abbrev: sls
+    #  mana: 14
+    #  cast: cast spider #offense
+    #  cyclic: true
+    #  night: true
+    #  day: false
     Seer's Sense:
       abbrev: seer
       recast: 30
@@ -292,11 +312,13 @@ waggle_sets:
       abbrev: my tattoo
       recast: 25
       cambrinth:
-      - 35
-      - 35
       - 30
-      before:
-        - message: harness 50
+      - 30
+      - 30
+      - 30
+      - 30
+      #before:
+      #  - message: harness 50
     Invocation of the Spheres:
       abbrev: iots
       mana: 620

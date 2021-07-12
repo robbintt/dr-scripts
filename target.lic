@@ -11,6 +11,8 @@ bput("invoke my Katamba globe", "You raise the globe up, and a cold white glow s
 
 loop {
   target_pd
+  target_pd
+  target_pd
   cleanup
   advance
 }

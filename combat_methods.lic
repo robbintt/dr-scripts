@@ -313,10 +313,43 @@ module Combat
     put "analyze"
   end
 
+  def safe_target_cast
+    already_targeted = "Your target pattern is already around"
+    start_targeting = "You begin to weave mana lines"
+    target_result = bput("target", already_targeted, start_targeting)
+
+    if target_result == "You must be preparing a spell in order to target it!"
+      return 1 # start over
+    end
+
+    if target_result == start_targeting
+      pause 5 # give the targeting a minimal amount of time
+      return safe_target_cast # try again and just return the outcome, hopefully the stack doesn't get too deep
+    end
+
+    action_completed = "You gesture at"
+    no_spell = "You don't have a spell prepared!"
+    your_target_died = "Your target pattern dissipates"
+    if target_result == already_targeted
+      cast_result = bput("cast", action_completed, no_spell, your_target_died)
+    end
+
+    if cast_result.include?(action_completed)
+      return 0 # continue
+    elsif cast_result.include?(no_spell)
+      return 1 # start over
+    elsif cast_result.include?(your_target_died)
+      # what happens if I `target pd 18` a dead thing? i think face the next thing
+      return 1 # start over
+    end
+
+    return 0 # continue
+  end
+
   def target_pd
     pause
     waitrt?
-    fput "target pd 16", "attunement", "already"
+    fput "target pd 40", "attunement", "already"
 
     pause # 1 sec
     waitrt?
@@ -330,15 +363,18 @@ module Combat
       return
     end
 
-    pause # 1 sec
-    waitrt?
-    fput "cast", "You"
+    # this code pattern works anywhere, but we target_pd from this function all the time anyways
+    res = safe_target_cast
+    if res == 1 # return code for 'start over'
+      target_pd # hope the stack doesn't get too deep
+    end
+
   end
 
   def elbow_pd
     pause
     waitrt?
-    fput "target pd 16", "attunement", "already"
+    fput "target pd 40", "attunement", "already"
 
     pause # 1 sec
     waitrt?
@@ -354,15 +390,19 @@ module Combat
     end
 
     circle
-    pause # 1 sec
-    waitrt?
-    fput "cast", "You"
+
+    # this code pattern works anywhere, but we target_pd from this function all the time anyways
+    res = safe_target_cast
+    if res == 1 # return code for 'start over'
+      target_pd # hope the stack doesn't get too deep
+    end
+
   end
 
   def kill_pd
     pause
     waitrt?
-    fput "target pd 16", "attunement", "already"
+    fput "target pd 40", "attunement", "already"
 
     pause # 1 sec
     waitrt?
@@ -377,9 +417,12 @@ module Combat
       return
     end
 
-    pause # 1 sec
-    waitrt?
-    fput "cast", "You"
+    # this code pattern works anywhere, but we target_pd from this function all the time anyways
+    res = safe_target_cast
+    if res == 1 # return code for 'start over'
+      target_pd # hope the stack doesn't get too deep
+    end
+
   end
 
   def release_shw

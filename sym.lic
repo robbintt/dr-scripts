@@ -37,7 +37,7 @@ class MagicTrainer
     if DRSkill.getxp("Outdoorsmanship") < 32 and DRSkill.getxp("Perception") < 32
       collect_rock
     end
-    waitfor "fully prepared to cast"
+    matchtimeout 30, "fully prepared to cast"
     pause 5
   end
 
@@ -48,7 +48,7 @@ class MagicTrainer
     if DRSkill.getxp("Outdoorsmanship") < 32 and DRSkill.getxp("Perception") < 32
       collect_rock
     end
-    waitfor "fully prepared to cast"
+    matchtimeout 30, "fully prepared to cast"
     pause 5
   end
 
@@ -60,34 +60,6 @@ class MagicTrainer
     @skill_targets
   end
 
-  def utilmagic
-    spell = "pg"
-    mana = 28
-    pause
-    waitrt?
-    put "release"
-    pause
-    waitrt?
-    prep_symbiosis
-    #prep_notask spell, mana
-    prep_task spell, mana
-    fput "cast", "You gesture", "You don't have a spell prepared!"
-  end
-
-  def augmagic
-    spell = "aus"
-    mana = 28
-    pause
-    waitrt?
-    put "release"
-    pause
-    waitrt?
-    prep_symbiosis
-    #prep_notask spell, mana
-    prep_task spell, mana
-    fput "cast", "You gesture", "You don't have a spell prepared!"
-  end
-
   def caster(spell, mana)
     pause
     waitrt?
@@ -97,7 +69,7 @@ class MagicTrainer
     prep_symbiosis
     #prep_notask spell, mana
     prep_task spell, mana
-    fput "cast", "You gesture", "You don't have a spell prepared!"
+    bput("cast", "You gesture", "You don't have a spell prepared!")
   end
 end
 

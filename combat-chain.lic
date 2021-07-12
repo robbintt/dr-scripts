@@ -12,6 +12,8 @@ include UtilMethods # from util_methods
 
 before_dying do
   sheath_right
+  put "retreat"
+  put "retreat"
   unpause_script('percmoons')
 end
 
@@ -39,8 +41,8 @@ loop {
   #critter = "gryphon"
   #critter = "basilisk"
   #critter = "gremlin"
-  #critter = "beast"
-  critter = "gargoyle"
+  critter = "beast"
+  #critter = "gargoyle"
   other_critter = "other #{critter}"
 
   if used_tarantula == 0
@@ -61,7 +63,7 @@ loop {
     debil_shw
   end
 
-  # swap every full rotation if staying balanced, else rebalance
+  # switch to lower defense to keep them balanced each loop
   if DRSkill.getxp('Shield Usage') < DRSkill.getxp('Parry Ability')
     set_stance("shield")
   else
@@ -73,7 +75,8 @@ loop {
     debil_shw
   end
 
-  if DRSkill.getxp('Targeted Magic') < 33 and DRSkill.getxp('Small Edged') < 33
+  # targeted and small edged
+  if DRSkill.getxp('Targeted Magic') < 32 and DRSkill.getxp('Small Edged') < 32
     if DRSkill.getxp('Debilitation') < 34
       debil
     end
@@ -84,7 +87,8 @@ loop {
     cleanup
   end
 
-  if DRSkill.getxp('Targeted Magic') < 33 and DRSkill.getxp('Brawling') < 33
+  # targeted and brawling
+  if DRSkill.getxp('Targeted Magic') < 32 and DRSkill.getxp('Brawling') < 32
     if DRSkill.getxp('Debilitation') < 34
       debil
     end
@@ -95,7 +99,8 @@ loop {
     cleanup
   end
 
-  if DRSkill.getxp('Targeted Magic') < 33 and DRSkill.getxp('Brawling') >= 33 and DRSkill.getxp('Small Edged') >= 33
+  # only targeted (brawling & small edged are full)
+  if DRSkill.getxp('Targeted Magic') < 32 and DRSkill.getxp('Brawling') >= 32 and DRSkill.getxp('Small Edged') >= 32
     if DRSkill.getxp('Debilitation') < 34
       debil
     end
@@ -105,7 +110,17 @@ loop {
     cleanup
   end
 
-  #if DRSkill.getxp('Brawling') < 33
+  if DRSkill.getxp('Targeted Magic') > 32 and DRSkill.getxp('Brawling') >= 32 and DRSkill.getxp('Small Edged') >= 32
+    if DRSkill.getxp('Debilitation') < 34
+      debil
+    end
+    circle
+    circle
+    circle
+    cleanup
+  end
+
+  #if DRSkill.getxp('Brawling') < 32
   #  circle # get some balance & tactics
   #  elbow
   #  elbow
@@ -114,19 +129,19 @@ loop {
   #end
 
 
-  #if DRSkill.getxp('Stealth') < 33
+  #if DRSkill.getxp('Stealth') < 32
   #  ambush_feint
   #  ambush_feint
   #  cleanup
   #end
 
-  #if DRSkill.getxp('Stealth') < 33
+  #if DRSkill.getxp('Stealth') < 32
   #  ambush_feint
   #  ambush_feint
   #  cleanup
   #end
 
-  #if DRSkill.getxp('Small Edged') < 33
+  #if DRSkill.getxp('Small Edged') < 32
   #  feint
   #  feint
   #  feint
@@ -134,33 +149,33 @@ loop {
   #end
 
   # use lich sanowret
-  #if DRSkill.getxp('Arcana') < 33
+  #if DRSkill.getxp('Arcana') < 32
   #  gazecrystal
   #end
 
-  if DRSkill.getxp('Perception') < 33
+  if DRSkill.getxp('Perception') < 32
     hunt
   end
 
-  if DRSkill.getxp('Astrology') < 33
+  if DRSkill.getxp('Astrology') < 32
     percmoons
   end
 
-  if DRSkill.getxp('Tactics') < 33
+  if DRSkill.getxp('Tactics') < 32
     analyze
   end
 
-  if DRSkill.getxp('Appraisal') < 33
+  if DRSkill.getxp('Appraisal') < 32
     app_critter(critter)
   end
-  if DRSkill.getxp('Appraisal') < 33
+  if DRSkill.getxp('Appraisal') < 32
     app_critter(other_critter)
   end
 
-  if DRSkill.getxp('Scholarship') < 33
+  if DRSkill.getxp('Scholarship') < 32
     recall_critter(critter)
   end
-  if DRSkill.getxp('Scholarship') < 33
+  if DRSkill.getxp('Scholarship') < 32
     recall_critter(other_critter)
   end
 }
